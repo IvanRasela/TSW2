@@ -1,8 +1,10 @@
+UserRest.php
 <?php
 
 require_once(__DIR__."/../model/User.php");
 require_once(__DIR__."/../model/UserMapper.php");
 require_once(__DIR__."/BaseRest.php");
+require_once(__DIR__."/URIDispatcher.php");
 
 /**
 * Class UserRest
@@ -13,30 +15,34 @@ require_once(__DIR__."/BaseRest.php");
 *
 */
 class UserRest extends BaseRest {
+
 	private $userMapper;
 
 	public function __construct() {
 		parent::__construct();
 
 		$this->userMapper = new UserMapper();
+		echo("Constructor");
 	}
-
-	//Método HTTP POST /account para el inicio de sesión
-	//	Data IN: {"alias", "passwd"}
+	
+	//FALTA COMPROBAR
+	//Método HTTP GET /account para el inicio de sesión
+	//	Data IN: {"alias"}
 	//	Data OUT: {HTTP 200-OK, set cookie "bearer_token" / HTTP 403 Forbidden}
 	public function login($alias) {
+		
 		$currentLogged = parent::authenticateUser();
 		if ($currentLogged->getAlias() != $alias) {
 			header($_SERVER['SERVER_PROTOCOL'].' 403 Forbidden'); //el servidor entiende la solicitud pero se niega a cumplirla
 			echo("You are not authorized to login as anyone but you");
 		} else {
-			header($_SERVER['SERVER_PROTOCOL'].' 200 Ok'); 
+			header($_SERVER['SERVER_PROTOCOL'].' 201 Ok'); 
 			echo("Hello ".$alias);
 		}
 	}
 
-	//Método HTTP POST /account/new para solicitar el registro  
-	//	para ello se le pedirá el nombre de usuario, contraseña y email.
+	//COMPROBADO Y CORRECTO
+	//Método HTTP POST /user/post para solicitar el registro  
 	//	Data OUT: {HTTP 201 "created" / HTTP 400} el usuario no
 	//	tiene que estar autentificado ya que se va a crear uno nuevo (registro)
 	public function postUser($data) {
@@ -57,6 +63,9 @@ class UserRest extends BaseRest {
 		}
 	}
 
+
+	//	REVISAR CODIGOS DE HTTP
+	//	COMPROBADO Y CORRECTO
 	//Método HTTP GET /account/userAvailability/<alias>. Se usará para saber
 	//	si hay un usuario registrado con ese alias.
 	//	Data OUT: {HTTP 200 OK "si el usuario existe" / HTTP 204 404 "no content" si no existe ningún nombre de usuario con ese nombre}
@@ -65,7 +74,7 @@ class UserRest extends BaseRest {
 		if($this->userMapper->aliasExists($alias)){
 			//El usuario existe
 			header($_SERVER['SERVER_PROTOCOL'] . ' 200 OK');
-			echo("El usuario existe");
+			echo("\nEl usuario existe");
 		}else{
 			//No se encontró el usuario
 			header($_SERVER['SERVER_PROTOCOL'] . ' 204 No Content');
@@ -74,6 +83,34 @@ class UserRest extends BaseRest {
 	}
 
 	//Nueva funcionalidad: reestablecer contraseña y se ha olvidado el usuairo
+
+
+	//Método DELETE /account. Se usa para la eliminación de la cuenta insertando
+	//	alias y passwd.
+	//	Data OUT: {HTTP 200 OK / HTTP 400}
+	public function deleteUserAccount($alias, $passwd){
+		//El usuario debe estar registrado
+		echo("\nFuera del if del deleteUserAccount()");
+		//revisar isValidUser
+		if ($this->userMapper->isValidUser($alias, $passwd)) {
+			echo("Dentro del if del deleteUserAccount()");	
+			//Nueva función del UserMapper
+			if($this->userMapper->deleteByAlias($alias)){
+				// Datos de salida HTTP 200 OK
+				header($_SERVER['SERVER_PROTOCOL'] . ' 200 OK');
+			}else{
+				header($_SERVER['SERVER_PROTOCOL'] . ' 400');
+				echo("No se ha podido eliminar dicho usuario");
+			}
+			
+		}else{
+			http_response_code(400);
+			$errors = array();
+			$errors["general"] = "Alias o contraseña no valido/s";
+
+		}
+	}
+
 
 
 	//Método PUT /account. Se usa para la edición de los datos de la cuenta, 
@@ -107,36 +144,14 @@ class UserRest extends BaseRest {
 	}
 
 
-	//Método DELETE /account. Se usa para la eliminación de la cuenta insertando
-	//	alias y passwd.
-	//	Data OUT: {HTTP 200 OK / HTTP 400}
-	public function deleteUserAccount($alias, $passwd){
-		//El usuario debe estar registrado
-		$user = $this->userMapper->findByAlias($alias);
-
-		if ($user !== null && $this->userMapper->isValidUser($alias, $passwd)) {
-				
-			//Nueva función del UserMapper
-			if($this->userMapper->deleteByAlias($alias)){
-				// Datos de salida HTTP 200 OK
-				header($_SERVER['SERVER_PROTOCOL'] . ' 200 OK');
-			}else{
-				header($_SERVER['SERVER_PROTOCOL'] . ' 400');
-				echo("No se ha podido eliminar dicho usuario");
-			}
-			
-		}else{
-			http_response_code(400);
-			$errors = array();
-			$errors["general"] = "Alias o contraseña no valido/s";
-			$this->view->setVariable("errors", $errors);
-		}
-	}
+	
 
 }
 
 // URI-MAPPING for this Rest endpoint
 $userRest = new UserRest();
 URIDispatcher::getInstance()
-->map("GET",	"/user/$1", array($userRest,"login"))
-->map("POST", "/user", array($userRest,"postUser"));
+->map("GET",	"/user/login/$1", array($userRest,"login"))
+->map("POST", "/user/post/new", array($userRest,"postUser"))
+->map("GET", "/user/checkAvailability/$1", array($userRest,"getUser"))
+->map("DELETE", "/user/delete/$1/$2", array($userRest,"deleteUserAccount"));

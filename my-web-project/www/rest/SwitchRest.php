@@ -4,33 +4,21 @@
 require_once(__DIR__."/../model/User.php");
 require_once(__DIR__."/../model/UserMapper.php");
 
-require_once(__DIR__."/../model/Post.php");
-require_once(__DIR__."/../model/PostMapper.php");
+require_once(__DIR__."/../model/Switchs.php");
+require_once(__DIR__."/../model/SwitchsMapper.php");
 
-require_once(__DIR__."/../model/Comment.php");
-require_once(__DIR__."/../model/CommentMapper.php");
 
 require_once(__DIR__."/BaseRest.php");
 
-/**
-* Class PostRest
-*
-* It contains operations for creating, retrieving, updating, deleting and
-* listing posts, as well as to create comments to posts.
-*
-* Methods gives responses following Restful standards. Methods of this class
-* are intended to be mapped as callbacks using the URIDispatcher class.
-*
-*/
-class PostRest extends BaseRest {
+require_once(__DIR__."/URIDispatcher.php");
+
+class SwitchRest extends BaseRest {
 	private $SwitchsMapper;
-	private $commentMapper;
 
 	public function __construct() {
 		parent::__construct();
 
 		$this->SwitchsMapper = new SwitchsMapper();
-		$this->commentMapper = new CommentMapper();
 	}
 
 	public function getSwitchs() {
@@ -242,12 +230,12 @@ class PostRest extends BaseRest {
 }
 
 // URI-MAPPING for this Rest endpoint
-$postRest = new PostRest();
+$switchRest = new SwitchRest();
 URIDispatcher::getInstance()
-->map("GET",	"/post", array($postRest,"getSwitchs"))
-->map("GET",	"/post", array($postRest,"getSwitchsByPublic"))
-->map("GET",	"/post", array($postRest,"getSwitchsByPrivate"))
-->map("GET",	"/post", array($postRest,"getSwitchsSuscribe"))
-->map("POST", "/post", array($postRest,"createSwitch"))
-->map("PUT",	"/post/$1", array($postRest,"updateSwitch"))
-->map("DELETE", "/post/$1", array($postRest,"deleteSwitch"));
+->map("GET",	"/post", array($switchRest,"getSwitchs"))
+->map("GET",	"/post", array($switchRest,"getSwitchsByPublic"))
+->map("GET",	"/post", array($switchRest,"getSwitchsByPrivate"))
+->map("GET",	"/post", array($switchRest,"getSwitchsSuscribe"))
+->map("POST", "/post", array($switchRest,"createSwitch"))
+->map("PUT",	"/post/$1", array($switchRest,"updateSwitch"))
+->map("DELETE", "/post/$1", array($switchRest,"deleteSwitch"));

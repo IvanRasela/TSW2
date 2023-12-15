@@ -37,7 +37,7 @@ class UserMapper {
 		$stmt = $this->db->prepare("INSERT INTO usuario values (?,?,?)");
 		$result = $stmt->execute(array($user->getAlias(), $user->getPasswd(), $user->getEmail()));
 		if ($result) {
-			echo "Usuario guardado correctamente en la base de datos.";
+			echo "\nUsuario guardado correctamente en la base de datos.";
 
 			/*$recipients = $user->getEmail();
 			$headers['From']    = 'ivan.rasela.verin@gmail.com';

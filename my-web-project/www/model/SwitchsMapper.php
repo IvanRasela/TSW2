@@ -4,7 +4,7 @@
 // file: model/PostMapper.php
 require_once(__DIR__."/../core/PDOConnection.php");
 require_once(__DIR__."/../model/User.php");
-require_once(__DIR__."/../model/switchs.php");
+require_once(__DIR__."/../model/Switchs.php");
 
 /**
 * Class PostMapper
@@ -13,7 +13,7 @@ require_once(__DIR__."/../model/switchs.php");
 *
 * @author lipido <lipido@gmail.com>
 */
-class switchsMapper {
+class SwitchsMapper {
 
 	/**
 	* Reference to the PDO connection
