@@ -111,11 +111,10 @@ class UserMapper {
 
 	}
 
-	public function deleteByAlias($alias){
+	public function deleteUser($alias, $passwd){
 		$stmt = $this->db->prepare("DELETE FROM usuario WHERE alias = ?");
 		$stmt->execute(array($alias));
-
-		if(findByAlias($alias)==NULL){
+		if(!$this->isValidUser($alias, $passwd)){
 			//Se ha eliminado correctamente
 			return true;
 		}else{
@@ -123,5 +122,19 @@ class UserMapper {
 		}
 
 	}
+
+	public function update($user, $alias, $passwd){
+		//Elimina el usuario con ese alias
+		if($this->deleteUser($alias, $passwd)){
+			//Crea el usuario 
+			$this->save($user);
+			return true;
+		}else{
+			return false;
+		}
+
+	}
+
+
 
 }
