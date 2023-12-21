@@ -66,7 +66,10 @@ class UserMapper {
 
 		if ($stmt->fetchColumn() > 0) {
 			return true;
+		}else{
+			return false;
 		}
+
 	}
 
 	public function emailExists($email) {
@@ -103,8 +106,10 @@ class UserMapper {
 		$stmt->execute(array($alias));
 		$userArray = $stmt->fetch(PDO::FETCH_ASSOC);
 
-		if($userArray != null){
+		if($userArray != null && array_key_exists('alias', $userArray) && array_key_exists('passwd', $userArray) && array_key_exists('email', $userArray)){
 			$user = new User($userArray['alias'], $userArray['passwd'], $userArray['email']);
+		}else if(!array_key_exists('alias', $userArray) || !array_key_exists('passwd', $userArray) || !array_key_exists('email', $userArray)){
+			echo("\nKEYs DOESn't EXISTs.");	
 		}else{
 			return NULL;
 		}
@@ -122,19 +127,6 @@ class UserMapper {
 		}
 
 	}
-
-	public function update($user, $alias, $passwd){
-		//Elimina el usuario con ese alias
-		if($this->deleteUser($alias, $passwd)){
-			//Crea el usuario 
-			$this->save($user);
-			return true;
-		}else{
-			return false;
-		}
-
-	}
-
 
 
 }

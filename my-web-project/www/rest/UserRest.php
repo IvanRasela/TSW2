@@ -41,9 +41,8 @@ class UserRest extends BaseRest {
 		}
 	}
 
-	//COMPROBADO Y CORRECTO
-	//Método HTTP POST /user/post para solicitar el registro  
-	//	Data OUT: {HTTP 201 "created" / HTTP 400} el usuario no
+	//Método HTTP POST /user/new para solicitar el registro  
+	//	Data OUT: {HTTP 201 "created" / HTTP 422} el usuario no
 	//	tiene que estar autentificado ya que se va a crear uno nuevo (registro)
 	public function postUser($data) {
 		$user = new User($data->alias, $data->passwd, $data->email);
@@ -52,23 +51,21 @@ class UserRest extends BaseRest {
 
 			$this->userMapper->save($user);
 
-			//DATA_OUT 200 OK
+			//DATA_OUT 201 Created
 			header($_SERVER['SERVER_PROTOCOL'].' 201 Created');
 			//Cambiamos la URI a /account donde account será el alias
 			header("Location: ".$_SERVER['REQUEST_URI']."/".$data->alias);
 		}catch(ValidationException $e) {
-			http_response_code(400); //la solicitud no pudo ser entendida o procesada por el servidor
+			//422 Unprocessable entity. Solicitud no puede ser procesada debido a la lógica de negocio o reglas de validación. 
+			http_response_code(422); 
 			header('Content-Type: application/json');
 			echo(json_encode($e->getErrors()));
 		}
 	}
 
-
-	//	REVISAR CODIGOS DE HTTP
-	//	COMPROBADO Y CORRECTO
-	//Método HTTP GET /account/userAvailability/<alias>. Se usará para saber
+	//Método HTTP GET /user/checkAvailability/<alias>. Se usará para saber
 	//	si hay un usuario registrado con ese alias.
-	//	Data OUT: {HTTP 200 OK "si el usuario existe" / HTTP 204 404 "no content" si no existe ningún nombre de usuario con ese nombre}
+	//	Data OUT: {HTTP 200 OK "si el usuario existe" / HTTP 204 "no content" si no existe ningún nombre de usuario con ese nombre}
 	// usaremos la función aliasExists() de UserMapper.php
 	public function getUser($alias){
 		if($this->userMapper->aliasExists($alias)){
@@ -77,34 +74,35 @@ class UserRest extends BaseRest {
 			echo("\nEl usuario existe");
 		}else{
 			//No se encontró el usuario
+			echo("\nEl usuario no existe en la base de datos.");
 			header($_SERVER['SERVER_PROTOCOL'] . ' 204 No Content');
-			echo("No existe ningún nombre de usuario con ese nombre");
 		}
 	}
 
-	//Nueva funcionalidad: reestablecer contraseña y se ha olvidado el usuairo
+	//Nueva funcionalidad: reestablecer contraseña si se ha olvidado por el usuario
 
 	//COMPROBADA FUNCIONA CORRECTAMENTE
-	//Método DELETE /account. Se usa para la eliminación de la cuenta insertando
+	//Método POST /user/delete. Se usa para la eliminación de la cuenta insertando
 	//	alias y passwd.
-	//	Data OUT: {HTTP 200 OK / HTTP 400}
-	public function deleteUserAccount($alias, $passwd){
+	//	Data OUT: {HTTP 200 OK / HTTP 400 / HTTP 404 Not Found}
+	public function deleteUserAccount($data){
 
 		//El usuario debe estar registrado
-		if ($this->userMapper->isValidUser($alias, $passwd)) {	
+		if ($this->userMapper->isValidUser($data->alias, $data->passwd)) {	
 			//revisar deleteUser(), elimina pero no sale de la función. 
-			if($this->userMapper->deleteUser($alias, $passwd)){
+			if($this->userMapper->deleteUser($data->alias, $data->passwd)){
 				// Datos de salida HTTP 200 OK
 				//Usuario eliminado correctamente.
 				header($_SERVER['SERVER_PROTOCOL'] . ' 200 OK');
+				echo("\nUsuario eliminado correctamente.");
 			}else{
 				header($_SERVER['SERVER_PROTOCOL'] . ' 400');
-				echo("No se ha podido eliminar dicho usuario");
+				echo("\nNo se ha podido eliminar dicho usuario.");
 			}
 			
 		}else{
+			header($_SERVER['SERVER_PROTOCOL'] . ' 404 Not Found');
 			echo("\nNo se encuentra el usuario en la base de datos, ¿ya lo has eliminado?");
-			header($_SERVER['SERVER_PROTOCOL'] . ' 200 OK');
 			$errors = array();
 			$errors["general"] = "Alias o contraseña no valido/s";
 
@@ -112,41 +110,70 @@ class UserRest extends BaseRest {
 	}
 
 
+	//COMPROBADO Y CORRECTO
 
-	//Cuando se realiza una solicitud PUT a un recurso específico, se está indicando
-	// al servidor que debe actualizar el recurso con la representación proporcionada
-	// en la solicitud. Esto implica que se debe enviar toda la infomación del recurso,
-	// incluso las partes que no han cambiado.
-	//Método PUT /account. Se usa para la edición de los datos de la cuenta, 
-	//	el usuario debe estar registrado, podrá cambiar su alias, su contraseña (si 
-	//	inserta bien la antigua) y el email
+	//Método POST /user/edit. Se usa para la edición de los datos de la cuenta, 
+	//	el usuario debe insertar alias y passwd antigua correctamente ($data), además de 
+	//  alias, passwd, email si los quiere actualizar.
+	// 	no puede actualziar la passwd, para ello existe otra función. 
 	//	Data OUT: {HTTP 201 OK / HTTP 400}
-	public function editUserAccount($oldAlias, $oldPasswd, $alias, $passwd, $email){
+	public function editUserAccount($dataOld, $dataNew){
 
-		//El usuario debe estar registrado
-		$user = $this->userMapper->findByAlias($oldAlias);
+		//si el usuario está dentro de la base de datos. 
+		if ($this->userMapper->isValidUser($dataOld->aliasOld, $dataOld->passwdOld)) {
 
-		if ($this->userMapper->isValidUser($oldAlias, $oldPasswd) && $user!=NULL) {
+				// Creamos un nuevo usuario con las variables actualizadas
+				// y lo almacenamos en la base de datos. 
+				//$user = new User($alias, $passwd, $email);
+				try {
+					$user->checkIsValidForRegister();
+					if(!empty($dataNew->aliasNew) || !empty($dataNew->emailNew)){
 
-				// Actualiza los campos del usuario con los nuevos valores
-				$user->setAlias($alias);
-				$user->setPassword($passwd);
-				$user->setEmail($email);
+						//Eliminamos el usuario con las variables desactualizadas. 
+						$this->userMapper->deleteUser($dataOld->aliasOld, $dataOld->passwdOld);
 
-				//Guardamos el usuario actualizado en la base de datos:
-				// le pasamos el usuario actualizado y el alias anterior para 
-				// saber cual actualizar en la base de datos.
-				if($this->userMapper->update($user, $oldAlias, $oldPasswd)){
-					header($_SERVER['SERVER_PROTOCOL'].' 201 Edited');
-					header("Location: ".$_SERVER['REQUEST_URI']."/".$data->alias);
-				}else{
-					header($_SERVER['SERVER_PROTOCOL'] . ' 400');
-					echo("No se ha podido editar dicho usuario");
+						if(!empty($dataNew->aliasNew) && empty($dataNew->emailNew)){
+							//creamos un nuevo usuario con el nuevo alias y el mismo email
+							$user = new User($dataNew->aliasNew, $dataOld->passwdOld, $dataOld->emailOld);
+							$user->checkIsValidForRegister();
+
+							$this->userMapper->save($user);
+						}
+						if(empty($dataNew->aliasNew) && !empty($dataNew->emailNew)){
+							//Creamos un nuevo usuario con el nuevo email y el mismo alias
+							$user = new User($dataOld->aliasOld, $dataOld->passwdOld, $dataNew->emailNew);
+							$user->checkIsValidForRegister();
+
+							$this->userMapper->save($user);
+						}
+						if(!empty($dataNew->aliasNew) && !empty($dataNew->emailNew)){
+							//Creamos un nuevo usuario con nuevo alias y nuevo email
+							$user = new User($dataNew->aliasNew, $dataOld->passwdOld, $dataNew->emailNew);
+							$user->checkIsValidForRegister();
+
+							$this->userMapper->save($user);
+						}
+
+						header($_SERVER['SERVER_PROTOCOL'].' 201 Edited');
+						header("Location: ".$_SERVER['REQUEST_URI']."/".$data->alias);
+					}
+
+					else{
+						header($_SERVER['SERVER_PROTOCOL'].' 200 Ok');
+						echo("\nDebe indicar los nuevos valores a editar.");
+					}
+		
+				}catch(ValidationException $e) {
+					//No se ha podido guardar el usuario en la base de datos.
+					http_response_code(400); 
+					header('Content-Type: application/json');
+					echo(json_encode($e->getErrors()));
 				}
+				
 
 		}else{
 			$errors = array();
-			$errors["general"] = "Alias o contraseña no valido/s";
+			$errors["general"] = "Alias o contraseña no valido/s.";
 			$this->view->setVariable("errors", $errors);
 			http_response_code(400);
 		}
@@ -161,7 +188,7 @@ class UserRest extends BaseRest {
 $userRest = new UserRest();
 URIDispatcher::getInstance()
 ->map("GET",	"/user/login/$1", array($userRest,"login"))
-->map("POST", "/user/post/new", array($userRest,"postUser"))
+->map("POST", "/user/new", array($userRest,"postUser"))
 ->map("GET", "/user/checkAvailability/$1", array($userRest,"getUser"))
-->map("DELETE", "/user/delete/$1/$2", array($userRest,"deleteUserAccount"))
-->map("PUT", "/user/edit/$1/$2", array($userRest,"editUserAccount"));
+->map("POST", "/user/delete", array($userRest,"deleteUserAccount"))
+->map("POST", "/user/edit", array($userRest,"editUserAccount"));

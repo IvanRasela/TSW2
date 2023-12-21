@@ -118,7 +118,12 @@ class User {
 		if (strlen($this->passwd) < 5) {
 			$errors["passwd"] = "La contraseña no puede ser menor a 5 carácteres.";
 		}
-		//El email puede estar vacio
+		//El email puede estar vacio, pero si no lo está debe validarse
+		 if (!empty($this->email) && !filter_var($this->email, FILTER_VALIDATE_EMAIL)) {
+        	// Validar formato
+       		$errors["email"] = "El formato del correo electrónico no es válido.";
+   		}
+		
 		if (sizeof($errors)>0){
 			throw new ValidationException($errors, "Usuario no valido.");
 		}
