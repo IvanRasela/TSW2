@@ -1,12 +1,12 @@
 <?php
-//file: view/posts/add.php
+//file: view/switches/add.php
 require_once(__DIR__."/../../core/ViewManager.php");
 $view = ViewManager::getInstance();
 
 $switch = $view->getVariable("switchs");
 $errors = $view->getVariable("errors");
 
-$view->setVariable("title", "Edit Post");
+$view->setVariable("title", "Edit Switch");
 
 ?><h1>("Create switch")?</h1>
 <form action="index.php?controller=Switchs&amp;action=add" method="POST">

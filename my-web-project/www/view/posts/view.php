@@ -1,5 +1,5 @@
 <?php
-//file: view/posts/view.php
+//file: view/switches/view.php
 require_once(__DIR__."/../../core/ViewManager.php");
 $view = ViewManager::getInstance();
 

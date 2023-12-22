@@ -1,15 +1,15 @@
 
 
 <?php
-// file: model/PostMapper.php
+// file: model/SwitchMapper.php
 require_once(__DIR__."/../core/PDOConnection.php");
 require_once(__DIR__."/../model/User.php");
 require_once(__DIR__."/../model/Switchs.php");
 
 /**
-* Class PostMapper
+* Class SwitchMapper
 *
-* Database interface for Post entities
+* Database interface for Switch entities
 *
 * @author lipido <lipido@gmail.com>
 */
@@ -26,9 +26,9 @@ class SwitchsMapper {
 	}
 
 	/**
-	* Retrieves all posts
+	* Retrieves all switches
 	*
-	* Note: Comments are not added to the Post instances
+	* Note: Comments are not added to the Switch instances
 	*
 	* @throws PDOException if a database error occurs
 	* @return mixed Array of switchs instances (without comments)
@@ -71,13 +71,13 @@ class SwitchsMapper {
 	}
 
 	/**
-	* Loads a Post from the database given its id
+	* Loads a Switch from the database given its id
 	*
-	* Note: Comments are not added to the Post
+	* Note: Comments are not added to the Switch
 	*
 	* @throws PDOException if a database error occurs
-	* @return Post The switchs instances (without comments). NULL
-	* if the Post is not found
+	* @return Switch The switchs instances (without comments). NULL
+	* if the Switch is not found
 	*/
 	public function findById($publicuuid){
 		$stmt = $this->db->prepare("SELECT * FROM Switchs WHERE Public_UUID=?");
@@ -116,64 +116,12 @@ class SwitchsMapper {
 			return NULL;
 		}
 	}
-
-	/**
-	* Loads a Post from the database given its id
-	*
-	* It includes all the comments
-	*
-	* @throws PDOException if a database error occurs
-	* @return Post The Post instances (without comments). NULL
-	* if the Post is not found
-	*/
-	public function findByIdWithComments($postid){
-		$stmt = $this->db->prepare("SELECT
-			P.id as 'post.id',
-			P.title as 'post.title',
-			P.content as 'post.content',
-			P.author as 'post.author',
-			C.id as 'comment.id',
-			C.content as 'comment.content',
-			C.post as 'comment.post',
-			C.author as 'comment.author'
-
-			FROM posts P LEFT OUTER JOIN comments C
-			ON P.id = C.post
-			WHERE
-			P.id=? ");
-
-			$stmt->execute(array($postid));
-			$post_wt_comments= $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-			if (sizeof($post_wt_comments) > 0) {
-				$post = new Post($post_wt_comments[0]["post.id"],
-				$post_wt_comments[0]["post.title"],
-				$post_wt_comments[0]["post.content"],
-				new User($post_wt_comments[0]["post.author"]));
-				$comments_array = array();
-				if ($post_wt_comments[0]["comment.id"]!=null) {
-					foreach ($post_wt_comments as $comment){
-						$comment = new Comment( $comment["comment.id"],
-						$comment["comment.content"],
-						new User($comment["comment.author"]),
-						$post);
-						array_push($comments_array, $comment);
-					}
-				}
-				$post->setComments($comments_array);
-
-				return $post;
-			}else {
-				return NULL;
-			}
-		}
-
 		/**
-		* Saves a Post into the database
+		* Saves a Switch into the database
 		*
-		* @param Post $post The post to be saved
+		* @param Switch $switch The switch to be saved
 		* @throws PDOException if a database error occurs
-		* @return int The mew post id
+		* @return int The mew switch id
 		*/
 		public function save(Switchs $switchs) {
 			$stmt = $this->db->prepare("INSERT INTO Switchs(SwitchName, Private_UUID, Public_UUID, LastTimePowerOn, MaxTimePowerOn, DescriptionSwitch, AliasUser) values (?,?,?,?,?,?,?)");
@@ -188,19 +136,19 @@ class SwitchsMapper {
 		}
 
 		/**
-		* Updates a Post in the database
+		* Updates a Switch in the database
 		*
-		* @param Post $post The post to be updated
+		* @param Switch $switch The switch to be updated
 		* @throws PDOException if a database error occurs
 		* @return void
 		*/
-		public function update(Post $post) {
-			$stmt = $this->db->prepare("UPDATE posts set title=?, content=? where id=?");
-			$stmt->execute(array($post->getTitle(), $post->getContent(), $post->getId()));
+		public function update(Post $switch) {
+			$stmt = $this->db->prepare("UPDATE switches set title=?, content=? where id=?");
+			$stmt->execute(array($switch->getTitle(), $switch->getContent(), $switch->getId()));
 		}
 
 		/**
-		* Deletes a Post into the database
+		* Deletes a Switch into the database
 		*
 		* @param switchs $switchs The switchs to be deleted
 		* @throws PDOException if a database error occurs

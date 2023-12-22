@@ -1,27 +1,27 @@
-class SwitchsAddComponent extends Fronty.ModelComponent {
-    constructor(switchsModel, userModel, router) {
-      super(Handlebars.templates.switchedit, switchsModel);
-      this.switchsModel = switchsModel; 
+class SwitchAddComponent extends Fronty.ModelComponent {
+    constructor(switchModel, userModel, router) {
+      super(Handlebars.templates.switchedit, switchModel);
+      this.switchModel = switchModel; 
       
       this.userModel = userModel; // global
       this.addModel('user', userModel);
       this.router = router;
   
-      this.switchsService = new SwitchsService();
+      this.switchService = new SwitchService();
   
       this.addEventListener('click', '#savebutton', () => {
-        var newSwitchs= {};
-        newSwitchs.Descriptionswitchs = $('#description').val();
+        var newSwitch= {};
+        newSwitch.Descriptionswitch = $('#description').val();
         // Crear UUIDs y demas
-        newSwitchs.AliasUser = this.userModel.currentUser;
-        this.switchsService.addSwitchs(newSwitchs)
+        newSwitch.AliasUser = this.userModel.currentUser;
+        this.switchService.addSwitch(newSwitch)
           .then(() => {
-            this.router.goToPage('switchs');
+            this.router.goToPage('switch');
           })
           .fail((xhr, errorThrown, statusText) => {
             if (xhr.status == 400) {
-              this.switchsModel.set(() => {
-                this.switchsModel.errors = xhr.responseJSON;
+              this.switchModel.set(() => {
+                this.switchModel.errors = xhr.responseJSON;
               });
             } else {
               alert('an error has occurred during request: ' + statusText + '.' + xhr.responseText);
@@ -31,6 +31,6 @@ class SwitchsAddComponent extends Fronty.ModelComponent {
     }
     
     onStart() {
-      this.switchsModel.setSelectedSwitchs(new SwitchsModel());
+      this.switchModel.setSelectedSwitch(new SwitchModel());
     }
   }

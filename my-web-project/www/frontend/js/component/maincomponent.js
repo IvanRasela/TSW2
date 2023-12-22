@@ -9,27 +9,27 @@ class MainComponent extends Fronty.RouterComponent {
     this.userService = new UserService();
 
     super.setRouterConfig({
-      posts: {
-        component: new PostsComponent(this.postsModel, this.userModel, this),
-        title: 'Posts'
+      switches: {
+        component: new SwitchComponent(this.switchesModel, this.userModel, this),
+        title: 'Switches'
       },
-      'view-post': {
-        component: new PostViewComponent(this.postsModel, this.userModel, this),
-        title: 'Post'
+      'view-switch': {
+        component: new SwitchViewComponent(this.switchesModel, this.userModel, this),
+        title: 'Switch'
       },
-      'edit-post': {
-        component: new PostEditComponent(this.postsModel, this.userModel, this),
-        title: 'Edit Post'
+      'edit-switch': {
+        component: new SwitchEditComponent(this.switchesModel, this.userModel, this),
+        title: 'Edit Switch'
       },
-      'add-post': {
-        component: new PostAddComponent(this.postsModel, this.userModel, this),
-        title: 'Add Post'
+      'add-switch': {
+        component: new SwitchAddComponent(this.switchesModel, this.userModel, this),
+        title: 'Add Switch'
       },
       login: {
         component: new LoginComponent(this.userModel, this),
         title: 'Login'
       },
-      defaultRoute: 'posts'
+      defaultRoute: 'switches'
     });
 
     Handlebars.registerHelper('currentPage', () => {

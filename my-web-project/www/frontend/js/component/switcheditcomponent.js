@@ -1,26 +1,26 @@
-class PostEditComponent extends Fronty.ModelComponent {
-  constructor(postsModel, userModel, router) {
-    super(Handlebars.templates.postedit, postsModel);
-    this.postsModel = postsModel; // posts
+class SwitchEditComponent extends Fronty.ModelComponent {
+  constructor(switchesModel, userModel, router) {
+    super(Handlebars.templates.switchedit, switchesModel);
+    this.switchesModel = switchesModel; // switches
     this.userModel = userModel; // global
     this.addModel('user', userModel);
     this.router = router;
 
-    this.postsService = new PostsService();
+    this.switchService = new SwitchService();
 
     this.addEventListener('click', '#savebutton', () => {
-      this.postsModel.selectedPost.title = $('#title').val();
-      this.postsModel.selectedPost.content = $('#content').val();
-      this.postsService.savePost(this.postsModel.selectedPost)
+      this.switchesModel.selectedSwitch.title = $('#title').val();
+      this.switchesModel.selectedSwitch.content = $('#content').val();
+      this.switchesService.saveSwitch(this.switchesModel.selectedSwitch)
         .then(() => {
-          this.postsModel.set((model) => {
+          this.switchesModel.set((model) => {
             model.errors = []
           });
-          this.router.goToPage('posts');
+          this.router.goToPage('switches');
         })
         .fail((xhr, errorThrown, statusText) => {
           if (xhr.status == 400) {
-            this.postsModel.set((model) => {
+            this.switchesModel.set((model) => {
               model.errors = xhr.responseJSON;
             });
           } else {
@@ -34,9 +34,9 @@ class PostEditComponent extends Fronty.ModelComponent {
   onStart() {
     var selectedId = this.router.getRouteQueryParam('id');
     if (selectedId != null) {
-      this.postsService.findPost(selectedId)
-        .then((post) => {
-          this.postsModel.setSelectedPost(post);
+      this.switchesService.findSwitch(selectedId)
+        .then((switch_r) => {
+          this.switchModel.setSelectedSwitch(switch_r);
         });
     }
   }

@@ -1,43 +1,43 @@
-class SwitchsComponent extends Fronty.ModelComponent {
-    constructor(switchsModel, userModel, router) {
-      super(Handlebars.templates.switchstable, switchsModel, null, null);
+class SwitchComponent extends Fronty.ModelComponent {
+    constructor(switchModel, userModel, router) {
+      super(Handlebars.templates.switchtable, switchModel, null, null);
       
       
-      this.switchsModel = switchsModel;
+      this.switchModel = switchModel;
       this.userModel = userModel;
       this.addModel('user', userModel);
       this.router = router;
   
-      this.switchsService = new SwitchsService();
+      this.switchService = new SwitchService();
   
     }
   
     onStart() {
-      this.updateSwitchs();
+      this.updateSwitch();
     }
   
-    updateSwitchs() {
-      this.switchsService.getSwitchs().then((data) => {
+    updateSwitch() {
+      this.switchService.getSwitch().then((data) => {
   
-        this.switchsModel.setSwitchs(
+        this.switchModel.setSwitch(
           // create a Fronty.Model for each item retrieved from the backend
           data.map(
-            (item) => new SwitchsModel(item.switchsName, item.Public_UUID, item.AliasUser, item.Descriptionswitchs)
+            (item) => new SwitchModel(item.switchName, item.Public_UUID, item.AliasUser, item.Descriptionswitch)
         ));
       });
     }
   
     // Override
     createChildModelComponent(className, element, id, modelItem) {
-      return new SwitchsRowComponent(modelItem, this.userModel, this.router, this);
+      return new SwitchRowComponent(modelItem, this.userModel, this.router, this);
     }
   }
   
-  class SwitchsRowComponent extends Fronty.ModelComponent {
-    constructor(switchsModel, userModel, router, SwitchsComponent) {
-      super(Handlebars.templates.switchsrow, switchsModel, null, null);
+  class SwitchRowComponent extends Fronty.ModelComponent {
+    constructor(switchModel, userModel, router, SwitchComponent) {
+      super(Handlebars.templates.switchrow, switchModel, null, null);
       
-      this.switchsComponent = switchsComponent;
+      this.switchComponent = switchComponent;
       
       this.userModel = userModel;
       this.addModel('user', userModel); // a secondary model
@@ -46,20 +46,20 @@ class SwitchsComponent extends Fronty.ModelComponent {
   
       this.addEventListener('click', '.remove-button', (event) => {
         if (confirm(I18n.translate('Are you sure?'))) {
-          var switchsId = event.target.getAttribute('item');
-          this.switchsComponent.switchsService.deleteSwitch(switchsId)
+          var switchId = event.target.getAttribute('item');
+          this.switchComponent.switchService.deleteSwitch(switchId)
             .fail(() => {
-              alert('post cannot be deleted')
+              alert('switch cannot be deleted')
             })
             .always(() => {
-              this.switchsComponent.updateSwitchs();
+              this.switchComponent.updateSwitch();
             });
         }
       });
       // On-Off
       this.addEventListener('click', '.edit-button', (event) => {
-        var postId = event.target.getAttribute('item');
-        this.router.goToPage('edit-post?id=' + postId);
+        var switchId = event.target.getAttribute('item');
+        this.router.goToPage('edit-switch?id=' + switchId);
       });
     }
   

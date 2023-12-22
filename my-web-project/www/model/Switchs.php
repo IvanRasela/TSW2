@@ -1,13 +1,13 @@
 
 <?php
-// file: model/Post.php
+// file: model/Switch.php
 
 require_once(__DIR__."/../core/ValidationException.php");
 
 /**
-* Class Post
+* Class Switch
 *
-* Represents a Post in the blog. A Post was written by an
+* Represents a Switch in the blog. A Switch was written by an
 * specific User (author) and contains a list of Comments
 *
 * @author lipido <lipido@gmail.com>
@@ -80,9 +80,9 @@ class switchs {
 	}
 
 	/**
-	* Gets the id of this post
+	* Gets the id of this switch
 	*
-	* @return string The id of this post
+	* @return string The id of this switch
 	*/
 	public function getSwitchsName() {
 		return $this->switchsName;
@@ -93,27 +93,27 @@ class switchs {
 	}
 
 	/**
-	* Gets the title of this post
+	* Gets the title of this switch
 	*
-	* @return string The title of this post
+	* @return string The title of this switch
 	*/
 	public function getPrivate_UUID() {
 		return $this->Private_UUID;
 	}
 
 	/**
-	* Gets the title of this post
+	* Gets the title of this switch
 	*
-	* @return string The title of this post
+	* @return string The title of this switch
 	*/
 	public function getPublic_UUID() {
 		return $this->Public_UUID;
 	}
 
 	/**
-	* Sets the title of this post
+	* Sets the title of this switch
 	*
-	* @param string $title the title of this post
+	* @param string $title the title of this switch
 	* @return void
 	*/
 	public function setPrivate_UUID($Private_UUID) {
@@ -121,9 +121,9 @@ class switchs {
 	}
 
 	/**
-	* Sets the title of this post
+	* Sets the title of this switch
 	*
-	* @param string $title the title of this post
+	* @param string $title the title of this switch
 	* @return void
 	*/
 	public function setPublic_UUID($Public_UUID) {
@@ -131,18 +131,18 @@ class switchs {
 	}
 
 	/**
-	* Gets the content of this post
+	* Gets the content of this switch
 	*
-	* @return User The content of this post
+	* @return User The content of this switch
 	*/
 	public function getAliasUser() {
 		return $this->AliasUser;
 	}
 
 	/**
-	* Sets the content of this post
+	* Sets the content of this switch
 	*
-	* @param string $content the content of this post
+	* @param string $content the content of this switch
 	* @return void
 	*/
 	public function setAliasUser(User $AliasUser) {
@@ -150,18 +150,18 @@ class switchs {
 	}
 
 	/**
-	* Gets the author of this post
+	* Gets the author of this switch
 	*
-	* @return string The author of this post
+	* @return string The author of this switch
 	*/
 	public function getDescriptionswitchs() {
 		return $this->Descriptionswitchs;
 	}
 
 	/**
-	* Sets the author of this post
+	* Sets the author of this switch
 	*
-	* @param string $author the author of this post
+	* @param string $author the author of this switch
 	* @return void
 	*/
 	public function setDescriptionswitchs($Descriptionswitchs) {
@@ -170,18 +170,18 @@ class switchs {
 
 
 	/**
-	* Gets the list of comments of this post
+	* Gets the list of comments of this switch
 	*
-	* @return time The list of comments of this post
+	* @return time The list of comments of this switch
 	*/
 	public function getLastTimePowerOn() {
 		return $this->LastTimePowerOn;
 	}
 
 	/**
-	* Sets the comments of the post
+	* Sets the comments of the switch
 	*
-	* @param time $comments the comments list of this post
+	* @param time $comments the comments list of this switch
 	* @return void
 	*/
 	public function setLastTimePowerOn($LastTimePowerOn) {
@@ -189,18 +189,18 @@ class switchs {
 	}
 
 	/**
-	* Gets the list of comments of this post
+	* Gets the list of comments of this switch
 	*
-	* @return time The list of comments of this post
+	* @return time The list of comments of this switch
 	*/
 	public function getMaxTimePowerOn() {
 		return $this->MaxTimePowerOn;
 	}
 
 	/**
-	* Sets the comments of the post
+	* Sets the comments of the switch
 	*
-	* @param time $comments the comments list of this post
+	* @param time $comments the comments list of this switch
 	* @return void
 	*/
 	public function setMaxTimePowerOn($MaxTimePowerOn) {
@@ -251,7 +251,7 @@ class switchs {
 			}
 		}
 		if (sizeof($errors) > 0) {
-			throw new ValidationException($errors, "post is not valid");
+			throw new ValidationException($errors, "switch is not valid");
 		}
 	}
 }

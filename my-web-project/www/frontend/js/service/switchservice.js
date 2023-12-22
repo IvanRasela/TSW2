@@ -1,56 +1,56 @@
-class PostsService {
+class SwitchService {
     constructor() {
   
     }
 
-    getSwitchs() {
-      return $.get(AppConfig.backendServer+'/rest/post');
+    getSwitch() {
+      return $.get(AppConfig.backendServer+'/rest/switch');
     }
   
-    getSwitchsByPublic(id) {
-        return $.get(AppConfig.backendServer+'/rest/post/' + id);
+    getSwitchByPublic(id) {
+        return $.get(AppConfig.backendServer+'/rest/switch/' + id);
       }
 
-    getSwitchsByPrivate(id) {
-        return $.get(AppConfig.backendServer+'/rest/post/' + id);
+    getSwitchByPrivate(id) {
+        return $.get(AppConfig.backendServer+'/rest/switch/' + id);
     }
 
-    getSwitchsSuscribe(id) {
-        return $.get(AppConfig.backendServer+'/rest/post/' + id);
+    getSwitchSuscribe(id) {
+        return $.get(AppConfig.backendServer+'/rest/switch/' + id);
     }
     
-    findPost(id) {
-      return $.get(AppConfig.backendServer+'/rest/post/' + id);
+    findSwitch(id) {
+      return $.get(AppConfig.backendServer+'/rest/switch/' + id);
     }
   
     deleteSwitch(id) {
       return $.ajax({
-        url: AppConfig.backendServer+'/rest/post/' + id,
+        url: AppConfig.backendServer+'/rest/switch/' + id,
         method: 'DELETE'
       });
     }
   
-    createSwitch(switchs) {
+    createSwitch(switch_r) {
       return $.ajax({
-        url: AppConfig.backendServer+'/rest/post/' + post.id,
+        url: AppConfig.backendServer+'/rest/switch/' + switch_r.id,
         method: 'PUT',
-        data: JSON.stringify(post),
+        data: JSON.stringify(switch_r),
         contentType: 'application/json'
       });
     }
   
-    createSwitch(switchs) {
+    createSwitch(switch_r) {
       return $.ajax({
-        url: AppConfig.backendServer+'/rest/post',
+        url: AppConfig.backendServer+'/rest/switch',
         method: 'POST',
-        data: JSON.stringify(post),
+        data: JSON.stringify(switch_r),
         contentType: 'application/json'
       });
     }
   
     turnOnOffSwitchPublic(id) {
       return $.ajax({
-        url: AppConfig.backendServer+'/rest/post/' + postid + '/comment',
+        url: AppConfig.backendServer+'/rest/switch/' + switchid + '/comment',
         method: 'POST',
         data: JSON.stringify(comment),
         contentType: 'application/json'
@@ -59,7 +59,7 @@ class PostsService {
 
     turnOnOffSwitchPrivate(id) {
         return $.ajax({
-          url: AppConfig.backendServer+'/rest/post/' + postid + '/comment',
+          url: AppConfig.backendServer+'/rest/switch/' + switchid + '/comment',
           method: 'POST',
           data: JSON.stringify(comment),
           contentType: 'application/json'

@@ -106,13 +106,10 @@ class SwitchRest extends BaseRest {
 		}
 
 		try {
-			// validate Post object
 			$switch->checkIsValidForCreate(); // if it fails, ValidationException
 
-			// save the Post object into the database
 			$switchId = $this->SwitchsMapper->save($switch);
 
-			// response OK. Also send post in content
 			header($_SERVER['SERVER_PROTOCOL'].' 201 Created');
 			header('Location: '.$_SERVER['REQUEST_URI']."/".$switchId);
 			header('Content-Type: application/json');
@@ -136,13 +133,13 @@ class SwitchRest extends BaseRest {
 
 		if ($switch == NULL) {
 			header($_SERVER['SERVER_PROTOCOL'].' 400 Bad request');
-			echo("Post with id ".$postId." not found");
+			echo("Switch with id ".$switchId." not found");
 			return;
 		}
-		// Check if the Post author is the currentUser (in Session)
+		// Check if the Switch author is the currentUser (in Session)
 		if ($switch->getAliasUser->getAlias() != $currentUser) {
 			header($_SERVER['SERVER_PROTOCOL'].' 401 Unauthorized');
-			echo("you are not the author of this post");
+			echo("you are not the author of this switch");
 			return;
 		}
 
@@ -157,13 +154,13 @@ class SwitchRest extends BaseRest {
 
 		if ($switch == NULL) {
 			header($_SERVER['SERVER_PROTOCOL'].' 400 Bad request');
-			echo("Post with id ".$postId." not found");
+			echo("Switch with id ".$switchId." not found");
 			return;
 		}
-		// Check if the Post author is the currentUser (in Session)
+		// Check if the Switch author is the currentUser (in Session)
 		if ($switch->getAliasUser->getAlias() != $currentUser) {
 			header($_SERVER['SERVER_PROTOCOL'].' 403 Forbidden');
-			echo("you are not the author of this post");
+			echo("you are not the author of this switch");
 			return;
 		}
 
@@ -177,13 +174,12 @@ class SwitchRest extends BaseRest {
 
 		if ($switch == NULL) {
 			header($_SERVER['SERVER_PROTOCOL'].' 400 Bad request');
-			echo("Post with id ".$postId." not found");
+			echo("Switch with id ".$switchId." not found");
 			return;
 		}
-		// Check if the Post author is the currentUser (in Session)
 		if ($switch->getAliasUser->getAlias() != $currentUser) {
 			header($_SERVER['SERVER_PROTOCOL'].' 403 Forbidden');
-			echo("you are not the author of this post");
+			echo("you are not the author of this switch");
 			return;
 		}
 

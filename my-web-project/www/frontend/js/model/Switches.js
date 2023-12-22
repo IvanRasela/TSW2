@@ -1,21 +1,24 @@
-class SwitchsModel extends Fronty.Model {
+//Fronty.Model es parte del framework Fronty para gestionar modelos 
+//  de una sola página como SPA
+
+class SwitchesModel extends Fronty.Model {
 
     constructor() {
-      super('SwitchsModel'); //call super
+      super('SwitchesModel'); //call super
   
       // model attributes
-      this.switchs = [];
+      this.switch = [];
     }
   
-    setSelectedSwitch(switchs) {
+    setSelectedSwitch(switch_r) {
       this.set((self) => {
-        self.selectedPost = post;
+        self.selectedSwitch = switch_r;
       });
     }
   
-    setSwitchs(switchs) {
+    setSwitch(switch_r) {
       this.set((self) => {
-        self.switchs = switchs;
+        self.switch = switch_r;
       });
     }
   }

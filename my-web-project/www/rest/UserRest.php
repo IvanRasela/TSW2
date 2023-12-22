@@ -187,8 +187,8 @@ class UserRest extends BaseRest {
 // URI-MAPPING for this Rest endpoint
 $userRest = new UserRest();
 URIDispatcher::getInstance()
-->map("GET",	"/user/login/$1", array($userRest,"login"))
-->map("POST", "/user/new", array($userRest,"postUser"))
+->map("GET",	"/user/$1", array($userRest,"login"))
+->map("POST", "/user", array($userRest,"postUser"))
 ->map("GET", "/user/checkAvailability/$1", array($userRest,"getUser"))
 ->map("POST", "/user/delete", array($userRest,"deleteUserAccount"))
 ->map("POST", "/user/edit", array($userRest,"editUserAccount"));

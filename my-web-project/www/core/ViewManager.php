@@ -237,7 +237,7 @@ class ViewManager {
 	* calling the setLayout method
 	*
 	* @param string $controller Name of the controller (in URL format
-	* e.g: "posts")
+	* e.g: "switches")
 	* @param string $viewname Name of the view
 	* @return void
 	*/
