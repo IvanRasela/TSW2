@@ -1,21 +1,21 @@
-class PostsModel extends Fronty.Model {
+class SwitchsModel extends Fronty.Model {
 
     constructor() {
-      super('PostsModel'); //call super
+      super('SwitchsModel'); //call super
   
       // model attributes
-      this.posts = [];
+      this.switchs = [];
     }
   
-    setSelectedPost(post) {
+    setSelectedSwitch(switchs) {
       this.set((self) => {
         self.selectedPost = post;
       });
     }
   
-    setPosts(posts) {
+    setSwitchs(switchs) {
       this.set((self) => {
-        self.posts = posts;
+        self.switchs = switchs;
       });
     }
   }

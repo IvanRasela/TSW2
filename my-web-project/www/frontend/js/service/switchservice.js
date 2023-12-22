@@ -7,7 +7,7 @@ class PostsService {
       return $.get(AppConfig.backendServer+'/rest/post');
     }
   
-    getSwitchsByPublic(od) {
+    getSwitchsByPublic(id) {
         return $.get(AppConfig.backendServer+'/rest/post/' + id);
       }
 

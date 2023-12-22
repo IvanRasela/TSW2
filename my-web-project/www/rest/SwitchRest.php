@@ -98,8 +98,6 @@ class SwitchRest extends BaseRest {
 		$currentUser = parent::authenticateUser();
 		$switch = new Switchs();
 
-
-
 		if (isset($data->title) && isset($data->content)) {
 			$switch->setTitle($data->title);
 			$switch->setContent($data->content);
@@ -131,37 +129,6 @@ class SwitchRest extends BaseRest {
 		}
 	}
 
-
-	public function updatePost($postId, $data) {
-		$currentUser = parent::authenticateUser();
-
-		$post = $this->postMapper->findById($postId);
-		if ($post == NULL) {
-			header($_SERVER['SERVER_PROTOCOL'].' 400 Bad request');
-			echo("Post with id ".$postId." not found");
-			return;
-		}
-
-		// Check if the Post author is the currentUser (in Session)
-		if ($post->getAuthor() != $currentUser) {
-			header($_SERVER['SERVER_PROTOCOL'].' 403 Forbidden');
-			echo("you are not the author of this post");
-			return;
-		}
-		$post->setTitle($data->title);
-		$post->setContent($data->content);
-
-		try {
-			// validate Post object
-			$post->checkIsValidForUpdate(); // if it fails, ValidationException
-			$this->postMapper->update($post);
-			header($_SERVER['SERVER_PROTOCOL'].' 200 Ok');
-		}catch (ValidationException $e) {
-			header($_SERVER['SERVER_PROTOCOL'].' 400 Bad request');
-			header('Content-Type: application/json');
-			echo(json_encode($e->getErrors()));
-		}
-	}
 
 	public function deleteSwitch($switchuuid) {
 		$currentUser = parent::authenticateUser();
@@ -232,10 +199,9 @@ class SwitchRest extends BaseRest {
 // URI-MAPPING for this Rest endpoint
 $switchRest = new SwitchRest();
 URIDispatcher::getInstance()
-->map("GET",	"/post", array($switchRest,"getSwitchs"))
-->map("GET",	"/post", array($switchRest,"getSwitchsByPublic"))
-->map("GET",	"/post", array($switchRest,"getSwitchsByPrivate"))
-->map("GET",	"/post", array($switchRest,"getSwitchsSuscribe"))
-->map("POST", "/post", array($switchRest,"createSwitch"))
-->map("PUT",	"/post/$1", array($switchRest,"updateSwitch"))
-->map("DELETE", "/post/$1", array($switchRest,"deleteSwitch"));
+->map("GET",	"/Switch/get", array($switchRest,"getSwitchs"))
+->map("GET",	"/Switch/getPublic", array($switchRest,"getSwitchsByPublic"))
+->map("GET",	"/Switch/getPrivate", array($switchRest,"getSwitchsByPrivate"))
+->map("GET",	"/Switch/getSuscribe", array($switchRest,"getSwitchsSuscribe"))
+->map("POST", "/Switch/create", array($switchRest,"createSwitch"))
+->map("DELETE", "/Switch/delete/$1", array($switchRest,"deleteSwitch"));
