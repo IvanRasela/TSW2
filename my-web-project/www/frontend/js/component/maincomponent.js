@@ -1,3 +1,8 @@
+
+//Se encarga de la navegación. 
+//Los componentes definidos gestionan la lógica de la aplicación
+//  y, a menudo, también manipulan el DOM para mostrar las vistas.
+//  MainComponent está configurado para manejar las rutas y cargar diferentes componentes
 class MainComponent extends Fronty.RouterComponent {
   constructor() {
     super('frontyapp', Handlebars.templates.main, 'maincontent');

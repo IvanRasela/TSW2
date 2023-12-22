@@ -41,6 +41,8 @@ class UserRest extends BaseRest {
 		}
 	}
 
+
+	
 	//Método HTTP POST /user/new para solicitar el registro  
 	//	Data OUT: {HTTP 201 "created" / HTTP 422} el usuario no
 	//	tiene que estar autentificado ya que se va a crear uno nuevo (registro)

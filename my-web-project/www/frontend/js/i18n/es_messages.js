@@ -19,18 +19,22 @@ I18n.translations = {
   'Save': 'Guardar',
   'Login': 'Entrar',
   'Your are logged. Logout first': 'Ya estás logueado. Sal primero',
-  'Password': 'Contraseña',
+  'Passwd': 'Contraseña',
   'New user': 'Nuevo usuario',
   'New here?': '¿Nuevo aquí?',
   'Register Here!': '¡Regístrate aquí!',
-  'Create user': 'Registrarse',
-  'Username must be at least 5 characters length': 'El usuario debe contener al menos 5 letras',
+  'Createe user': 'Registrarse',
+  'Username must be at least 5 characters length': 'El alias debe contener al menos 5 letras',
   'Are you sure?': '¿Estás seguro?',
   'remove': 'eliminar',
   'edit': 'editar',
   'logout': 'cerrar sesión',
   'Login': 'Iniciar sesión',
-  'Username': 'Usuario',
-  'The username/password is not valid': 'El nombre de usuario/contraseña no son válidos'
+  'Username': 'Alias',
+  'The username/password is not valid': 'El alias/contraseña no son válidos',
+
+
+
+  'Email':'Correo electrónico'
 
 }
