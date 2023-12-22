@@ -4,33 +4,21 @@
 require_once(__DIR__."/../model/User.php");
 require_once(__DIR__."/../model/UserMapper.php");
 
-require_once(__DIR__."/../model/Post.php");
-require_once(__DIR__."/../model/PostMapper.php");
+require_once(__DIR__."/../model/Switchs.php");
+require_once(__DIR__."/../model/SwitchsMapper.php");
 
-require_once(__DIR__."/../model/Comment.php");
-require_once(__DIR__."/../model/CommentMapper.php");
 
 require_once(__DIR__."/BaseRest.php");
 
-/**
-* Class PostRest
-*
-* It contains operations for creating, retrieving, updating, deleting and
-* listing posts, as well as to create comments to posts.
-*
-* Methods gives responses following Restful standards. Methods of this class
-* are intended to be mapped as callbacks using the URIDispatcher class.
-*
-*/
-class PostRest extends BaseRest {
+require_once(__DIR__."/URIDispatcher.php");
+
+class SwitchRest extends BaseRest {
 	private $SwitchsMapper;
-	private $commentMapper;
 
 	public function __construct() {
 		parent::__construct();
 
 		$this->SwitchsMapper = new SwitchsMapper();
-		$this->commentMapper = new CommentMapper();
 	}
 
 	public function getSwitchs() {
@@ -110,8 +98,6 @@ class PostRest extends BaseRest {
 		$currentUser = parent::authenticateUser();
 		$switch = new Switchs();
 
-
-
 		if (isset($data->title) && isset($data->content)) {
 			$switch->setTitle($data->title);
 			$switch->setContent($data->content);
@@ -143,37 +129,6 @@ class PostRest extends BaseRest {
 		}
 	}
 
-
-	public function updatePost($postId, $data) {
-		$currentUser = parent::authenticateUser();
-
-		$post = $this->postMapper->findById($postId);
-		if ($post == NULL) {
-			header($_SERVER['SERVER_PROTOCOL'].' 400 Bad request');
-			echo("Post with id ".$postId." not found");
-			return;
-		}
-
-		// Check if the Post author is the currentUser (in Session)
-		if ($post->getAuthor() != $currentUser) {
-			header($_SERVER['SERVER_PROTOCOL'].' 403 Forbidden');
-			echo("you are not the author of this post");
-			return;
-		}
-		$post->setTitle($data->title);
-		$post->setContent($data->content);
-
-		try {
-			// validate Post object
-			$post->checkIsValidForUpdate(); // if it fails, ValidationException
-			$this->postMapper->update($post);
-			header($_SERVER['SERVER_PROTOCOL'].' 200 Ok');
-		}catch (ValidationException $e) {
-			header($_SERVER['SERVER_PROTOCOL'].' 400 Bad request');
-			header('Content-Type: application/json');
-			echo(json_encode($e->getErrors()));
-		}
-	}
 
 	public function deleteSwitch($switchuuid) {
 		$currentUser = parent::authenticateUser();
@@ -242,12 +197,11 @@ class PostRest extends BaseRest {
 }
 
 // URI-MAPPING for this Rest endpoint
-$postRest = new PostRest();
+$switchRest = new SwitchRest();
 URIDispatcher::getInstance()
-->map("GET",	"/post", array($postRest,"getSwitchs"))
-->map("GET",	"/post", array($postRest,"getSwitchsByPublic"))
-->map("GET",	"/post", array($postRest,"getSwitchsByPrivate"))
-->map("GET",	"/post", array($postRest,"getSwitchsSuscribe"))
-->map("POST", "/post", array($postRest,"createSwitch"))
-->map("PUT",	"/post/$1", array($postRest,"updateSwitch"))
-->map("DELETE", "/post/$1", array($postRest,"deleteSwitch"));
+->map("GET",	"/Switch/get", array($switchRest,"getSwitchs"))
+->map("GET",	"/Switch/getPublic", array($switchRest,"getSwitchsByPublic"))
+->map("GET",	"/Switch/getPrivate", array($switchRest,"getSwitchsByPrivate"))
+->map("GET",	"/Switch/getSuscribe", array($switchRest,"getSwitchsSuscribe"))
+->map("POST", "/Switch/create", array($switchRest,"createSwitch"))
+->map("DELETE", "/Switch/delete/$1", array($switchRest,"deleteSwitch"));

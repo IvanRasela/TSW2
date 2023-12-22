@@ -1,0 +1,3 @@
++que carpetas ya no se usan con SPA. Ya no se usa la los controllers no? ni view?
++rest/.htaccess: cuando un usuario solicita un archivo que no existe en nuestra app la solicitud va a ser redirigida al index. (Es lo primero que abre la app web)
++tiene que ver la creación de BaseRest.php para la autenticación con poner solución a 'man in the Middle'?

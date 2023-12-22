@@ -37,7 +37,7 @@ class UserMapper {
 		$stmt = $this->db->prepare("INSERT INTO usuario values (?,?,?)");
 		$result = $stmt->execute(array($user->getAlias(), $user->getPasswd(), $user->getEmail()));
 		if ($result) {
-			echo "Usuario guardado correctamente en la base de datos.";
+			echo "\nUsuario guardado correctamente en la base de datos.";
 
 			/*$recipients = $user->getEmail();
 			$headers['From']    = 'ivan.rasela.verin@gmail.com';
@@ -66,7 +66,10 @@ class UserMapper {
 
 		if ($stmt->fetchColumn() > 0) {
 			return true;
+		}else{
+			return false;
 		}
+
 	}
 
 	public function emailExists($email) {
@@ -103,19 +106,20 @@ class UserMapper {
 		$stmt->execute(array($alias));
 		$userArray = $stmt->fetch(PDO::FETCH_ASSOC);
 
-		if($userArray != null){
+		if($userArray != null && array_key_exists('alias', $userArray) && array_key_exists('passwd', $userArray) && array_key_exists('email', $userArray)){
 			$user = new User($userArray['alias'], $userArray['passwd'], $userArray['email']);
+		}else if(!array_key_exists('alias', $userArray) || !array_key_exists('passwd', $userArray) || !array_key_exists('email', $userArray)){
+			echo("\nKEYs DOESn't EXISTs.");	
 		}else{
 			return NULL;
 		}
 
 	}
 
-	public function deleteByAlias($alias){
+	public function deleteUser($alias, $passwd){
 		$stmt = $this->db->prepare("DELETE FROM usuario WHERE alias = ?");
 		$stmt->execute(array($alias));
-
-		if(findByAlias($alias)==NULL){
+		if(!$this->isValidUser($alias, $passwd)){
 			//Se ha eliminado correctamente
 			return true;
 		}else{
@@ -123,5 +127,6 @@ class UserMapper {
 		}
 
 	}
+
 
 }
