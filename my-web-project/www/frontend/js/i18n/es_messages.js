@@ -23,7 +23,7 @@ I18n.translations = {
   'New user': 'Nuevo usuario',
   'New here?': '¿Nuevo aquí?',
   'Register Here!': '¡Regístrate aquí!',
-  'Createe user': 'Registrarse',
+  'Create user': 'Registrarse',
   'Username must be at least 5 characters length': 'El alias debe contener al menos 5 letras',
   'Are you sure?': '¿Estás seguro?',
   'remove': 'eliminar',

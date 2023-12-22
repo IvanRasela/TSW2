@@ -30,7 +30,7 @@ class UserService {
     return new Promise((resolve, reject) => {
 
       $.get({
-          url: AppConfig.backendServer+'/rest/user' + login,
+          url: AppConfig.backendServer+'/rest/user/' + login,
           beforeSend: function(xhr) {
             xhr.setRequestHeader("Authorization", "Basic " + btoa(login + ":" + pass));
           }

@@ -6,7 +6,6 @@
   {{i18n 'Alias'}}: <input type="text" id="login"> <br> {{i18n 'Passwd'}}: <input type="password" id="passwd"><br>
   <input type="submit" id='loginbutton' value="{{i18n 'Login'}}"> {{i18n 'New here?'}} <a href="#login" id='registerlink'>{{i18n 'Register Here!'}}</a>
   {{#if registerMode}}
-  <h2>KLK</h2>
     <h2>{{i18n 'New user'}}</h2>
     <div id="registration-form">
       {{i18n 'Alias'}}: <input type="text" id="registeralias">
@@ -17,7 +16,7 @@
 
       <br> {{i18n 'Email'}}: <input type="email" id="registeremail">
       {{#i18n}}{{registerErrors.email}}{{/i18n}}
-      <input type="submit" id='registerbutton' value="{{i18n 'Createe user'}}">
+      <input type="submit" id='registerbutton' value="{{i18n 'Create user'}}">
     </div>
   {{/if}}
 
