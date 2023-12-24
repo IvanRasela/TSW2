@@ -14,7 +14,7 @@ class MainComponent extends Fronty.RouterComponent {
     this.userService = new UserService();
 
     super.setRouterConfig({
-      switches: {
+    Switches: {
         component: new SwitchComponent(this.switchesModel, this.userModel, this),
         title: 'Switches'
       },

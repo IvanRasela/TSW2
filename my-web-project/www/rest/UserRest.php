@@ -22,7 +22,7 @@ class UserRest extends BaseRest {
 		parent::__construct();
 
 		$this->userMapper = new UserMapper();
-		echo("Constructor");
+		echo("Constructor UserRest");
 	}
 	
 	//FALTA COMPROBAR
@@ -70,15 +70,22 @@ class UserRest extends BaseRest {
 	//	Data OUT: {HTTP 200 OK "si el usuario existe" / HTTP 204 "no content" si no existe ningún nombre de usuario con ese nombre}
 	// usaremos la función aliasExists() de UserMapper.php
 	public function getUser($alias){
-		if($this->userMapper->aliasExists($alias)){
-			//El usuario existe
-			header($_SERVER['SERVER_PROTOCOL'] . ' 200 OK');
-			echo("\nEl usuario existe");
-		}else{
-			//No se encontró el usuario
-			echo("\nEl usuario no existe en la base de datos.");
-			header($_SERVER['SERVER_PROTOCOL'] . ' 204 No Content');
+		try{
+			if($this->userMapper->aliasExists($alias)){
+				//El usuario existe
+				header($_SERVER['SERVER_PROTOCOL'] . ' 200 OK');
+				echo("\nEl usuario existe");
+			}else{
+				//No se encontró el usuario
+				echo("\nEl usuario no existe en la base de datos.");
+				header($_SERVER['SERVER_PROTOCOL'] . ' 204 No Content');
+			}
+		}catch(ValidationException $e) {
+			http_response_code(400); 
+			header('Content-Type: application/json');
+			echo(json_encode($e->getErrors()));
 		}
+		
 	}
 
 	//Nueva funcionalidad: reestablecer contraseña si se ha olvidado por el usuario

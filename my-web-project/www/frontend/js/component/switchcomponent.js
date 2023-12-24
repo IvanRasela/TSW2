@@ -1,8 +1,9 @@
+
 class SwitchComponent extends Fronty.ModelComponent {
     constructor(switchModel, userModel, router) {
       super(Handlebars.templates.switchtable, switchModel, null, null);
       
-      
+      alert("switchcomponent");
       this.switchModel = switchModel;
       this.userModel = userModel;
       this.addModel('user', userModel);
