@@ -6,7 +6,7 @@
 * Default controller if any controller is passed in the URL
 */
 define("DEFAULT_CONTROLLER", "users");
-
+require_once(__DIR__."/../controller/UsersController.php");
 /**
 * Default action if any action is passed in the URL
 */

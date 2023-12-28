@@ -1,3 +1,18 @@
 +que carpetas ya no se usan con SPA. Ya no se usa la los controllers no? ni view?
 +rest/.htaccess: cuando un usuario solicita un archivo que no existe en nuestra app la solicitud va a ser redirigida al index. (Es lo primero que abre la app web)
 +tiene que ver la creación de BaseRest.php para la autenticación con poner solución a 'man in the Middle'?
++solucionar duplicado cuando email es vacio
++Deberiamos hacer las funciones de editar de otra forma?
++hacer bien el API REST del user para que verifique que debe estar autenticado el user o no
+
++solucionar error:  Uncaught (in promise) TypeError: modelRenderer is not a function
+    at SwitchComponent.renderer (fronty.js:1648:14)
+    at SwitchComponent.renderNewDOM (fronty.js:739:31)
+    at SwitchComponent.buildFirstRenderTree (fronty.js:559:12)
+    at SwitchComponent.render (fronty.js:477:14)
+    at SwitchComponent.start (fronty.js:641:14)
+    at SwitchComponent.start (fronty.js:1739:114)
+    at MainComponent.addChildComponent (fronty.js:318:19)
+    at MainComponent._goToCurrentPage (fronty.js:2103:16)
+    at MainComponent.onStart (fronty.js:2004:12)
+    at MainComponent.start (fronty.js:648:12)

@@ -17,6 +17,7 @@ class SwitchRest extends BaseRest {
 
 	public function __construct() {
 		parent::__construct();
+		
 		echo("Constructor SwitchRest");
 		$this->SwitchsMapper = new SwitchsMapper();
 	}
@@ -25,7 +26,7 @@ class SwitchRest extends BaseRest {
 	//	'suscritos/propios' en un array
 	//	   204 Not found)}
 	// NO SE PUECE COMPROBAR CON POSTMAN
-	public function getSwitchs() {
+	/*public function getSwitchs() {
 		try{
 			$currentUser = parent::authenticateUser();
 			$switchs = $this->SwitchsMapper->findAll($currentUser);
@@ -53,6 +54,37 @@ class SwitchRest extends BaseRest {
 			echo(json_encode($e->getErrors()));
 		}
 	
+	}*/
+
+	public function getSwitchs() {
+
+		try {
+			$currentUser = parent::authenticateUser();
+			
+			//$user= new User($data->alias, $data->passwd, $data->email);
+			$switchs = $this->SwitchsMapper->findAll($currentUser);
+			echo("getSwitchs");
+			$switchs_array = array();
+			foreach ($switchs as $switch) {
+				array_push($switchs_array, array(
+					"SwitchName" => $switch->getSwitchsName(),
+					"Public_UUID" => $switch->getPublic_UUID(),
+				));
+			}
+	
+			if (empty($switchs_array)) {
+				http_response_code(204);
+			} else {
+				http_response_code(200);
+				header('Content-Type: application/json');
+				echo(json_encode($switchs_array));
+			}
+		}  catch (ValidationException $e) {
+			http_response_code(400);
+			header('Content-Type: application/json');
+			error_log("ValidationException: " . json_encode($e->getErrors()));
+			echo(json_encode($e->getErrors()));
+		}
 	}
 
 
@@ -121,9 +153,9 @@ class SwitchRest extends BaseRest {
 
 		if (isset($data->title) && isset($data->content)) {
 			$switch->setTitle($data->title);
-			$switch->setContent($data->content);
+			$switch->setDescriptionswitchs($data->content);
 
-			$switch->setAuthor($currentUser);
+			$switch->setAliasUser($currentUser);
 		}
 
 		try {
@@ -136,8 +168,8 @@ class SwitchRest extends BaseRest {
 			header('Content-Type: application/json');
 			echo(json_encode(array(
 				"id"=>$switchId,
-				"title"=>$switch->getTitle(),
-				"content" => $switch->getContent()
+				"aliasuser"=>$switch->getAliasUser(),
+				"description" => $switch->getDescriptionswitchs()
 			)));
 
 		} catch (ValidationException $e) {
@@ -220,5 +252,5 @@ URIDispatcher::getInstance()
 ->map("GET",	"/switch/getByPublic/$1", array($switchRest,"getSwitchsByPublic"))
 ->map("GET",	"/switch/getByPrivate", array($switchRest,"getSwitchsByPrivate"))
 ->map("GET",	"/switch/getSuscribe", array($switchRest,"getSwitchsSuscribe"))
-->map("POST", "/switch/create", array($switchRest,"createSwitch"))
+->map("POST", "/switch/create/$1", array($switchRest,"createSwitch"))
 ->map("DELETE", "/switch/delete/$1", array($switchRest,"deleteSwitch"));
