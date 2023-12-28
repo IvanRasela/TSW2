@@ -1,6 +1,7 @@
 
 
-
+//login--alias
+//pass--passwd
 class UserService {
   constructor() {
 
@@ -58,8 +59,8 @@ class UserService {
   }
 
   logout() {
-    window.sessionStorage.removeItem('login');
-    window.sessionStorage.removeeItm('pass');
+    window.sessionStorage.removeItem('alias');
+    window.sessionStorage.removeeItm('passwd');
     $.ajaxSetup({
       beforeSend: (xhr) => {}
     });

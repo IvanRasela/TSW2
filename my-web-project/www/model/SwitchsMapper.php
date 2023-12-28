@@ -33,10 +33,10 @@ class SwitchsMapper {
 	* @throws PDOException if a database error occurs
 	* @return mixed Array of switchs instances (without comments)
 	*/
-	public function findAll($user) {
+	public function findAll($alias) {
 		
 		$stmt = $this->db->prepare("SELECT * FROM Switchs WHERE Switchs.AliasUser=?");
-		$stmt->execute(array($user->getAlias()));
+		$stmt->execute(array($alias));
 		$switchs_db = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 		$switchs = array();

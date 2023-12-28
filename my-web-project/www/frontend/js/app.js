@@ -45,8 +45,8 @@ function loadTextFile(url) {
         Handlebars.templates.user = Handlebars.compile(source)),
       loadTextFile('templates/components/login.hbs').then((source) =>
         Handlebars.templates.login = Handlebars.compile(source)),
-      loadTextFile('templates/components/switches-table.hbs').then((source) =>
-        Handlebars.templates.switchestable = Handlebars.compile(source)),
+      loadTextFile('templates/components/switch-table.hbs').then((source) =>
+        Handlebars.templates.switchtable = Handlebars.compile(source)),
       loadTextFile('templates/components/switch-edit.hbs').then((source) =>
         Handlebars.templates.switchedit = Handlebars.compile(source)),
       loadTextFile('templates/components/switch-view.hbs').then((source) =>
