@@ -3,7 +3,8 @@
         <h1>{{i18n 'Switches'}}</h1>
 {{/if}}
 <div id="switches-table">
-  {{#if switches.length}}
+  <p>Switches ({{switch.length}}) num.</p>
+  {{#if switch.length}}
     <table border="1">
       <thead>
       <tr>
@@ -13,7 +14,7 @@
       </tr>
       </thead>
       <tbody>
-      {{#each switches}}
+      {{#each switch}}
         <tr fronty-component="SwitchRowComponent" key="{{id}}" model="switches[{{@index}}]" id="item-{{id}}"></tr>
       {{/each}}
     </tbody>

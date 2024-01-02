@@ -38,7 +38,7 @@ class SwitchViewComponent extends Fronty.ModelComponent {
 
   loadSwitch(switchId) {
       if (switchId != null) {
-          this.switchesService.findSwitches(switchId)
+          this.switchesService.getSwitchesByPublic(switchId)
               .then((switch_r) => {
                   this.switchModel.setSelectedSwitches(switch_r);
               });

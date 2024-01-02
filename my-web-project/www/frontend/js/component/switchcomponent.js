@@ -1,7 +1,6 @@
-
 class SwitchComponent extends Fronty.ModelComponent {
     constructor(switchModel, userModel, router) {
-      super(Handlebars.templates.switchtable, switchModel, null, null);
+      super(Handlebars.templates.switchestable, switchModel, null, null);
       
       this.switchModel = switchModel;
       this.userModel = userModel;
@@ -17,9 +16,9 @@ class SwitchComponent extends Fronty.ModelComponent {
     }
   
     updateSwitch() {
-      this.switchService.getSwitchs().then((data) => {
+      this.switchService.getSwitches().then((data) => {
   
-        this.switchModel.setSwitchs(
+        this.switchModel.setSwitches(
           // create a Fronty.Model for each item retrieved from the backend
           data.map(
             (item) => new SwitchModel(item.switchName, item.Public_UUID, item.AliasUser, item.Descriptionswitch)
