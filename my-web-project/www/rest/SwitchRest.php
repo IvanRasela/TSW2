@@ -1,5 +1,4 @@
-SwitchRest.php
-http://localhost/rest/switch
+
 <?php
 
 require_once(__DIR__."/../model/User.php");
@@ -22,39 +21,37 @@ class SwitchRest extends BaseRest {
 		$this->SwitchsMapper = new SwitchsMapper();
 	}
 
+	//función de prueba, si funciona
+	public function findAllSwitches($userAlias){
+		$switchs = $this->SwitchsMapper->findAll($userAlias);
+		if($switchs==NULL){
+			header($_SERVER['SERVER_PROTOCOL'].' 401 Not found');
+		}else{
+			header($_SERVER['SERVER_PROTOCOL'].' 200 Ok');
+		}
+
+	}
+
 	public function getSwitchs() {
 
-		try {
-			$currentUser = parent::authenticateUser();
-			
-			//$user= new User($data->alias, $data->passwd, $data->email);
-			$switchs = $this->SwitchsMapper->findAll($currentUser);
-			$switchs_array = array();
-			foreach ($switchs as $switch) {
-				array_push($switchs_array, array(
-					"SwitchName" => $switch->getSwitchsName(),
-					"Public_UUID" => $switch->getPublic_UUID(),
-				));
-			}
-
-			/*array_push($switchs_array, array(
-				"SwitchName" => "SwitchMinecraft",
-				"Public_UUID" => "0937427sdhads",
-			));*/
-	
-			if (empty($switchs_array)) {
-				http_response_code(204);
-			} else {
-				header($_SERVER['SERVER_PROTOCOL'].' 200 Ok');
-				header('Content-Type: application/json');
-				echo(json_encode($switchs_array));
-			}
-		}  catch (ValidationException $e) {
-			http_response_code(400);
-			header('Content-Type: application/json');
-			error_log("ValidationException: " . json_encode($e->getErrors()));
-			echo(json_encode($e->getErrors()));
-		}
+		//currentUser da el nombre del usuario
+		$currentUser = parent::authenticateUser();
+		
+		//$user= new User($data->alias, $data->passwd, $data->email);
+		$switchs = $this->SwitchsMapper->findAll($currentUser->getAlias());
+		/*$switchs_array = array();
+		foreach ($switchs as $switch) {
+			array_push($switchs_array, array(
+				"SwitchName" => $switch->getSwitchsName(),
+				"Public_UUID" => $switch->getPublic_UUID(),
+			));
+		}*/
+		
+		header($_SERVER['SERVER_PROTOCOL'].' 200 Ok');
+		header('Content-Type: application/json');
+		echo(json_encode($switchs_array));
+		
+		
 	}
 
 
@@ -253,4 +250,5 @@ URIDispatcher::getInstance()
 ->map("GET",	"/switch/getByPrivate", array($switchRest,"getSwitchsByPrivate"))
 ->map("GET",	"/switch/getSuscribe", array($switchRest,"getSwitchsSuscribe"))
 ->map("POST", "/switch/create/$1", array($switchRest,"createSwitch"))
-->map("DELETE", "/switch/delete/$1", array($switchRest,"deleteSwitch"));
+->map("DELETE", "/switch/delete/$1", array($switchRest,"deleteSwitch"))
+->map("GET", "/switch/getByAlias/$1", array($switchRest,"findAllSwitches"));
