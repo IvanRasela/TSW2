@@ -29,6 +29,7 @@ class SwitchRest extends BaseRest {
 		}else{
 			header($_SERVER['SERVER_PROTOCOL'].' 200 Ok');
 		}
+		
 
 	}
 
@@ -39,13 +40,13 @@ class SwitchRest extends BaseRest {
 		
 		//$user= new User($data->alias, $data->passwd, $data->email);
 		$switchs = $this->SwitchsMapper->findAll($currentUser->getAlias());
-		/*$switchs_array = array();
+		$switchs_array = array();
 		foreach ($switchs as $switch) {
 			array_push($switchs_array, array(
 				"SwitchName" => $switch->getSwitchsName(),
 				"Public_UUID" => $switch->getPublic_UUID(),
 			));
-		}*/
+		}
 		
 		header($_SERVER['SERVER_PROTOCOL'].' 200 Ok');
 		header('Content-Type: application/json');
