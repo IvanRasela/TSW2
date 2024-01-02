@@ -1,5 +1,7 @@
 <div>
-<h1>{{i18n 'Switches'}}</h1>
+{{#if user.isLogged}}
+        <h1>{{i18n 'Switches'}}</h1>
+{{/if}}
 <div id="switches-table">
   {{#if switches.length}}
     <table border="1">

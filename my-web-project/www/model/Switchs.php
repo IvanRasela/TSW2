@@ -12,7 +12,7 @@ require_once(__DIR__."/../core/ValidationException.php");
 *
 * @author lipido <lipido@gmail.com>
 */
-class switchs {
+class Switchs {
 
 	/**
 	* The name of this switchs

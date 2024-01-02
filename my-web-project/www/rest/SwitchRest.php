@@ -63,7 +63,6 @@ class SwitchRest extends BaseRest {
 			
 			//$user= new User($data->alias, $data->passwd, $data->email);
 			$switchs = $this->SwitchsMapper->findAll($currentUser);
-			echo("getSwitchs");
 			$switchs_array = array();
 			foreach ($switchs as $switch) {
 				array_push($switchs_array, array(
@@ -71,11 +70,16 @@ class SwitchRest extends BaseRest {
 					"Public_UUID" => $switch->getPublic_UUID(),
 				));
 			}
+
+			/*array_push($switchs_array, array(
+				"SwitchName" => "SwitchMinecraft",
+				"Public_UUID" => "0937427sdhads",
+			));*/
 	
 			if (empty($switchs_array)) {
 				http_response_code(204);
 			} else {
-				http_response_code(200);
+				header($_SERVER['SERVER_PROTOCOL'].' 200 Ok');
 				header('Content-Type: application/json');
 				echo(json_encode($switchs_array));
 			}

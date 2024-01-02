@@ -43,7 +43,7 @@ class SwitchsMapper {
 
 		foreach ($switchs_db as $switch) {
 			$alias = new User($switch["AliasUser"]);
-			array_push($switchs, new switchs($switch["SwitchName"], $switch["Private_UUID"], $switch["Public_UUID"],$alias, $switch["DescriptionSwitch"], $switch["LastTimePowerOn"], $switch["MaxTimePowerOn"]));
+			array_push($switchs, new Switchs($switch["SwitchName"], $switch["Private_UUID"], $switch["Public_UUID"],$alias, $switch["DescriptionSwitch"], $switch["LastTimePowerOn"], $switch["MaxTimePowerOn"]));
 		}
 
 		return $switchs;
@@ -65,7 +65,7 @@ class SwitchsMapper {
 
 		foreach ($switchList as $switch) {
 			//$alias = new User($switch->getAliasUser());
-			array_push($switchs, new switchs($switch->getSwitchsName(), $switch->getPrivate_UUID(), $switch->getPublic_UUID(),$switch->getAliasUser(), $switch->getDescriptionswitchs(), $switch->getLastTimePowerOn(), $switch->getMaxTimePowerOn()));		}
+			array_push($switchs, new Switchs($switch->getSwitchsName(), $switch->getPrivate_UUID(), $switch->getPublic_UUID(),$switch->getAliasUser(), $switch->getDescriptionswitchs(), $switch->getLastTimePowerOn(), $switch->getMaxTimePowerOn()));		}
 
 		return $switchs;
 	}
@@ -142,7 +142,7 @@ class SwitchsMapper {
 		* @throws PDOException if a database error occurs
 		* @return void
 		*/
-		public function update(Post $switch) {
+		public function update(Switchs $switch) {
 			$stmt = $this->db->prepare("UPDATE switches set title=?, content=? where id=?");
 			$stmt->execute(array($switch->getTitle(), $switch->getContent(), $switch->getId()));
 		}

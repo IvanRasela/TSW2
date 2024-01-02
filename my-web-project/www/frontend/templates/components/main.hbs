@@ -3,7 +3,9 @@
   <h1>IAmOn</h1>
   <nav id="menu">
     <ul>
-      <li><a href="#switches">{{i18n 'Switches'}}</a></li>
+      {{#if user.isLogged}}
+        <li><a href="#switches">{{i18n 'Switches'}}</a></l>
+      {{/if}}
       <li>
         <div id="userbar">Loading...</div>
       </li>

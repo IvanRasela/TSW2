@@ -4,7 +4,7 @@ class SwitchService {
   }
 
   getSwitchs() {
-    return $.get(AppConfig.backendServer+'/rest/switch');
+    return $.get(AppConfig.backendServer+'/rest/switch/get');
   }
 
   getSwitchsByPublic(uuid) {
