@@ -36,10 +36,11 @@ class SwitchsMapper {
 
 	//"error": "array_push(): Argument #1 ($array) must be of type array, null given"
 	public function findAll() {
+		//$stmt = $this->db->query("SELECT * FROM Switchs");
 		$stmt = $this->db->query("SELECT * FROM Switchs, usuario WHERE usuario.Alias = Switchs.AliasUser");
 		$switches_db = $stmt->fetchAll(PDO::FETCH_ASSOC);
 	
-		$switches = array(); // Aquí estás usando $switches
+		$switches = array(); 
 	
 		foreach ($switches_db as $switch) {
 			$alias = new User($switch["AliasUser"]);

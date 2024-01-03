@@ -40,11 +40,13 @@ class SwitchRest extends BaseRest {
 			header($_SERVER['SERVER_PROTOCOL'].' 400 NotFound');
 		}else{
 			$switchs_array = array();
-			//no tengo muy claro para que se utiliza esto
+			
 			foreach ($switchs as $switch) {
 				array_push($switchs_array, array(
 					"SwitchName" => $switch->getSwitchName(),
 					"Public_UUID" => $switch->getPublic_UUID(),
+					"Private_UUID" =>$switch->getPrivate_UUID(),
+					"AliasUser" =>$switch->getAliasUser()->getAlias()
 				));
 			}
 			header($_SERVER['SERVER_PROTOCOL'].' 200 Ok');

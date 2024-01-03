@@ -22,7 +22,7 @@ class UserRest extends BaseRest {
 		parent::__construct();
 
 		$this->userMapper = new UserMapper();
-		//echo("Constructor UserRest");
+		echo("Constructor UserRest");
 	}
 	
 	//FALTA COMPROBAR
