@@ -18,7 +18,7 @@ class Switchs {
 	* The name of this switchs
 	* @var string
 	*/
-	private $switchsName;
+	private $SwitchName;
 
 	/**
 	* The private uuid
@@ -42,7 +42,7 @@ class Switchs {
 	* The description of this switchs
 	* @var string
 	*/
-	private $Descriptionswitchs;
+	private $DescriptionSwitchs;//DescriptionSwitchs
 
 
 	/**
@@ -60,20 +60,20 @@ class Switchs {
 	/**
 	* The constructor
 	*
-	* @param string $switchsName The name of the switchs
+	* @param string $SwitchName The name of the switchs
 	* @param string $Private_UUID The private uuid
 	* @param string $Public_UUID The public uuid
 	* @param User $AliasUser The alias of user
-	* @param string $Descriptionswitchs The description of this switchs
+	* @param string $DescriptionSwitchs The description of this switchs
 	* @param string $LastTimePowerOn The last time power on
 	* @param string $MaxTimePowerOn The max time power on
 	*/
-	public function __construct($switchsName=NULL, $Private_UUID=NULL, $Public_UUID=NULL, User $AliasUser=NULL, $Descriptionswitchs=NULL,$LastTimePowerOn=NULL,$MaxTimePowerOn=NULL) {
-		$this->switchsName = $switchsName;
+	public function __construct($SwitchName=NULL, $Private_UUID=NULL, $Public_UUID=NULL, User $AliasUser=NULL, $DescriptionSwitchs=NULL,$LastTimePowerOn=NULL,$MaxTimePowerOn=NULL) {
+		$this->SwitchName = $SwitchName;
 		$this->Private_UUID = $Private_UUID;
 		$this->Public_UUID = $Public_UUID;
 		$this->AliasUser = $AliasUser;
-		$this->Descriptionswitchs = $Descriptionswitchs;
+		$this->DescriptionSwitchs = $DescriptionSwitchs;
 		$this->LastTimePowerOn = $LastTimePowerOn;
 		$this->MaxTimePowerOn = $MaxTimePowerOn;
 
@@ -84,12 +84,12 @@ class Switchs {
 	*
 	* @return string The id of this switch
 	*/
-	public function getSwitchsName() {
-		return $this->switchsName;
+	public function getSwitchName() {
+		return $this->SwitchName;
 	}
 
-	public function setSwitchsName($SwitchsName) {
-		$this->switchsName = $SwitchsName;
+	public function setSwitchName($SwitchName) {
+		$this->SwitchName = $SwitchName;
 	}
 
 	/**
@@ -154,8 +154,8 @@ class Switchs {
 	*
 	* @return string The author of this switch
 	*/
-	public function getDescriptionswitchs() {
-		return $this->Descriptionswitchs;
+	public function getDescriptionSwitchs() {
+		return $this->DescriptionSwitchs;
 	}
 
 	/**
@@ -164,8 +164,8 @@ class Switchs {
 	* @param string $author the author of this switch
 	* @return void
 	*/
-	public function setDescriptionswitchs($Descriptionswitchs) {
-		$this->Descriptionswitchs = $Descriptionswitchs;
+	public function setDescriptionSwitchs($DescriptionSwitchs) {
+		$this->DescriptionSwitchs = $DescriptionSwitchs;
 	}
 
 
@@ -218,8 +218,8 @@ class Switchs {
 	*/
 	public function checkIsValidForCreate() {
 		$errors = array();
-		if (strlen(trim($this->switchsName)) == 0 ) {
-			$errors["switchsName"] = "switchsName is mandatory";
+		if (strlen(trim($this->SwitchName)) == 0 ) {
+			$errors["SwitchName"] = "SwitchName is mandatory";
 		}
 
 		if (sizeof($errors) > 0){

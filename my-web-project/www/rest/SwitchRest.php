@@ -22,36 +22,35 @@ class SwitchRest extends BaseRest {
 	}
 
 	//función de prueba, si funciona
-	public function findAllSwitches($userAlias){
-		$switchs = $this->SwitchsMapper->findAll($userAlias);
+	public function findAllSwitches(){
+		$switchs = $this->SwitchsMapper->findAll();
 		if($switchs==NULL){
 			header($_SERVER['SERVER_PROTOCOL'].' 401 Not found');
 		}else{
+			echo(json_encode($switchs));
 			header($_SERVER['SERVER_PROTOCOL'].' 200 Ok');
 		}
-		
 
 	}
 
 	public function getSwitchs() {
 
-		//currentUser da el nombre del usuario
-		$currentUser = parent::authenticateUser();
-		
-		//$user= new User($data->alias, $data->passwd, $data->email);
-		$switchs = $this->SwitchsMapper->findAll($currentUser->getAlias());
-		$switchs_array = array();
-		foreach ($switchs as $switch) {
-			array_push($switchs_array, array(
-				"SwitchName" => $switch->getSwitchsName(),
-				"Public_UUID" => $switch->getPublic_UUID(),
-			));
+		$switchs = $this->SwitchsMapper->findAll();
+		if($switchs==NULL){
+			header($_SERVER['SERVER_PROTOCOL'].' 400 NotFound');
+		}else{
+			$switchs_array = array();
+			//no tengo muy claro para que se utiliza esto
+			foreach ($switchs as $switch) {
+				array_push($switchs_array, array(
+					"SwitchName" => $switch->getSwitchName(),
+					"Public_UUID" => $switch->getPublic_UUID(),
+				));
+			}
+			header($_SERVER['SERVER_PROTOCOL'].' 200 Ok');
+			header('Content-Type: application/json');
+			echo(json_encode($switchs_array));
 		}
-		
-		header($_SERVER['SERVER_PROTOCOL'].' 200 Ok');
-		header('Content-Type: application/json');
-		echo(json_encode($switchs_array));
-		
 		
 	}
 
@@ -133,7 +132,7 @@ class SwitchRest extends BaseRest {
 
 			if (isset($data->title) && isset($data->content)) {
 				$switch->setTitle($data->title);
-				$switch->setDescriptionswitchs($data->content);
+				$switch->setDescriptionSwitchs($data->content);
 
 				$switch->setAliasUser($currentUser);
 			}
@@ -147,7 +146,7 @@ class SwitchRest extends BaseRest {
 			echo(json_encode(array(
 				"id"=>$switchId,
 				"aliasuser"=>$switch->getAliasUser(),
-				"description" => $switch->getDescriptionswitchs()
+				"description" => $switch->getDescriptioSwitchs()
 			)));
 
 		} catch (ValidationException $e) {
@@ -252,4 +251,4 @@ URIDispatcher::getInstance()
 ->map("GET",	"/switch/getSuscribe", array($switchRest,"getSwitchsSuscribe"))
 ->map("POST", "/switch/create/$1", array($switchRest,"createSwitch"))
 ->map("DELETE", "/switch/delete/$1", array($switchRest,"deleteSwitch"))
-->map("GET", "/switch/getByAlias/$1", array($switchRest,"findAllSwitches"));
+->map("GET", "/switch/getAll", array($switchRest,"findAllSwitches"));

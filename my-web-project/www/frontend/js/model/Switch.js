@@ -1,10 +1,10 @@
 class SwitchModel extends Fronty.Model {
 
-    constructor(switchName, Private_UUID, Public_UUID, AliasUser, Descriptionswitch, LastTimePowerOn,MaxTimePowerOn ) {
+    constructor(SwitchName, Private_UUID, Public_UUID, AliasUser, Descriptionswitch, LastTimePowerOn,MaxTimePowerOn ) {
       super('SwitchModel'); //call super
       
-      if (switchName) {
-        this.switchName = switchName;
+      if (SwitchName) {
+        this.SwitchName = SwitchName;
       }
       
       if (Private_UUID) {
