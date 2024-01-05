@@ -247,10 +247,10 @@ class SwitchRest extends BaseRest {
 // URI-MAPPING for this Rest endpoint
 $switchRest = new SwitchRest();
 URIDispatcher::getInstance()
-->map("GET",	"/switch/get", array($switchRest,"getSwitchs"))
-->map("GET",	"/switch/getByPublic/$1", array($switchRest,"getSwitchsByPublic"))
-->map("GET",	"/switch/getByPrivate", array($switchRest,"getSwitchsByPrivate"))
-->map("GET",	"/switch/getSuscribe", array($switchRest,"getSwitchsSuscribe"))
-->map("POST", "/switch/create/$1", array($switchRest,"createSwitch"))
-->map("DELETE", "/switch/delete/$1", array($switchRest,"deleteSwitch"))
-->map("GET", "/switch/getAll", array($switchRest,"findAllSwitches"));
+->map("GET",	"/switch", array($switchRest,"getSwitchs"))
+->map("GET",	"/switch/public/$1", array($switchRest,"getSwitchsByPublic"))
+->map("GET",	"/switch/private/$1", array($switchRest,"getSwitchsByPrivate"))
+->map("GET",	"/switch/suscribers", array($switchRest,"getSwitchsSuscribe"))//revisar pq en switchservice se le pasa la uuid
+->map("POST", "/switch/new/$1", array($switchRest,"createSwitch"))//revisar en el service
+->map("DELETE", "/switch/del/$1", array($switchRest,"deleteSwitch"))
+->map("GET", "/switch/all", array($switchRest,"findAllSwitches"));//quitar esta que es para comprobar solo
