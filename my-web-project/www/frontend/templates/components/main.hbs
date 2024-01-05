@@ -1,7 +1,8 @@
-<div>
+<div class="container">
 <header>
-  <h1>IAmOn</h1>
-  <nav id="menu">
+  
+  <img class="IamOntitle" src="../../../img/IAmOnLogo.png">
+  <nav id="menu" >
     <ul>
       {{#if user.isLogged}}
         <li><a href="#switches">{{i18n 'Switches'}}</a></l>
@@ -11,7 +12,6 @@
       </li>
     </ul>
   </nav>
-
 </header>
 
 <!-- router contents -->

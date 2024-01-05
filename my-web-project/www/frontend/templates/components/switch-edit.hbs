@@ -4,6 +4,9 @@
   <br>
   <textarea id="content" rows="20" cols="80">{{selectedSwitch.content}}</textarea>
   {{#i18n}}{{errors.content}}{{/i18n}}
+  
   <br>
   <input type="button" id="savebutton" value="{{i18n 'Save'}}"></input>
+  <input type="button" id="backbutton" value="{{i18n 'Back'}}" onclick="window.location.href='#switches'">
+  
 </div>
