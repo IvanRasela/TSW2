@@ -42,7 +42,7 @@ class Switchs {
 	* The description of this switchs
 	* @var string
 	*/
-	private $DescriptionSwitchs;//DescriptionSwitchs
+	private $DescriptionSwitch;//DescriptionSwitch
 
 
 	/**
@@ -68,12 +68,12 @@ class Switchs {
 	* @param string $LastTimePowerOn The last time power on
 	* @param string $MaxTimePowerOn The max time power on
 	*/
-	public function __construct($SwitchName=NULL, $Private_UUID=NULL, $Public_UUID=NULL, User $AliasUser=NULL, $DescriptionSwitchs=NULL,$LastTimePowerOn=NULL,$MaxTimePowerOn=NULL) {
+	public function __construct($SwitchName=NULL, $Private_UUID=NULL, $Public_UUID=NULL, User $AliasUser=NULL, $DescriptionSwitch=NULL,$LastTimePowerOn=NULL,$MaxTimePowerOn=NULL) {
 		$this->SwitchName = $SwitchName;
 		$this->Private_UUID = $Private_UUID;
 		$this->Public_UUID = $Public_UUID;
 		$this->AliasUser = $AliasUser;
-		$this->DescriptionSwitchs = $DescriptionSwitchs;
+		$this->DescriptionSwitch = $DescriptionSwitch;
 		$this->LastTimePowerOn = $LastTimePowerOn;
 		$this->MaxTimePowerOn = $MaxTimePowerOn;
 
@@ -154,8 +154,8 @@ class Switchs {
 	*
 	* @return string The author of this switch
 	*/
-	public function getDescriptionSwitchs() {
-		return $this->DescriptionSwitchs;
+	public function getDescriptionSwitch() {
+		return $this->DescriptionSwitch;
 	}
 
 	/**
@@ -164,8 +164,8 @@ class Switchs {
 	* @param string $author the author of this switch
 	* @return void
 	*/
-	public function setDescriptionSwitchs($DescriptionSwitchs) {
-		$this->DescriptionSwitchs = $DescriptionSwitchs;
+	public function setDescriptionSwitch($DescriptionSwitch) {
+		$this->DescriptionSwitch = $DescriptionSwitch;
 	}
 
 

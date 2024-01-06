@@ -19,8 +19,8 @@ class SwitchModel extends Fronty.Model {
         this.AliasUser = AliasUser;
       }
 
-      if (Descriptionswitch) {
-        this.Descriptionswitch = Descriptionswitch;
+      if (DescriptionSwitch) {
+        this.DescriptionSwitch = DescriptionSwitch;
       }
 
       if (LastTimePowerOn) {
@@ -33,9 +33,9 @@ class SwitchModel extends Fronty.Model {
 
     }
   
-    setTitle(switchName) {
+    setTitle(SwitchName) {
       this.set((self) => {
-        self.switchName = switchName;
+        self.SwitchName = SwitchName;
       });
     }
   
@@ -57,9 +57,9 @@ class SwitchModel extends Fronty.Model {
     });
     }
 
-    setAuthor_id(Descriptionswitch) {
+    setAuthor_id(DescriptionSwitch) {
     this.set((self) => {
-        self.Descriptionswitch = Descriptionswitch;
+        self.DescriptionSwitch = DescriptionSwitch;
     });
     }
 

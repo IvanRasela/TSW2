@@ -37,7 +37,7 @@ class SwitchsMapper {
 	//"error": "array_push(): Argument #1 ($array) must be of type array, null given"
 	public function findAll() {
 		//$stmt = $this->db->query("SELECT * FROM Switchs");
-		$stmt = $this->db->query("SELECT * FROM Switchs, usuario WHERE usuario.Alias = Switchs.AliasUser");
+		$stmt = $this->db->query("SELECT * FROM Switchs, Usuario WHERE Usuario.Alias = Switchs.AliasUser");
 		$switches_db = $stmt->fetchAll(PDO::FETCH_ASSOC);
 	
 		$switches = array(); 
@@ -69,7 +69,7 @@ class SwitchsMapper {
 
 		foreach ($switchList as $switch) {
 			//$alias = new User($switch->getAliasUser());
-			array_push($switchs, new Switchs($switch->getSwitchName(), $switch->getPrivate_UUID(), $switch->getPublic_UUID(),$switch->getAliasUser(), $switch->getDescriptionswitchs(), $switch->getLastTimePowerOn(), $switch->getMaxTimePowerOn()));		}
+			array_push($switchs, new Switchs($switch->getSwitchName(), $switch->getPrivate_UUID(), $switch->getPublic_UUID(),$switch->getAliasUser(), $switch->getDescriptionSwitch(), $switch->getLastTimePowerOn(), $switch->getMaxTimePowerOn()));		}
 
 		return $switchs;
 	}
@@ -129,7 +129,7 @@ class SwitchsMapper {
 		*/
 		public function save(Switchs $switchs) {
 			$stmt = $this->db->prepare("INSERT INTO Switchs(SwitchName, Private_UUID, Public_UUID, LastTimePowerOn, MaxTimePowerOn, DescriptionSwitch, AliasUser) values (?,?,?,?,?,?,?)");
-			$stmt->execute(array($switchs->getSwitchName(), $switchs->getPrivate_UUID(), $switchs->getPublic_UUID(),$switchs->getLastTimePowerOn(),$switchs->getMaxTimePowerOn(),$switchs->getDescriptionswitchs(),$switchs->getAliasUser()->getAlias()));
+			$stmt->execute(array($switchs->getSwitchName(), $switchs->getPrivate_UUID(), $switchs->getPublic_UUID(),$switchs->getLastTimePowerOn(),$switchs->getMaxTimePowerOn(),$switchs->getDescriptionSwitch(),$switchs->getAliasUser()->getAlias()));
 			return $this->db->lastInsertId();
 		}
 

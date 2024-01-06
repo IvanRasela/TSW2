@@ -134,7 +134,7 @@ class SwitchRest extends BaseRest {
 
 			if (isset($data->title) && isset($data->content)) {
 				$switch->setTitle($data->title);
-				$switch->setDescriptionSwitchs($data->content);
+				$switch->setDescriptionSwitch($data->content);
 
 				$switch->setAliasUser($currentUser);
 			}
@@ -148,7 +148,7 @@ class SwitchRest extends BaseRest {
 			echo(json_encode(array(
 				"id"=>$switchId,
 				"aliasuser"=>$switch->getAliasUser(),
-				"description" => $switch->getDescriptioSwitchs()
+				"description" => $switch->getDescriptionSwitch()
 			)));
 
 		} catch (ValidationException $e) {
