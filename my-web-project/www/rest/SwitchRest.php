@@ -33,7 +33,7 @@ class SwitchRest extends BaseRest {
 
 	}
 
-	public function getSwitchs() {
+	public function getSwitches() {
 
 		$switchs = $this->SwitchsMapper->findAll();
 		if($switchs==NULL){
@@ -247,7 +247,7 @@ class SwitchRest extends BaseRest {
 // URI-MAPPING for this Rest endpoint
 $switchRest = new SwitchRest();
 URIDispatcher::getInstance()
-->map("GET",	"/switch", array($switchRest,"getSwitchs"))
+->map("GET",	"/switch", array($switchRest,"getSwitches"))
 ->map("GET",	"/switch/public/$1", array($switchRest,"getSwitchsByPublic"))
 ->map("GET",	"/switch/private/$1", array($switchRest,"getSwitchsByPrivate"))
 ->map("GET",	"/switch/suscribers", array($switchRest,"getSwitchsSuscribe"))//revisar pq en switchservice se le pasa la uuid

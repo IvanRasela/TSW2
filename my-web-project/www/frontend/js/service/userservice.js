@@ -60,7 +60,7 @@ class UserService {
 
   logout() {
     window.sessionStorage.removeItem('alias');
-    window.sessionStorage.removeeItem('passwd');
+    window.sessionStorage.removeItem('passwd');
     $.ajaxSetup({
       beforeSend: (xhr) => {}
     });

@@ -64,7 +64,7 @@ class Switchs {
 	* @param string $Private_UUID The private uuid
 	* @param string $Public_UUID The public uuid
 	* @param User $AliasUser The alias of user
-	* @param string $DescriptionSwitchs The description of this switchs
+	* @param string $DescriptionSwitch The description of this switchs
 	* @param string $LastTimePowerOn The last time power on
 	* @param string $MaxTimePowerOn The max time power on
 	*/
@@ -223,7 +223,7 @@ class Switchs {
 		}
 
 		if (sizeof($errors) > 0){
-			throw new ValidationException($errors, "switchs is not valid");
+			throw new ValidationException($errors, "switch is not valid");
 		}
 	}
 
