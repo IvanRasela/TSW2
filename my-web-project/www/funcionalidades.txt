@@ -1,0 +1,11 @@
+- arreglar lo del email vacio (Richard)
+-entrar para solo poder buscar (Paulo)
+-lista de propios
+-lista de suscritos
+-que vaya el off/on
+-crear switch
+-eliminar propio
+-desuscribirse
+-suscribirse
+-detalles 
+-css (login-Paulo) (register-Richard)

@@ -123,8 +123,6 @@ class SwitchRest extends BaseRest {
 			error_log("ValidationException: " . json_encode($e->getErrors()));
 			echo(json_encode($e->getErrors()));
 		}
-		
-
 	}
 
 	public function createSwitch($data) {
