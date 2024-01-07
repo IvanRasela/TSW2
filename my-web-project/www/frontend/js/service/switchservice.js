@@ -3,24 +3,24 @@ class SwitchService {
 
   }
 
-  getSwitchs() {
+  getSwitches() {
     return $.get(AppConfig.backendServer+'/rest/switch');
   }
 
-  getSwitchsByPublic(uuid) {
-    return $.get(AppConfig.backendServer+'/rest/switch/' + uuid);
+  getSwitchesByPublic(uuid) {
+    return $.get(AppConfig.backendServer+'/rest/switch/public/' + uuid);
   }
-  getSwitchsByPrivate(uuid) {
-    return $.get(AppConfig.backendServer+'/rest/switch/' + uuid);
+  getSwitchesByPrivate(uuid) {
+    return $.get(AppConfig.backendServer+'/rest/switch/private/' + uuid);
   }
 
-  getSwitchsSuscribe() {
-    return $.get(AppConfig.backendServer+'/rest/switch/' + uuid);
+  getSwitchesSuscribe() {
+    return $.get(AppConfig.backendServer+'/rest/switch/suscribers/' + uuid);
   }
 
   createSwitch(switch_r) {
     return $.ajax({
-      url: AppConfig.backendServer+'/rest/switch',
+      url: AppConfig.backendServer+'/rest/switch/new/',
       method: 'POST',
       data: JSON.stringify(post),
       contentType: 'application/json'
@@ -28,7 +28,7 @@ class SwitchService {
   }
   deleteSwitch(uuid) {
     return $.ajax({
-      url: AppConfig.backendServer+'/rest/switch/' + uuid,
+      url: AppConfig.backendServer+'/rest/switch/del/' + uuid,
       method: 'DELETE'
     });
   }

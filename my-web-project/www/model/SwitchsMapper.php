@@ -33,22 +33,26 @@ class SwitchsMapper {
 	* @throws PDOException if a database error occurs
 	* @return mixed Array of switchs instances (without comments)
 	*/
-	public function findAll($alias) {
-		
-		$stmt = $this->db->prepare("SELECT * FROM Switchs WHERE Switchs.AliasUser=?");
-		$stmt->execute(array($alias));
-		$switchs_db = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-		$switchs = array();
-
-		foreach ($switchs_db as $switch) {
+	//"error": "array_push(): Argument #1 ($array) must be of type array, null given"
+	public function findAll() {
+		//$stmt = $this->db->query("SELECT * FROM Switchs");
+		$stmt = $this->db->query("SELECT * FROM Switchs, Usuario WHERE Usuario.Alias = Switchs.AliasUser");
+		$switches_db = $stmt->fetchAll(PDO::FETCH_ASSOC);
+	
+		$switches = array(); 
+	
+		foreach ($switches_db as $switch) {
 			$alias = new User($switch["AliasUser"]);
-			array_push($switchs, new switchs($switch["SwitchName"], $switch["Private_UUID"], $switch["Public_UUID"],$alias, $switch["DescriptionSwitch"], $switch["LastTimePowerOn"], $switch["MaxTimePowerOn"]));
+			array_push($switches, new Switchs($switch["SwitchName"], $switch["Private_UUID"], $switch["Public_UUID"], $alias));
 		}
-
-		return $switchs;
+	
+		return $switches;
 	}
+	
+	
 
+	
 	public function findIfSuscribe($user) {
 		$switchList = [];
 
@@ -65,7 +69,7 @@ class SwitchsMapper {
 
 		foreach ($switchList as $switch) {
 			//$alias = new User($switch->getAliasUser());
-			array_push($switchs, new switchs($switch->getSwitchsName(), $switch->getPrivate_UUID(), $switch->getPublic_UUID(),$switch->getAliasUser(), $switch->getDescriptionswitchs(), $switch->getLastTimePowerOn(), $switch->getMaxTimePowerOn()));		}
+			array_push($switchs, new Switchs($switch->getSwitchName(), $switch->getPrivate_UUID(), $switch->getPublic_UUID(),$switch->getAliasUser(), $switch->getDescriptionSwitch(), $switch->getLastTimePowerOn(), $switch->getMaxTimePowerOn()));		}
 
 		return $switchs;
 	}
@@ -125,13 +129,13 @@ class SwitchsMapper {
 		*/
 		public function save(Switchs $switchs) {
 			$stmt = $this->db->prepare("INSERT INTO Switchs(SwitchName, Private_UUID, Public_UUID, LastTimePowerOn, MaxTimePowerOn, DescriptionSwitch, AliasUser) values (?,?,?,?,?,?,?)");
-			$stmt->execute(array($switchs->getswitchsName(), $switchs->getPrivate_UUID(), $switchs->getPublic_UUID(),$switchs->getLastTimePowerOn(),$switchs->getMaxTimePowerOn(),$switchs->getDescriptionswitchs(),$switchs->getAliasUser()->getAlias()));
+			$stmt->execute(array($switchs->getSwitchName(), $switchs->getPrivate_UUID(), $switchs->getPublic_UUID(),$switchs->getLastTimePowerOn(),$switchs->getMaxTimePowerOn(),$switchs->getDescriptionSwitch(),$switchs->getAliasUser()->getAlias()));
 			return $this->db->lastInsertId();
 		}
 
 		public function suscribeTo(Switchs $switch) {
 			$stmt = $this->db->prepare("INSERT INTO Suscriptores(SuscriptorAlias, Public_UUID) values (?,?)");
-			$stmt->execute(array($switchs->getswitchsName(),$switchs->getPublic_UUID()));
+			$stmt->execute(array($switchs->getSwitchName(),$switchs->getPublic_UUID()));
 			return $this->db->lastInsertId();
 		}
 
@@ -142,7 +146,7 @@ class SwitchsMapper {
 		* @throws PDOException if a database error occurs
 		* @return void
 		*/
-		public function update(Post $switch) {
+		public function update(Switchs $switch) {
 			$stmt = $this->db->prepare("UPDATE switches set title=?, content=? where id=?");
 			$stmt->execute(array($switch->getTitle(), $switch->getContent(), $switch->getId()));
 		}

@@ -34,7 +34,7 @@ I18n.translations = {
   'The username/password is not valid': 'El alias/contraseña no son válidos',
 
 
-
+  'Back':'Atrás',
   'Email':'Correo electrónico'
 
 }

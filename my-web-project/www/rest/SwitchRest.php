@@ -1,5 +1,4 @@
-SwitchRest.php
-http://localhost/rest/switch
+
 <?php
 
 require_once(__DIR__."/../model/User.php");
@@ -22,69 +21,39 @@ class SwitchRest extends BaseRest {
 		$this->SwitchsMapper = new SwitchsMapper();
 	}
 
-	//GET {200 OK (almacena todos los switches relacionados con un user 
-	//	'suscritos/propios' en un array
-	//	   204 Not found)}
-	// NO SE PUECE COMPROBAR CON POSTMAN
-	/*public function getSwitchs() {
-		try{
-			$currentUser = parent::authenticateUser();
-			$switchs = $this->SwitchsMapper->findAll($currentUser);
-	
+	//función de prueba, si funciona
+	public function findAllSwitches(){
+		$switchs = $this->SwitchsMapper->findAll();
+		if($switchs==NULL){
+			header($_SERVER['SERVER_PROTOCOL'].' 401 Not found');
+		}else{
+			echo(json_encode($switchs));
+			header($_SERVER['SERVER_PROTOCOL'].' 200 Ok');
+		}
+
+	}
+
+	public function getSwitches() {
+
+		$switchs = $this->SwitchsMapper->findAll();
+		if($switchs==NULL){
+			header($_SERVER['SERVER_PROTOCOL'].' 400 NotFound');
+		}else{
 			$switchs_array = array();
-			foreach($switchs as $switch) {
+			
+			foreach ($switchs as $switch) {
 				array_push($switchs_array, array(
 					"SwitchName" => $switch->getSwitchName(),
 					"Public_UUID" => $switch->getPublic_UUID(),
+					"Private_UUID" =>$switch->getPrivate_UUID(),
+					"AliasUser" =>$switch->getAliasUser()->getAlias()
 				));
 			}
-	
-			if($switchs_array == NULL){
-				header($_SERVER['SERVER_PROTOCOL'].' 204 Not found');
-				header('Content-Type: application/json');
-				echo(json_encode($e->getErrors()));
-			}else{
-				header($_SERVER['SERVER_PROTOCOL'].' 200 Ok');
-				header('Content-Type: application/json');
-				echo(json_encode($switchs_array));
-			}
-		}catch(ValidationException $e) {
-			http_response_code(400); 
+			header($_SERVER['SERVER_PROTOCOL'].' 200 Ok');
 			header('Content-Type: application/json');
-			echo(json_encode($e->getErrors()));
+			echo(json_encode($switchs_array));
 		}
-	
-	}*/
-
-	public function getSwitchs() {
-
-		try {
-			$currentUser = parent::authenticateUser();
-			
-			//$user= new User($data->alias, $data->passwd, $data->email);
-			$switchs = $this->SwitchsMapper->findAll($currentUser);
-			echo("getSwitchs");
-			$switchs_array = array();
-			foreach ($switchs as $switch) {
-				array_push($switchs_array, array(
-					"SwitchName" => $switch->getSwitchsName(),
-					"Public_UUID" => $switch->getPublic_UUID(),
-				));
-			}
-	
-			if (empty($switchs_array)) {
-				http_response_code(204);
-			} else {
-				http_response_code(200);
-				header('Content-Type: application/json');
-				echo(json_encode($switchs_array));
-			}
-		}  catch (ValidationException $e) {
-			http_response_code(400);
-			header('Content-Type: application/json');
-			error_log("ValidationException: " . json_encode($e->getErrors()));
-			echo(json_encode($e->getErrors()));
-		}
+		
 	}
 
 
@@ -124,41 +93,49 @@ class SwitchRest extends BaseRest {
 	}
 
 	public function getSwitchsSuscribe() {
-		$currentUser = parent::authenticateUser();
-		$switchs = $this->SwitchsMapper->findIfSuscribe($currentUser);
+		try{
 
-		$switchs_array = array();
-		foreach($switchs as $switch) {
-			array_push($switchs_array, array(
-				"SwitchName" => $switch->getSwitchName(),
-				"Public_UUID" => $switch->getPublic_UUID(),
-			));
-		}
+			$currentUser = parent::authenticateUser();
+			$switchs = $this->SwitchsMapper->findIfSuscribe($currentUser);
 
-		if($switchs_array == NULL){
-			header($_SERVER['SERVER_PROTOCOL'].' 404 Not found');
+			$switchs_array = array();
+			foreach($switchs as $switch) {
+				array_push($switchs_array, array(
+					"SwitchName" => $switch->getSwitchName(),
+					"Public_UUID" => $switch->getPublic_UUID(),
+				));
+			}
+
+			if($switchs_array == NULL){
+				header($_SERVER['SERVER_PROTOCOL'].' 404 Not found');
+				header('Content-Type: application/json');
+				echo(json_encode($e->getErrors()));
+			}
+
+			header($_SERVER['SERVER_PROTOCOL'].' 200 Ok');
 			header('Content-Type: application/json');
+			echo(json_encode($switchs_array));
+
+
+		}catch (ValidationException $e) {
+			http_response_code(400);
+			header('Content-Type: application/json');
+			error_log("ValidationException: " . json_encode($e->getErrors()));
 			echo(json_encode($e->getErrors()));
 		}
-
-		header($_SERVER['SERVER_PROTOCOL'].' 200 Ok');
-		header('Content-Type: application/json');
-		echo(json_encode($switchs_array));
-
 	}
 
 	public function createSwitch($data) {
-		$currentUser = parent::authenticateUser();
-		$switch = new Switchs();
-
-		if (isset($data->title) && isset($data->content)) {
-			$switch->setTitle($data->title);
-			$switch->setDescriptionswitchs($data->content);
-
-			$switch->setAliasUser($currentUser);
-		}
-
 		try {
+			$currentUser = parent::authenticateUser();
+			$switch = new Switchs();
+
+			if (isset($data->title) && isset($data->content)) {
+				$switch->setTitle($data->title);
+				$switch->setDescriptionSwitch($data->content);
+
+				$switch->setAliasUser($currentUser);
+			}
 			$switch->checkIsValidForCreate(); // if it fails, ValidationException
 
 			$switchId = $this->SwitchsMapper->save($switch);
@@ -169,7 +146,7 @@ class SwitchRest extends BaseRest {
 			echo(json_encode(array(
 				"id"=>$switchId,
 				"aliasuser"=>$switch->getAliasUser(),
-				"description" => $switch->getDescriptionswitchs()
+				"description" => $switch->getDescriptionSwitch()
 			)));
 
 		} catch (ValidationException $e) {
@@ -181,76 +158,97 @@ class SwitchRest extends BaseRest {
 
 
 	public function deleteSwitch($switchuuid) {
-		$currentUser = parent::authenticateUser();
-		$switch = $this->SwitchsMapper->findById($switchuuid);
+		try{
+			$currentUser = parent::authenticateUser();
+			$switch = $this->SwitchsMapper->findById($switchuuid);
 
-		if ($switch == NULL) {
-			header($_SERVER['SERVER_PROTOCOL'].' 400 Bad request');
-			echo("Switch with id ".$switchId." not found");
-			return;
-		}
-		// Check if the Switch author is the currentUser (in Session)
-		if ($switch->getAliasUser->getAlias() != $currentUser) {
-			header($_SERVER['SERVER_PROTOCOL'].' 401 Unauthorized');
-			echo("you are not the author of this switch");
-			return;
-		}
+			if ($switch == NULL) {
+				header($_SERVER['SERVER_PROTOCOL'].' 400 Bad request');
+				echo("Switch with id ".$switchId." not found");
+				return;
+			}
+			// Check if the Switch author is the currentUser (in Session)
+			if ($switch->getAliasUser->getAlias() != $currentUser) {
+				header($_SERVER['SERVER_PROTOCOL'].' 401 Unauthorized');
+				echo("you are not the author of this switch");
+				return;
+			}
 
 		$this->SwitchsMapper->delete($switch);
 
 		header($_SERVER['SERVER_PROTOCOL'].' 204 No Content');
+			
+		}catch (ValidationException $e) {
+			header($_SERVER['SERVER_PROTOCOL'].' 400 Bad request');
+			header('Content-Type: application/json');
+			echo(json_encode($e->getErrors()));
+		}
+		
 	}
 
 	public function turnOnOffSwitchPublic($uuid) {
-		$currentUser = parent::authenticateUser();
-		$switch = $this->SwitchsMapper->findById($switchuuid);
+		try{
+			$currentUser = parent::authenticateUser();
+			$switch = $this->SwitchsMapper->findById($switchuuid);
 
-		if ($switch == NULL) {
+			if ($switch == NULL) {
+				header($_SERVER['SERVER_PROTOCOL'].' 400 Bad request');
+				echo("Switch with id ".$switchId." not found");
+				return;
+			}
+			// Check if the Switch author is the currentUser (in Session)
+			if ($switch->getAliasUser->getAlias() != $currentUser) {
+				header($_SERVER['SERVER_PROTOCOL'].' 403 Forbidden');
+				echo("you are not the author of this switch");
+				return;
+			}
+
+			$this->SwitchsMapper->changeState($switch);
+
+			header($_SERVER['SERVER_PROTOCOL'].' 204 No Content');
+		}catch (ValidationException $e) {
 			header($_SERVER['SERVER_PROTOCOL'].' 400 Bad request');
-			echo("Switch with id ".$switchId." not found");
-			return;
+			header('Content-Type: application/json');
+			echo(json_encode($e->getErrors()));
 		}
-		// Check if the Switch author is the currentUser (in Session)
-		if ($switch->getAliasUser->getAlias() != $currentUser) {
-			header($_SERVER['SERVER_PROTOCOL'].' 403 Forbidden');
-			echo("you are not the author of this switch");
-			return;
-		}
-
-		$this->SwitchsMapper->changeState($switch);
-
-		header($_SERVER['SERVER_PROTOCOL'].' 204 No Content');
+		
 	}
 
 	public function turnOnOffSwitchPrivate($uuid) {
-		$switch = $this->SwitchsMapper->findById($switchuuid);
+		try{
+			$currentUser = parent::authenticateUser();
+			$switch = $this->SwitchsMapper->findById($switchuuid);
 
-		if ($switch == NULL) {
+			if ($switch == NULL) {
+				header($_SERVER['SERVER_PROTOCOL'].' 400 Bad request');
+				echo("Switch with id ".$switchId." not found");
+				return;
+			}
+			if ($switch->getAliasUser->getAlias() != $currentUser) {
+				header($_SERVER['SERVER_PROTOCOL'].' 403 Forbidden');
+				echo("you are not the author of this switch");
+				return;
+			}
+
+			$this->SwitchsMapper->changeState($switch);
+
+			header($_SERVER['SERVER_PROTOCOL'].' 204 No Content');
+		}catch (ValidationException $e) {
 			header($_SERVER['SERVER_PROTOCOL'].' 400 Bad request');
-			echo("Switch with id ".$switchId." not found");
-			return;
+			header('Content-Type: application/json');
+			echo(json_encode($e->getErrors()));
 		}
-		if ($switch->getAliasUser->getAlias() != $currentUser) {
-			header($_SERVER['SERVER_PROTOCOL'].' 403 Forbidden');
-			echo("you are not the author of this switch");
-			return;
-		}
-
-		$this->SwitchsMapper->changeState($switch);
-
-		header($_SERVER['SERVER_PROTOCOL'].' 204 No Content');
+		
 	}
-
-	
-
 }
 
 // URI-MAPPING for this Rest endpoint
 $switchRest = new SwitchRest();
 URIDispatcher::getInstance()
-->map("GET",	"/switch/get", array($switchRest,"getSwitchs"))
-->map("GET",	"/switch/getByPublic/$1", array($switchRest,"getSwitchsByPublic"))
-->map("GET",	"/switch/getByPrivate", array($switchRest,"getSwitchsByPrivate"))
-->map("GET",	"/switch/getSuscribe", array($switchRest,"getSwitchsSuscribe"))
-->map("POST", "/switch/create/$1", array($switchRest,"createSwitch"))
-->map("DELETE", "/switch/delete/$1", array($switchRest,"deleteSwitch"));
+->map("GET",	"/switch", array($switchRest,"getSwitches"))
+->map("GET",	"/switch/public/$1", array($switchRest,"getSwitchsByPublic"))
+->map("GET",	"/switch/private/$1", array($switchRest,"getSwitchsByPrivate"))
+->map("GET",	"/switch/suscribers", array($switchRest,"getSwitchsSuscribe"))//revisar pq en switchservice se le pasa la uuid
+->map("POST", "/switch/new/$1", array($switchRest,"createSwitch"))//revisar en el service
+->map("DELETE", "/switch/del/$1", array($switchRest,"deleteSwitch"))
+->map("GET", "/switch/all", array($switchRest,"findAllSwitches"));//quitar esta que es para comprobar solo
