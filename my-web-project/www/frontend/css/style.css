@@ -2,15 +2,22 @@
 .container{
 	display: grid;
 	height:100vh;
-	grid-template-columns: 0.2fr 1fr 0.2fr;
-	grid-template-rows: 0.2fr 2.7fr 0.5fr;
+	grid-template-columns: 1fr 1fr;
+	grid-template-rows: 1.5fr 3fr 1.5fr;
 	grid-template-areas:
-		"header header header"
-		"main main main"
-		"footer footer footer";
+		"header header"
+		"main main"
+		"footer footer";
 	grid-gap: 0.2rem;
 }
-
+#maincontent{
+	display: grid;
+	grid-area:main;
+	grid-template-areas:
+        "switches suscribers";
+    grid-template-columns: 1fr 1fr; 
+    grid-template-rows: auto; 
+}
 header{
 	background-color: #2596be;
 	grid-area: header;
@@ -60,11 +67,19 @@ li{
 	transform: scale(1.02);
 }
 
-
-
-
 #maincontent{
 	grid-area:main;
+	background-color: #92e2ff;
+}
+#switches-table{
+	grid-area:switches;
+	background-color: #2596be;
+	border-radius: 8px;
+}
+#suscribers-table{
+	grid-area:suscribers;
+	background-color: #2596be;
+	border-radius: 8px;
 }
 
 span{
@@ -96,7 +111,12 @@ footer{
 @media only screen and (max-width:550px){
 	.container{
 		grid-template-columns: 1fr;
-		grid-template-rows: 0.2fr 2.7fr 0.5fr;
-		grid-template-areas: "header" "main" "footer";
+		grid-template-rows: 0.2fr auto auto 0.5fr;
+		grid-template-areas: "header" "main" "main" "footer";
 	}
+	#maincontent {
+        grid-template-areas:"switches" "suscribers";
+        grid-template-columns: 1fr; /* Ajusta las columnas según sea necesario */
+        grid-template-rows: auto auto; /* Ajusta las filas según sea necesario */
+    }
 }
