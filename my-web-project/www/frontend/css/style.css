@@ -75,11 +75,13 @@ li{
 	grid-area:switches;
 	background-color: #2596be;
 	border-radius: 8px;
+	margin: auto;
 }
 #suscribers-table{
 	grid-area:suscribers;
 	background-color: #2596be;
 	border-radius: 8px;
+	margin: auto;
 }
 
 span{
