@@ -1,7 +1,7 @@
 <div>
   {{#if user.isLogged}}
           <h1>{{i18n 'Switches'}}</h1>
-  {{/if}}
+  
   <div id="switches-table">
     <p>Switches ({{switches.length}}) num.</p>
     {{#if switches.length}}
@@ -40,7 +40,6 @@
       </table>
     {{/if}}
   </div>
-  {{#if user.isLogged}}
     <a href='#add-switch'>{{i18n 'Add switch'}}</a>
   {{/if}}
 </div>
