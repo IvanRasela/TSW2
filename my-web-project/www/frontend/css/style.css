@@ -31,11 +31,7 @@ header{
 	background-color: #92e2ff;
 	display: inline-block; 
 	padding: 10px; 
-    border-radius: 8px; /* Bordes redondeados */ 
-	transition: transform 0.3s ease; 
-}
-#menu:hover{
-	transform: scale(1.02);
+    border-radius: 8px; 	 
 }
 ul{
 	margin:0;
@@ -47,6 +43,25 @@ a{
 li{
 	list-style: none;
 }
+#userbar{
+	background-color: #2596be;
+	padding: 5px;
+	transition: transform 0.3s ease;
+	border-radius: 8px;
+	margin-bottom: 5px;
+}
+#invitadobar{
+	background-color: #2596be;
+	padding: 5px;
+	transition: transform 0.3s ease;
+	border-radius: 8px;
+}
+#userbar:hover, #invitadobar:hover{
+	transform: scale(1.02);
+}
+
+
+
 
 #maincontent{
 	grid-area:main;

@@ -1,15 +1,16 @@
 <div class="container">
 <header>
-  
   <img class="IamOntitle" src="../../../img/IAmOnLogo.png">
   <nav id="menu" >
     <ul>
       {{#if user.isLogged}}
-        <li><a href="#switches">{{i18n 'Switches'}}</a></l>
+        <li><a href="#switches">{{i18n 'Switches'}}</a></li>
+      {{else}}
+        <li>
+          <div id="userbar">Loading...</div>
+          <div id="invitadobar"><a href="#switches">{{i18n 'Enter as a guest'}}</a></div>
+        </li>
       {{/if}}
-      <li>
-        <div id="userbar">Loading...</div>
-      </li>
     </ul>
   </nav>
 </header>
