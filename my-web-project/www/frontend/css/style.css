@@ -50,21 +50,15 @@ a{
 li{
 	list-style: none;
 }
-#userbar{
+#loginbar{
 	background-color: #2596be;
 	padding: 5px;
-	transition: transform 0.3s ease;
 	border-radius: 8px;
-	margin-bottom: 5px;
 }
 #invitadobar{
 	background-color: #2596be;
 	padding: 5px;
-	transition: transform 0.3s ease;
 	border-radius: 8px;
-}
-#userbar:hover, #invitadobar:hover{
-	transform: scale(1.02);
 }
 
 #maincontent{
