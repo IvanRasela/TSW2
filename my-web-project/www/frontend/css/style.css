@@ -69,13 +69,20 @@ li{
 	grid-area:switches;
 	background-color: #2596be;
 	border-radius: 8px;
-	margin: auto;
+	margin: 15px;
+	text-align: center;
+	align-items: center;
 }
+
+
+
 #suscribers-table{
 	grid-area:suscribers;
 	background-color: #2596be;
 	border-radius: 8px;
-	margin: auto;
+	margin: 15px;
+	text-align: center;
+	align-items: center;
 }
 
 span{
@@ -107,12 +114,12 @@ footer{
 @media only screen and (max-width:550px){
 	.container{
 		grid-template-columns: 1fr;
-		grid-template-rows: 0.2fr auto auto 0.5fr;
+		grid-template-rows: 0.2fr auto auto 0.1fr;
 		grid-template-areas: "header" "main" "main" "footer";
 	}
 	#maincontent {
         grid-template-areas:"switches" "suscribers";
-        grid-template-columns: 1fr; /* Ajusta las columnas según sea necesario */
-        grid-template-rows: auto auto; /* Ajusta las filas según sea necesario */
+        grid-template-columns: 1fr; 
+        grid-template-rows: auto auto; 
     }
 }

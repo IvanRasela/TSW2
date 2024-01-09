@@ -2,7 +2,6 @@
   <!--aqui poner el buscador de switches por uri publica-->
 
   {{#if user.isLogged}}
-          <h1>{{i18n 'Switches'}}</h1>
   <div id="switches-table">
     <p>Switches ({{switches.length}}) num.</p>
     {{#if switches.length}}
@@ -21,6 +20,7 @@
       </tbody>
       </table>
     {{/if}}
+    <a href='#add-switch' id="addSwitch">{{i18n 'Add switch'}}</a>
   </div>
   <div id="suscribers-table">
     <p>Suscribers ({{switches.length}}) num.</p>
@@ -41,6 +41,6 @@
       </table>
     {{/if}}
   </div>
-    <a href='#add-switch'>{{i18n 'Add switch'}}</a>
+    
   {{/if}}
 </div>
