@@ -65,6 +65,9 @@ li{
 #maincontent{
 	grid-area:main;
 	background-color: #92e2ff;
+	border-radius: 8px;
+	text-align: center;
+	align-items: center;
 }
 #switches-table{
 	grid-area:switches;
@@ -83,7 +86,6 @@ li{
 	border-radius: 8px;
 	margin: 15px;
 	text-align: center;
-	align-items: center;
 }
 
 span{

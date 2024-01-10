@@ -34,6 +34,7 @@ I18n.translations = {
   'The username/password is not valid': 'El alias/contraseña no son válidos',
   'Enter as a guest':'Entrar como invitado',
 
+  'Welcome':'Bienvenido',
   'Back':'Atrás',
   'Email':'Correo electrónico'
 
