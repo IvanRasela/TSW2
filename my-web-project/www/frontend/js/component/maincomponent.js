@@ -34,7 +34,7 @@ class MainComponent extends Fronty.RouterComponent {
         component: new LoginComponent(this.userModel, this),
         title: 'Login'
       },
-      
+      defaultRoute: 'switches'
     });
 
     Handlebars.registerHelper('currentPage', () => {
