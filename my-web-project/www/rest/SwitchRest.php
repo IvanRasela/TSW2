@@ -1,4 +1,3 @@
-
 <?php
 
 require_once(__DIR__."/../model/User.php");
@@ -17,7 +16,7 @@ class SwitchRest extends BaseRest {
 	public function __construct() {
 		parent::__construct();
 		
-		echo("Constructor SwitchRest");
+		
 		$this->SwitchsMapper = new SwitchsMapper();
 	}
 

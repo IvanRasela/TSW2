@@ -1,5 +1,3 @@
-
-
 <?php
 // file: model/SwitchMapper.php
 require_once(__DIR__."/../core/PDOConnection.php");
