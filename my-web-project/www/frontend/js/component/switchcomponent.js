@@ -15,16 +15,26 @@ class SwitchComponent extends Fronty.ModelComponent {
       this.updateSwitch();
     }
   
-    updateSwitch() {
-      this.switchService.getSwitches().then((data) => {
+    async updateSwitch() {
+      this.switchService.getSwitches(this.userModel.currentUser).then((data) => {
   
         this.switchModel.setSwitches(
           // create a Fronty.Model for each item retrieved from the backend
           data.map(
-            (item) => new SwitchModel(item.switchName, item.Public_UUID, item.AliasUser, item.Descriptionswitch)
+            (item) => new SwitchModel(item.SwitchName, item.Public_UUID, item.Private_UUID, item.AliasUser)
+        ));
+      })
+
+      this.switchService.getSwitchesSuscribe(this.userModel.currentUser).then((data1) => {
+  
+        this.switchModel.setSwitchesSuscribe(
+          // create a Fronty.Model for each item retrieved from the backend
+          data1.map(
+            (item) => SwitchModel(item.SwitchName, item.Public_UUID, item.Private_UUID, item.AliasUser)
         ));
       });
     }
+
   
     // Override
     createChildModelComponent(className, element, id, modelItem) {

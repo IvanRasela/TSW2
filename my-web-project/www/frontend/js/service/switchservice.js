@@ -3,8 +3,12 @@ class SwitchService {
 
   }
 
-  getSwitches() {
-    return $.get(AppConfig.backendServer+'/rest/switch');
+  getSwitches(user) {
+    return $.get(AppConfig.backendServer+'/rest/switch/' + user);
+  }
+
+  getSwitchesSuscribe(user) {
+    return $.get(AppConfig.backendServer+'/rest/switch/suscribe/' + user);
   }
 
   getSwitchesByPublic(uuid) {
@@ -12,10 +16,6 @@ class SwitchService {
   }
   getSwitchesByPrivate(uuid) {
     return $.get(AppConfig.backendServer+'/rest/switch/private/' + uuid);
-  }
-
-  getSwitchesSuscribe() {
-    return $.get(AppConfig.backendServer+'/rest/switch/suscribers/' + uuid);
   }
 
   createSwitch(switch_r) {
