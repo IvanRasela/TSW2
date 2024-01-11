@@ -1,4 +1,3 @@
-UserRest.php
 <?php
 
 require_once(__DIR__."/../model/User.php");
@@ -22,7 +21,6 @@ class UserRest extends BaseRest {
 		parent::__construct();
 
 		$this->userMapper = new UserMapper();
-		echo("Constructor UserRest");
 	}
 	
 	//FALTA COMPROBAR

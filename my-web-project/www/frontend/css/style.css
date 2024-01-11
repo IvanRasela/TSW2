@@ -2,15 +2,23 @@
 .container{
 	display: grid;
 	height:100vh;
-	grid-template-columns: 0.2fr 1fr 0.2fr;
-	grid-template-rows: 0.2fr 2.7fr 0.5fr;
+	grid-template-columns: 1fr;
+	grid-template-rows: 1fr 3fr 0.5fr;
 	grid-template-areas:
-		"header header header"
-		"main main main"
-		"footer footer footer";
+		"header header"
+		"main main"
+		"footer footer";
 	grid-gap: 0.2rem;
 }
-
+#maincontent{
+	display: grid;
+	grid-area:main;
+	grid-template-columns: 1fr 1fr; 
+    grid-template-rows: 0.05fr 2fr; 
+	grid-template-areas:
+		"search search"
+        "switches suscribers";
+}
 header{
 	background-color: #2596be;
 	grid-area: header;
@@ -31,11 +39,7 @@ header{
 	background-color: #92e2ff;
 	display: inline-block; 
 	padding: 10px; 
-    border-radius: 8px; /* Bordes redondeados */ 
-	transition: transform 0.3s ease; 
-}
-#menu:hover{
-	transform: scale(1.02);
+    border-radius: 8px; 	 
 }
 ul{
 	margin:0;
@@ -47,9 +51,44 @@ a{
 li{
 	list-style: none;
 }
+#loginbar{
+	background-color: #2596be;
+	padding: 5px;
+	border-radius: 8px;
+}
+#invitadobar{
+	background-color: #2596be;
+	padding: 5px;
+	border-radius: 8px;
+}
 
 #maincontent{
 	grid-area:main;
+	background-color: #92e2ff;
+	border-radius: 8px;
+	text-align: center;
+	align-items: center;
+}
+
+
+
+#switches-table{
+	grid-area:switches;
+	background-color: #2596be;
+	border-radius: 8px;
+	margin: 15px;
+	text-align: center;
+	align-items: center;
+}
+
+
+
+#suscribers-table{
+	grid-area:suscribers;
+	background-color: #2596be;
+	border-radius: 8px;
+	margin: 15px;
+	text-align: center;
 }
 
 span{
@@ -64,8 +103,6 @@ span{
 
 
 
-
-
 footer{
 	background-color: #2596be;
 	grid-area: footer;
@@ -73,15 +110,15 @@ footer{
 }
 
 
-
-
-
-
-
 @media only screen and (max-width:550px){
 	.container{
 		grid-template-columns: 1fr;
-		grid-template-rows: 0.2fr 2.7fr 0.5fr;
-		grid-template-areas: "header" "main" "footer";
+		grid-template-rows: 0.2fr 0.05fr auto auto 0.1fr;
+		grid-template-areas: "header" "main" "main" "footer";
 	}
+	#maincontent {
+        grid-template-areas:"search" "switches" "suscribers";
+        grid-template-columns: 1fr; 
+        grid-template-rows: 0.05fr auto auto; 
+    }
 }

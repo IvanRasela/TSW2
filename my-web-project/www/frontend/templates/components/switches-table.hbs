@@ -1,27 +1,49 @@
 <div>
-{{#if user.isLogged}}
-        <h1>{{i18n 'Switches'}}</h1>
-{{/if}}
-<div id="switches-table">
-  <p>Switches ({{switches.length}}) num.</p>
-  {{#if switches.length}}
-    <table border="1">
-      <thead>
-      <tr>
-        <th>{{i18n 'Title'}}</th>
-        <th>{{i18n 'Author'}}</th>
-        <th>{{i18n 'Actions'}}</th>
-      </tr>
-      </thead>
-      <tbody>
-      {{#each switch}}
-        <tr fronty-component="SwitchRowComponent" key="{{id}}" model="switches[{{@index}}]" id="item-{{id}}"></tr>
-      {{/each}}
-    </tbody>
-    </table>
+  <!--aqui poner el buscador de switches por uri publica-->
+  <div id="search">
+    <p>buscador</p>
+  </div>
+  
+  {{#if user.isLogged}}
+  <div id="switches-table">
+    <p>Switches ({{switches.length}}) num.</p>
+    {{#if switches.length}}
+      <table border="1">
+        <thead>
+        <tr>
+          <th>{{i18n 'Title'}}</th>
+          <th>{{i18n 'Author'}}</th>
+          <th>{{i18n 'Actions'}}</th>
+        </tr>
+        </thead>
+        <tbody>
+        {{#each switch}}
+          <tr fronty-component="SwitchRowComponent" key="{{id}}" model="switches[{{@index}}]" id="item-{{id}}"></tr>
+        {{/each}}
+      </tbody>
+      </table>
+    {{/if}}
+    <a href='#add-switch' id="addSwitch">{{i18n 'Add switch'}}</a>
+  </div>
+  <div id="suscribers-table">
+    <p>Suscribers ({{switches.length}}) num.</p>
+    {{#if switches.length}}
+      <table border="1">
+        <thead>
+        <tr>
+          <th>{{i18n 'Title'}}</th>
+          <th>{{i18n 'Author'}}</th>
+          <th>{{i18n 'Actions'}}</th>
+        </tr>
+        </thead>
+        <tbody>
+        {{#each switch}}
+          <tr fronty-component="SwitchRowComponent" key="{{id}}" model="switches[{{@index}}]" id="item-{{id}}"></tr>
+        {{/each}}
+      </tbody>
+      </table>
+    {{/if}}
+  </div>
+    
   {{/if}}
-</div>
-{{#if user.isLogged}}
-  <a href='#add-switch'>{{i18n 'Add switch'}}</a>
-{{/if}}
 </div>

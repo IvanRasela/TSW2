@@ -1,5 +1,3 @@
-
-
 <?php
 // file: model/User.php
 
