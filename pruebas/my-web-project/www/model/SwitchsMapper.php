@@ -33,13 +33,15 @@ class SwitchsMapper {
 	*/
 
 	//"error": "array_push(): Argument #1 ($array) must be of type array, null given"
-	public function findAll() {
+	public function findAll($user) {
 		//$stmt = $this->db->query("SELECT * FROM Switchs");
-		$stmt = $this->db->query("SELECT * FROM Switchs, Usuario WHERE Usuario.Alias = Switchs.AliasUser");
+
+		$stmt = $this->db->prepare("SELECT * FROM Switchs WHERE Switchs.AliasUser=?");
+		$stmt->execute(array($user));
 		$switches_db = $stmt->fetchAll(PDO::FETCH_ASSOC);
 	
 		$switches = array(); 
-	
+		
 		foreach ($switches_db as $switch) {
 			$alias = new User($switch["AliasUser"]);
 			array_push($switches, new Switchs($switch["SwitchName"], $switch["Private_UUID"], $switch["Public_UUID"], $alias));
@@ -48,28 +50,47 @@ class SwitchsMapper {
 		return $switches;
 	}
 	
+	public function findAllSuscribers($user) {
+		$stmt = $this->db->prepare("SELECT * FROM Suscriptor WHERE Suscriptor.alias=?");
+		$stmt->execute(array($user));
+		$suscribers_db = $stmt->fetchAll(PDO::FETCH_ASSOC);
 	
-
-	
-	public function findIfSuscribe($user) {
-		$switchList = [];
-
-		$stmt = $this->db->prepare("SELECT * FROM Suscriptores WHERE Suscriptores.SuscriptorAlias=?");
-		$stmt->execute(array($user->getAlias()));
-		$switchs_db = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-		$switchs = array();
-
-		foreach ($switchs_db as $switch){
-			$sw = $this->findById($switch["Public_UUID"]);
-			$switchList[] = $sw;
+		$suscribers = array();
+		
+		foreach ($suscribers_db as $switchData) {
+			$sw = $this->findById($switchData["Public_UUID"]);
+			$alias = new User($sw["AliasUser"]);
+			array_push($suscribers, $sw);
 		}
+	
+		return $suscribers;
+	}
 
-		foreach ($switchList as $switch) {
-			//$alias = new User($switch->getAliasUser());
-			array_push($switchs, new Switchs($switch->getSwitchName(), $switch->getPrivate_UUID(), $switch->getPublic_UUID(),$switch->getAliasUser(), $switch->getDescriptionSwitch(), $switch->getLastTimePowerOn(), $switch->getMaxTimePowerOn()));		}
-
-		return $switchs;
+	public function findIfSuscribe($user) {
+		$stmt = $this->db->prepare("SELECT * FROM Suscriptor WHERE Suscriptor.alias=?");
+		$stmt->execute(array($user));
+		$switchs_db = $stmt->fetchAll(PDO::FETCH_ASSOC);
+	
+		$switches = array();
+	
+		foreach ($switchs_db as $switchData) {
+			$sw = $this->findById($switchData["Public_UUID"]);
+			if ($sw != NULL) {
+				$alias = new User($sw["AliasUser"]);
+				$switch = new Switchs(
+					$sw["SwitchName"],
+					$sw["Private_UUID"],
+					$sw["Public_UUID"],
+					$alias,
+					$sw["DescriptionSwitch"],
+					$sw["LastTimePowerOn"],
+					$sw["MaxTimePowerOn"]
+				);
+				array_push($switches, $switch);
+			}
+		}
+	
+		return $switches;
 	}
 
 	/**
@@ -81,23 +102,24 @@ class SwitchsMapper {
 	* @return Switch The switchs instances (without comments). NULL
 	* if the Switch is not found
 	*/
-	public function findById($publicuuid){
-		$stmt = $this->db->prepare("SELECT * FROM Switchs WHERE Public_UUID=?");
-		$stmt->execute(array($publicuuid));
+	public function findById($uuid){
+		$stmt = $this->db->prepare("SELECT * FROM Switchs WHERE Switchs.Public_UUID=?");
+		$stmt->execute(array($uuid));
 		$switchs = $stmt->fetch(PDO::FETCH_ASSOC);
+		if($switchs != null) {
+			return $switchs;
+		} else {
+			$stmt = $this->db->prepare("SELECT * FROM Switchs WHERE Switchs.Private_UUID=?");
+			$stmt->execute(array($uuid));
+			$switchs = $stmt->fetch(PDO::FETCH_ASSOC);
+		}
 
 		if($switchs != null) {
-			return new Switchs(
-			$switchs["SwitchName"],
-			$switchs["Private_UUID"],
-			$switchs["Public_UUID"],
-			new User($switchs["AliasUser"]),
-			$switchs["DescriptionSwitch"],
-			$switchs["LastTimePowerOn"],
-			$switchs["MaxTimePowerOn"]);
+			return $switchs;
 		} else {
 			return NULL;
 		}
+
 	}
 
 	public function findByIdPrivate($uuid){
@@ -106,7 +128,7 @@ class SwitchsMapper {
 		$switchs = $stmt->fetch(PDO::FETCH_ASSOC);
 
 		if($switchs != null) {
-			return new Switchs(
+			$switch = new Switchs(
 			$switchs["SwitchName"],
 			$switchs["Private_UUID"],
 			$switchs["Public_UUID"],
@@ -117,6 +139,7 @@ class SwitchsMapper {
 		} else {
 			return NULL;
 		}
+		return $switch;
 	}
 		/**
 		* Saves a Switch into the database
@@ -126,13 +149,15 @@ class SwitchsMapper {
 		* @return int The mew switch id
 		*/
 		public function save(Switchs $switchs) {
+			$switchs->setPublic_UUID(this.createUUID());
+			$switchs->setPrivate_UUID(this.createUUID());
 			$stmt = $this->db->prepare("INSERT INTO Switchs(SwitchName, Private_UUID, Public_UUID, LastTimePowerOn, MaxTimePowerOn, DescriptionSwitch, AliasUser) values (?,?,?,?,?,?,?)");
 			$stmt->execute(array($switchs->getSwitchName(), $switchs->getPrivate_UUID(), $switchs->getPublic_UUID(),$switchs->getLastTimePowerOn(),$switchs->getMaxTimePowerOn(),$switchs->getDescriptionSwitch(),$switchs->getAliasUser()->getAlias()));
 			return $this->db->lastInsertId();
 		}
 
 		public function suscribeTo(Switchs $switch) {
-			$stmt = $this->db->prepare("INSERT INTO Suscriptores(SuscriptorAlias, Public_UUID) values (?,?)");
+			$stmt = $this->db->prepare("INSERT INTO Suscriptor(alias, Public_UUID) values (?,?)");
 			$stmt->execute(array($switchs->getSwitchName(),$switchs->getPublic_UUID()));
 			return $this->db->lastInsertId();
 		}
@@ -162,7 +187,7 @@ class SwitchsMapper {
 		}
 
 		public function desuscribeTo(Switchs $switchs) {
-			$stmt = $this->db->prepare("DELETE from Suscriptores WHERE Public_UUID=?");
+			$stmt = $this->db->prepare("DELETE from Suscriptor WHERE Public_UUID=?");
 			$stmt->execute(array($switchs->getPublic_UUID()));
 		}
 

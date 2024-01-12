@@ -22,9 +22,9 @@ class MainComponent extends Fronty.RouterComponent {
         component: new SwitchViewComponent(this.switchesModel, this.userModel, this),
         title: 'Switch'
       },
-      'edit-switch': {
+      'search-switch': {
         component: new SwitchEditComponent(this.switchesModel, this.userModel, this),
-        title: 'Edit Switch'
+        title: 'Search Switch'
       },
       'add-switch': {
         component: new SwitchAddComponent(this.switchesModel, this.userModel, this),
@@ -34,7 +34,7 @@ class MainComponent extends Fronty.RouterComponent {
         component: new LoginComponent(this.userModel, this),
         title: 'Login'
       },
-      
+      defaultRoute: 'switches'
     });
 
     Handlebars.registerHelper('currentPage', () => {
@@ -65,6 +65,28 @@ class MainComponent extends Fronty.RouterComponent {
     userbar.addEventListener('click', '#logoutbutton', () => {
       this.userModel.logout();
       this.userService.logout();
+    });
+
+    userbar.addEventListener('click', '#searchbutton', (event) => {
+      // contenido del input text: document.getElementById('searchCont'))
+      alert ("Buscando swith con clave " + $('#searchCont').val());
+      this.switchService.search($('#searchCont').val());
+      
+      /*.then(() => {
+       // this.router.goToPage('switches');
+      }) */
+      
+      /*this.userService.login($('#login').val(), $('#passwd').val())
+        .then(() => {
+          this.router.goToPage('switches');
+          this.userModel.setLoggeduser($('#login').val());
+        })
+        .catch((error) => {
+          this.userModel.set((model) => {
+            model.loginError = error.responseText;
+          });
+          this.userModel.logout();
+        }); */
     });
 
     return userbar;

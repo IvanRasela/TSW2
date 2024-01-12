@@ -8,6 +8,7 @@ class SwitchesModel extends Fronty.Model {
   
       // model attributes
       this.switches = [];
+      this.switchesSuscribe = [];
     }
   
     setSelectedSwitch(switch_r) {
@@ -19,6 +20,12 @@ class SwitchesModel extends Fronty.Model {
     setSwitches(switches) {
       this.set((self) => {
         self.switches = switches;
+      });
+    }
+
+    setSwitchesSuscribe(switchesSuscribe) {
+      this.set((self) => {
+        self.switchesSuscribe = switchesSuscribe;
       });
     }
   }

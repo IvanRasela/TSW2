@@ -3,29 +3,31 @@ class SwitchService {
 
   }
 
-  getSwitches() {
-    return $.get(AppConfig.backendServer+'/rest/switch');
+  getSwitches(user) {
+    return $.get(AppConfig.backendServer+'/rest/switch/' + user);
   }
 
-  getSwitchesByPublic(uuid) {
+  getSwitchesSuscribe(user) {
+    return $.get(AppConfig.backendServer+'/rest/switch/suscribers/' + user);
+  }
+
+  getSwitchesByUUID(uuid) {
     return $.get(AppConfig.backendServer+'/rest/switch/public/' + uuid);
   }
+
   getSwitchesByPrivate(uuid) {
     return $.get(AppConfig.backendServer+'/rest/switch/private/' + uuid);
   }
 
-  getSwitchesSuscribe() {
-    return $.get(AppConfig.backendServer+'/rest/switch/suscribers/' + uuid);
-  }
-
-  createSwitch(switch_r) {
+  addSwitch(switch_r) {
     return $.ajax({
       url: AppConfig.backendServer+'/rest/switch/new/',
       method: 'POST',
-      data: JSON.stringify(post),
+      data: JSON.stringify(switch_r),
       contentType: 'application/json'
     });
   }
+
   deleteSwitch(uuid) {
     return $.ajax({
       url: AppConfig.backendServer+'/rest/switch/del/' + uuid,
@@ -42,6 +44,23 @@ class SwitchService {
     });
   }
 
+  search(searchCont){
+
+    return new Promise((resolve, reject) => {
+
+      $.get({
+        url: AppConfig.backendServer+'/rest/switch/public/' + searchCont
+      })
+      resolve()
+      .fail((error) => {
+        window.sessionStorage.removeItem('searchCont');
+        $.ajaxSetup({
+          beforeSend: (xhr) => {}
+        });
+        reject(error);
+      });
+
+    });
 /*createComment(postid, comment) {
     return $.ajax({
       url: AppConfig.backendServer+'/rest/post/' + postid + '/comment',
