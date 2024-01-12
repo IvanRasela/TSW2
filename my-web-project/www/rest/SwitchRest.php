@@ -32,9 +32,10 @@ class SwitchRest extends BaseRest {
 
 	}
 
-	public function getSwitches() {
+	public function getSwitches($user) {
 
-		$switchs = $this->SwitchsMapper->findAll();
+		
+		$switchs = $this->SwitchsMapper->findAll($user);
 		if($switchs==NULL){
 			header($_SERVER['SERVER_PROTOCOL'].' 400 NotFound');
 		}else{
@@ -54,6 +55,33 @@ class SwitchRest extends BaseRest {
 		}
 		
 	}
+
+	public function getSuscribers($user) {
+
+		
+		$switchs = $this->SwitchsMapper->findAllSuscribers($user);
+		if($switchs==NULL){
+			header($_SERVER['SERVER_PROTOCOL'].' 400 NotFound');
+		}else{
+			$switchs_array = array();
+			
+			foreach ($switchs as $switch) {
+				array_push($switchs_array, array(
+					"SwitchName" => $switch->getSwitchName(),
+					"Public_UUID" => $switch->getPublic_UUID(),
+					"Private_UUID" =>$switch->getPrivate_UUID(),
+					"AliasUser" =>$switch->getAliasUser()->getAlias()
+				));
+			}
+			header($_SERVER['SERVER_PROTOCOL'].' 200 Ok');
+			header('Content-Type: application/json');
+			echo(json_encode($switchs_array));
+		}
+		
+	}
+
+
+
 
 
 	public function getSwitchsByPublic($uuid) {
@@ -91,36 +119,24 @@ class SwitchRest extends BaseRest {
 		echo(json_encode($switch));
 	}
 
-	public function getSwitchsSuscribe() {
-		try{
-
-			$currentUser = parent::authenticateUser();
-			$switchs = $this->SwitchsMapper->findIfSuscribe($currentUser);
-
+	public function getSwitchsSuscribe($user) {
+		$switchs = $this->SwitchsMapper->findIfSuscribe($user);
+		if($switchs==NULL){
+			header($_SERVER['SERVER_PROTOCOL'].' 400 NotFound');
+		}else{
 			$switchs_array = array();
-			foreach($switchs as $switch) {
+			
+			foreach ($switchs as $switch) {
 				array_push($switchs_array, array(
 					"SwitchName" => $switch->getSwitchName(),
 					"Public_UUID" => $switch->getPublic_UUID(),
+					"Private_UUID" => $switch->getPrivate_UUID(),
+					"AliasUser" =>$switch->getAliasUser()
 				));
 			}
-
-			if($switchs_array == NULL){
-				header($_SERVER['SERVER_PROTOCOL'].' 404 Not found');
-				header('Content-Type: application/json');
-				echo(json_encode($e->getErrors()));
-			}
-
 			header($_SERVER['SERVER_PROTOCOL'].' 200 Ok');
 			header('Content-Type: application/json');
 			echo(json_encode($switchs_array));
-
-
-		}catch (ValidationException $e) {
-			http_response_code(400);
-			header('Content-Type: application/json');
-			error_log("ValidationException: " . json_encode($e->getErrors()));
-			echo(json_encode($e->getErrors()));
 		}
 	}
 
@@ -244,10 +260,10 @@ class SwitchRest extends BaseRest {
 // URI-MAPPING for this Rest endpoint
 $switchRest = new SwitchRest();
 URIDispatcher::getInstance()
-->map("GET",	"/switch", array($switchRest,"getSwitches"))
+->map("GET",	"/switch/$1", array($switchRest,"getSwitches"))
 ->map("GET",	"/switch/public/$1", array($switchRest,"getSwitchsByPublic"))
 ->map("GET",	"/switch/private/$1", array($switchRest,"getSwitchsByPrivate"))
-->map("GET",	"/switch/suscribers", array($switchRest,"getSwitchsSuscribe"))//revisar pq en switchservice se le pasa la uuid
+->map("GET",	"/switch/suscribe/$1", array($switchRest,"getSwitchsSuscribe"))//revisar pq en switchservice se le pasa la uuid
 ->map("POST", "/switch/new/$1", array($switchRest,"createSwitch"))//revisar en el service
 ->map("DELETE", "/switch/del/$1", array($switchRest,"deleteSwitch"))
 ->map("GET", "/switch/all", array($switchRest,"findAllSwitches"));//quitar esta que es para comprobar solo
