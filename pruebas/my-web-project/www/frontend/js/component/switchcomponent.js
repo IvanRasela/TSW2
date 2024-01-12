@@ -21,7 +21,7 @@ class SwitchComponent extends Fronty.ModelComponent {
         this.switchModel.setSwitches(
           // create a Fronty.Model for each item retrieved from the backend
           data.map(
-            (item) => new SwitchModel(item.switchName, item.Public_UUID, item.AliasUser, item.Descriptionswitch)
+            (item) => new SwitchModel(item.SwitchName, item.Public_UUID, item.AliasUser, item.Descriptionswitch)
         ));
       });
     }
