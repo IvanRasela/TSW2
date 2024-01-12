@@ -50,7 +50,23 @@ class SwitchsMapper {
 		return $switches;
 	}
 	
-	public function findIfSuscribe($user) {
+	public function findAllSuscribers($user) {
+		$stmt = $this->db->prepare("SELECT * FROM Suscriptor WHERE Suscriptor.AliasUser=?");
+		$stmt->execute(array($user));
+		$suscribers_db = $stmt->fetchAll(PDO::FETCH_ASSOC);
+	
+		$suscribers = array();
+		
+		foreach ($suscribers_db as $switchData) {
+			$sw = $this->findById($switchData["Public_UUID"]);
+			$alias = new User($sw["AliasUser"]);
+			array_push($suscribers, new Switchs($sw["SwitchName"], $sw["Public_UUID"], $alias));
+		}
+	
+		return $suscribers;
+	}
+
+	/*public function findIfSuscribe($user) {
 		$stmt = $this->db->prepare("SELECT * FROM Suscriptor WHERE Suscriptor.SuscriptorAlias=?");
 		$stmt->execute(array($user));
 		$switchs_db = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -72,7 +88,7 @@ class SwitchsMapper {
 		}
 	
 		return $switches;
-	}
+	}*/
 
 	/**
 	* Loads a Switch from the database given its id
@@ -84,23 +100,20 @@ class SwitchsMapper {
 	* if the Switch is not found
 	*/
 	public function findById($publicuuid){
-		$stmt = $this->db->prepare("SELECT * FROM Switchs WHERE Public_UUID=?");
+		$stmt = $this->db->prepare("SELECT * FROM Switchs WHERE Switchs.Public_UUID=?");
 		$stmt->execute(array($publicuuid));
 		$switchs = $stmt->fetch(PDO::FETCH_ASSOC);
-
 		if($switchs != null) {
-			return new Switchs(
-			$switchs["SwitchName"],
-			$switchs["Private_UUID"],
-			$switchs["Public_UUID"],
-			new User($switchs["AliasUser"]),
-			$switchs["DescriptionSwitch"],
-			$switchs["LastTimePowerOn"],
-			$switchs["MaxTimePowerOn"]);
+			return $switchs;
 		} else {
 			return NULL;
 		}
 	}
+
+
+
+
+
 
 	public function findByIdPrivate($uuid){
 		$stmt = $this->db->prepare("SELECT * FROM Switchs WHERE Private_UUID=?");
@@ -108,7 +121,7 @@ class SwitchsMapper {
 		$switchs = $stmt->fetch(PDO::FETCH_ASSOC);
 
 		if($switchs != null) {
-			return new Switchs(
+			$switch = new Switchs(
 			$switchs["SwitchName"],
 			$switchs["Private_UUID"],
 			$switchs["Public_UUID"],
@@ -119,6 +132,7 @@ class SwitchsMapper {
 		} else {
 			return NULL;
 		}
+		return $switch;
 	}
 		/**
 		* Saves a Switch into the database

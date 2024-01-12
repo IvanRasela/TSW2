@@ -34,7 +34,6 @@ class SwitchRest extends BaseRest {
 
 	public function getSwitches($user) {
 
-		
 		$switchs = $this->SwitchsMapper->findAll($user);
 		if($switchs==NULL){
 			header($_SERVER['SERVER_PROTOCOL'].' 400 NotFound');
@@ -56,9 +55,10 @@ class SwitchRest extends BaseRest {
 		
 	}
 
+
+	
 	public function getSuscribers($user) {
 
-		
 		$switchs = $this->SwitchsMapper->findAllSuscribers($user);
 		if($switchs==NULL){
 			header($_SERVER['SERVER_PROTOCOL'].' 400 NotFound');
@@ -69,19 +69,30 @@ class SwitchRest extends BaseRest {
 				array_push($switchs_array, array(
 					"SwitchName" => $switch->getSwitchName(),
 					"Public_UUID" => $switch->getPublic_UUID(),
-					"Private_UUID" =>$switch->getPrivate_UUID(),
-					"AliasUser" =>$switch->getAliasUser()->getAlias()
+					"AliasUser" =>$switch->getAliasUser()
 				));
 			}
 			header($_SERVER['SERVER_PROTOCOL'].' 200 Ok');
 			header('Content-Type: application/json');
 			echo(json_encode($switchs_array));
+			//echo(json_encode($switchs));
+			
 		}
 		
 	}
 
+	//función de prueba 
+	public function getSwitchById($uuid) {
 
-
+		$switch = $this->SwitchsMapper->findById($uuid);
+		if($switch==NULL){
+			header($_SERVER['SERVER_PROTOCOL'].' 400 NotFound');
+		}else{
+			header($_SERVER['SERVER_PROTOCOL'].' 201 Ok');
+			header('Content-Type: application/json');
+			echo(json_encode($switch));
+		}
+	}
 
 
 	public function getSwitchsByPublic($uuid) {
@@ -261,6 +272,8 @@ class SwitchRest extends BaseRest {
 $switchRest = new SwitchRest();
 URIDispatcher::getInstance()
 ->map("GET",	"/switch/$1", array($switchRest,"getSwitches"))
+->map("GET",	"/switch/suscribers/$1", array($switchRest,"getSuscribers"))
+->map("GET",	"/switch/findByUUID/$1", array($switchRest,"getSwitchById"))//DE PRUEBA
 ->map("GET",	"/switch/public/$1", array($switchRest,"getSwitchsByPublic"))
 ->map("GET",	"/switch/private/$1", array($switchRest,"getSwitchsByPrivate"))
 ->map("GET",	"/switch/suscribe/$1", array($switchRest,"getSwitchsSuscribe"))//revisar pq en switchservice se le pasa la uuid
