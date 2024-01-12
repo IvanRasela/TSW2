@@ -11,21 +11,23 @@ class SwitchService {
     return $.get(AppConfig.backendServer+'/rest/switch/suscribe/' + user);
   }
 
-  getSwitchesByPublic(uuid) {
+  getSwitchesByUUID(uuid) {
     return $.get(AppConfig.backendServer+'/rest/switch/public/' + uuid);
   }
+
   getSwitchesByPrivate(uuid) {
     return $.get(AppConfig.backendServer+'/rest/switch/private/' + uuid);
   }
 
-  createSwitch(switch_r) {
+  addSwitch(switch_r) {
     return $.ajax({
       url: AppConfig.backendServer+'/rest/switch/new/',
       method: 'POST',
-      data: JSON.stringify(post),
+      data: JSON.stringify(switch_r),
       contentType: 'application/json'
     });
   }
+
   deleteSwitch(uuid) {
     return $.ajax({
       url: AppConfig.backendServer+'/rest/switch/del/' + uuid,

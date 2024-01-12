@@ -95,10 +95,10 @@ class SwitchRest extends BaseRest {
 	}
 
 
-	public function getSwitchsByPublic($uuid) {
+	public function getSwitchsByUUID($uuid) {
 		try{
 			$switch = $this->SwitchsMapper->findById($uuid);
-		
+			
 			if($switch == NULL){
 				header($_SERVER['SERVER_PROTOCOL'].' 204 Not found');
 				header('Content-Type: application/json');
@@ -153,15 +153,19 @@ class SwitchRest extends BaseRest {
 
 	public function createSwitch($data) {
 		try {
-			$currentUser = parent::authenticateUser();
+			
 			$switch = new Switchs();
 
-			if (isset($data->title) && isset($data->content)) {
-				$switch->setTitle($data->title);
-				$switch->setDescriptionSwitch($data->content);
-
-				$switch->setAliasUser($currentUser);
+			if (isset($data->AliasUser) && isset($data->DescriptionSwitch)&& isset($data->SwitchName)) {
+				$switch->setAliasUser($data->AliasUser);
+				$switch->setDescriptionSwitch($data->DescriptionSwitch);
+				$switch->setSwitchName($data->SwitchName);
 			}
+			if(data->MaxTimePowerOn == 0){
+				data->MaxTimePowerOn = 3600;
+			}
+			$switch->setMaxTimePowerOn($data->MaxTimePowerOn);
+
 			$switch->checkIsValidForCreate(); // if it fails, ValidationException
 
 			$switchId = $this->SwitchsMapper->save($switch);
@@ -274,8 +278,8 @@ URIDispatcher::getInstance()
 ->map("GET",	"/switch/$1", array($switchRest,"getSwitches"))
 ->map("GET",	"/switch/suscribers/$1", array($switchRest,"getSuscribers"))
 ->map("GET",	"/switch/findByUUID/$1", array($switchRest,"getSwitchById"))//DE PRUEBA
-->map("GET",	"/switch/public/$1", array($switchRest,"getSwitchsByPublic"))
-->map("GET",	"/switch/private/$1", array($switchRest,"getSwitchsByPrivate"))
+->map("GET",	"/switch/public/$1", array($switchRest,"getSwitchsByUUID"))
+->map("GET",	"/switch/private/$1", array($switchRest,"getSwitchsByPrivate"))//No se usa
 ->map("GET",	"/switch/suscribe/$1", array($switchRest,"getSwitchsSuscribe"))//revisar pq en switchservice se le pasa la uuid
 ->map("POST", "/switch/new/$1", array($switchRest,"createSwitch"))//revisar en el service
 ->map("DELETE", "/switch/del/$1", array($switchRest,"deleteSwitch"))

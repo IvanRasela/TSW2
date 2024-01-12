@@ -22,9 +22,9 @@ class MainComponent extends Fronty.RouterComponent {
         component: new SwitchViewComponent(this.switchesModel, this.userModel, this),
         title: 'Switch'
       },
-      'edit-switch': {
+      'search-switch': {
         component: new SwitchEditComponent(this.switchesModel, this.userModel, this),
-        title: 'Edit Switch'
+        title: 'Search Switch'
       },
       'add-switch': {
         component: new SwitchAddComponent(this.switchesModel, this.userModel, this),

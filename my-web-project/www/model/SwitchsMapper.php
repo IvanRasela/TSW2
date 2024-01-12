@@ -99,21 +99,25 @@ class SwitchsMapper {
 	* @return Switch The switchs instances (without comments). NULL
 	* if the Switch is not found
 	*/
-	public function findById($publicuuid){
+	public function findById($uuid){
 		$stmt = $this->db->prepare("SELECT * FROM Switchs WHERE Switchs.Public_UUID=?");
-		$stmt->execute(array($publicuuid));
+		$stmt->execute(array($uuid));
 		$switchs = $stmt->fetch(PDO::FETCH_ASSOC);
+		if($switchs != null) {
+			return $switchs;
+		} else {
+			$stmt = $this->db->prepare("SELECT * FROM Switchs WHERE Switchs.Private_UUID=?");
+			$stmt->execute(array($uuid));
+			$switchs = $stmt->fetch(PDO::FETCH_ASSOC);
+		}
+
 		if($switchs != null) {
 			return $switchs;
 		} else {
 			return NULL;
 		}
+
 	}
-
-
-
-
-
 
 	public function findByIdPrivate($uuid){
 		$stmt = $this->db->prepare("SELECT * FROM Switchs WHERE Private_UUID=?");
@@ -142,6 +146,8 @@ class SwitchsMapper {
 		* @return int The mew switch id
 		*/
 		public function save(Switchs $switchs) {
+			$switchs->setPublic_UUID()=this.createUUID();
+			$switchs->setPrivate_UUID()=this.createUUID();
 			$stmt = $this->db->prepare("INSERT INTO Switchs(SwitchName, Private_UUID, Public_UUID, LastTimePowerOn, MaxTimePowerOn, DescriptionSwitch, AliasUser) values (?,?,?,?,?,?,?)");
 			$stmt->execute(array($switchs->getSwitchName(), $switchs->getPrivate_UUID(), $switchs->getPublic_UUID(),$switchs->getLastTimePowerOn(),$switchs->getMaxTimePowerOn(),$switchs->getDescriptionSwitch(),$switchs->getAliasUser()->getAlias()));
 			return $this->db->lastInsertId();

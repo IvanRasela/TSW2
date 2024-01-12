@@ -47,12 +47,12 @@ function loadTextFile(url) {
         Handlebars.templates.login = Handlebars.compile(source)),
       loadTextFile('templates/components/switches-table.hbs').then((source) =>
         Handlebars.templates.switchestable = Handlebars.compile(source)),
-      loadTextFile('templates/components/switch-edit.hbs').then((source) =>
-        Handlebars.templates.switchedit = Handlebars.compile(source)),
-      loadTextFile('templates/components/switch-view.hbs').then((source) =>
-        Handlebars.templates.switchview = Handlebars.compile(source)),
-      loadTextFile('templates/components/switch-row.hbs').then((source) =>
-        Handlebars.templates.switchrow = Handlebars.compile(source))
+      loadTextFile('templates/components/switches-edit.hbs').then((source) =>
+        Handlebars.templates.switchesedit = Handlebars.compile(source)),
+      loadTextFile('templates/components/switches-view.hbs').then((source) =>
+        Handlebars.templates.switchesview = Handlebars.compile(source)),
+      loadTextFile('templates/components/switches-row.hbs').then((source) =>
+        Handlebars.templates.switchesrow = Handlebars.compile(source))
     ])
     //todas las promesas se cumplen entonces se ejecuta la función de inicio.
     .then(() => {

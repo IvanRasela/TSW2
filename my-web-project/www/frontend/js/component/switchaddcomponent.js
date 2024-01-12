@@ -11,7 +11,9 @@ class SwitchAddComponent extends Fronty.ModelComponent {
   
       this.addEventListener('click', '#savebutton', () => {
         var newSwitch= {};
-        newSwitch.Descriptionswitch = $('#description').val();
+        newSwitch.SwitchName = $('#SwitchName').val();
+        newSwitch.DescriptionSwitch = $('#description').val();
+        newSwitch.MaxTimePowerOn = $('#maxTime').val();
         // Crear UUIDs y demas
         newSwitch.AliasUser = this.userModel.currentUser;
         this.switchService.addSwitch(newSwitch)
