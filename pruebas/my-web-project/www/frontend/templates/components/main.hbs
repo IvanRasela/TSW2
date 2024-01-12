@@ -1,0 +1,27 @@
+<div class="container">
+<header>
+  <img class="IamOntitle" src="../../../img/IAmOnLogo.png">
+  <nav id="menu" >
+    <ul>
+      {{#if user.isLogged}}
+        <li><a href="#switches">{{i18n 'Switches'}}</a></li>
+      {{else}}
+        <li id="userListBar">
+          <div id="userbar">Loading...</div>
+        </li>
+      {{/if}}
+    </ul>
+  </nav>
+</header>
+
+<!-- router contents -->
+
+<main id="maincontent">
+  <h1 id="">{{i18n 'Welcome'}}</h1>
+</main>
+
+
+<footer>
+  <div id="languagecontrol">Loading...</div>
+</footer>
+</div>
