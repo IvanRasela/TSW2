@@ -38,6 +38,18 @@ class SwitchComponent extends Fronty.ModelComponent {
       });
     }
 
+    /*updateSwitchSearched() {
+      
+      this.switchService.getSwitchesByPublic(window.sessionStorage.getItem("login")).then((data1) => {
+  
+        this.switchModel.setSwitchesSuscribe(
+          // create a Fronty.Model for each item retrieved from the backend
+          data1.map(
+            (item) => new SwitchModel(item.SwitchName, item.AliasUser, item.Public_UUID)
+        ));
+      });
+    }*/
+
 
     // Override
     createChildModelComponent(className, element, id, modelItem) {
@@ -74,6 +86,41 @@ class SwitchComponent extends Fronty.ModelComponent {
         var switchId = event.target.getAttribute('item');
         this.router.goToPage('edit-switch?id=' + switchId);
       });
+    }
+  
+  }
+
+
+  class SwitchViewComponent extends Fronty.ModelComponent {
+    constructor(switchModel, userModel, router) {
+        super(Handlebars.templates.switchview, switchModel);
+  
+        this.switchModel = switchModel; // switches
+        this.userModel = userModel; // global
+        this.addModel('user', userModel);
+        this.router = router;
+  
+        
+        this.switchesService = new SwitchService();
+        
+
+    }
+    
+    onStart() {
+        var selectedId = this.router.getRouteQueryParam('id');
+        this.loadSwitch(selectedId);
+
+    }
+  
+    loadSwitch(switchId) {
+      this.switchesService.getSwitchesByPublic(switchId).then((data) => {
+  
+          this.switchModel.setSelectedSwitch(
+              data.map(
+                (item) => new SwitchModel(item.SwitchName, item.Public_UUID, item.AliasUser)
+            ));
+      })
+      
     }
   
   }

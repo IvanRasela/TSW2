@@ -1,5 +1,22 @@
 <div>
-  <h2>{{selectedSwitch.title}}</h2> {{i18n 'by'}} {{selectedSwitch.author_id}}
   <div>{{selectedSwitch.content}}</div>
-  <input type="button" id="backbutton" value="{{i18n 'Back'}}" onclick="window.location.href='#switches'">
+  <table border="1">
+      <thead>
+        <tr>
+          <th>{{i18n 'SwitchName'}}</th>
+          <th>{{i18n 'Public_UUID'}}</th>
+          <th>{{i18n 'AliasUser'}}</th>
+        </tr>
+      </thead>
+      <tbody>
+        {{#each switchesSuscribe}}
+          <tr fronty-component="SwitchViewComponent" key="{{id}}" model="selectedSwitch" id="item-{{id}}"></tr>
+          <td>{{SwitchName}}</td>
+          <td>{{Public_UUID}}</td>
+          <td>{{AliasUser}}</td>
+        {{/each}}
+      </tbody>
+    </table>
+    <input type="button" id="backbutton" value="{{i18n 'Back'}}" onclick="window.location.href='#switches'">
 </div>
+

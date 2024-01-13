@@ -10,7 +10,7 @@ class SwitchViewComponent extends Fronty.ModelComponent {
       // Corregir el nombre del servicio
       this.switchesService = new SwitchService();
 
-      this.addEventListener('click', '#createswitch', () => {
+      /*this.addEventListener('click', '#createswitch', () => {
           var selectedId = this.router.getRouteQueryParam('id');//id?
           this.switchesService.createSwitch(selectedId, {
                   content: $('#switchcontent').val()
@@ -28,7 +28,8 @@ class SwitchViewComponent extends Fronty.ModelComponent {
                       alert('an error has occurred during request: ' + statusText + '.' + xhr.responseText);
                   }
               });
-      });
+      });*/
+      
   }
 
   onStart() {
@@ -36,12 +37,16 @@ class SwitchViewComponent extends Fronty.ModelComponent {
       this.loadSwitch(selectedId);
   }
 
+
   loadSwitch(switchId) {
-      if (switchId != null) {
-          this.switchesService.getSwitchesByPublic(switchId)
-              .then((switch_r) => {
-                  this.switchModel.setSelectedSwitches(switch_r);
-              });
-      }
+    this.switchesService.getSwitchesByPublic(switchId).then((data) => {
+
+        this.switchModel.setSelectedSwitch(
+            data.map(
+              (item) => new SwitchModel(item.SwitchName, item.Public_UUID, item.AliasUser)
+          ));
+        
+    })
   }
+
 }

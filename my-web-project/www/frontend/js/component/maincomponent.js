@@ -66,7 +66,7 @@ class MainComponent extends Fronty.RouterComponent {
 
     userbar.addEventListener('click', '#searchbutton', (event) => {
       // contenido del input text: document.getElementById('searchCont'))
-      alert ("Buscando swith con clave " + $('#searchCont').val());
+      //alert ("Buscando swith con clave " + $('#searchCont').val());
       this.switchService.search($('#searchCont').val());
     });
 

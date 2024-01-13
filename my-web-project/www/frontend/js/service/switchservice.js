@@ -11,7 +11,7 @@ class SwitchService {
     return $.get(AppConfig.backendServer+'/rest/switch/suscribers/' + user);
   }
 
-  getSwitchesByPublic(uuid) {//getSwitchesByUUID
+  getSwitchesByPublic(uuid) {
     return $.get(AppConfig.backendServer+'/rest/switch/public/' + uuid);
   }
 
