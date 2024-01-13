@@ -32,6 +32,8 @@ class SwitchsMapper {
 	* @return mixed Array of switchs instances (without comments)
 	*/
 
+	
+
 	//"error": "array_push(): Argument #1 ($array) must be of type array, null given"
 	public function findAll($user) {
 		//$stmt = $this->db->query("SELECT * FROM Switchs");
@@ -147,12 +149,24 @@ class SwitchsMapper {
 		* @throws PDOException if a database error occurs
 		* @return int The mew switch id
 		*/
-		public function save(Switchs $switchs) {
-			$switchs->setPublic_UUID(this.createUUID());
-			$switchs->setPrivate_UUID(this.createUUID());
-			$stmt = $this->db->prepare("INSERT INTO Switchs(SwitchName, Private_UUID, Public_UUID, LastTimePowerOn, MaxTimePowerOn, DescriptionSwitch, AliasUser) values (?,?,?,?,?,?,?)");
-			$stmt->execute(array($switchs->getSwitchName(), $switchs->getPrivate_UUID(), $switchs->getPublic_UUID(),$switchs->getLastTimePowerOn(),$switchs->getMaxTimePowerOn(),$switchs->getDescriptionSwitch(),$switchs->getAliasUser()->getAlias()));
-			return $this->db->lastInsertId();
+		public function save(Switchs $switch) {
+			$switch->setPublic_UUID($this->generatePublic_UUID($switch->getAliasUser()->getAlias()));
+			$switch->setPrivate_UUID($this->generatePrivate_UUID($switch->getAliasUser()->getAlias()));
+			$stmt = $this->db->prepare("INSERT INTO Switchs values (?,?,?,?,?,?,?)");
+			$stmt->execute(array($switch->getSwitchName(), $switch->getPrivate_UUID(), $switch->getPublic_UUID(),$switch->getMaxTimePowerOn(),$switch->getMaxTimePowerOn(),$switch->getDescriptionSwitch(),$switch->getAliasUser()->getAlias()));
+			if ($result) {
+				echo "\Switch guardado correctamente en la base de datos.";
+			} else {
+				echo "Error al guardar el switch en la base de datos.";
+			}
+		}
+
+		public function generatePublic_UUID($alias){
+			//Crea una clave privada, comrpueba si está en la base de datos, si está vuelve a generar.
+			return '9e8a5c4d-68b3-4127-9df7-1a6e3f85a6d2';
+		}
+		public function generatePrivate_UUID($alias){
+			return '3a1f9d57-8bf1-4e02-9e76-cdc25f1272a4';
 		}
 
 		public function suscribeTo(Switchs $switch) {

@@ -32,7 +32,7 @@ class UserMapper {
 	* @return void
 	*/
 	public function save($user) {
-		$stmt = $this->db->prepare("INSERT INTO usuario values (?,?,?)");
+		$stmt = $this->db->prepare("INSERT INTO Usuario values (?,?,?)");
 		$result = $stmt->execute(array($user->getAlias(), $user->getPasswd(), $user->getEmail()));
 		if ($result) {
 			echo "\nUsuario guardado correctamente en la base de datos.";

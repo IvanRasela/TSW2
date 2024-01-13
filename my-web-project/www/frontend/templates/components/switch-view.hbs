@@ -1,5 +1,4 @@
 <div>
-  <div>{{selectedSwitch.content}}</div>
   <table border="1">
       <thead>
         <tr>
@@ -9,12 +8,9 @@
         </tr>
       </thead>
       <tbody>
-        {{#each switchesSuscribe}}
-          <tr fronty-component="SwitchViewComponent" key="{{id}}" model="selectedSwitch" id="item-{{id}}"></tr>
-          <td>{{SwitchName}}</td>
-          <td>{{Public_UUID}}</td>
-          <td>{{AliasUser}}</td>
-        {{/each}}
+        <td>{{selectedSwitch.SwitchName}}</td>
+        <td>{{selectedSwitch.Public_UUID}}</td>
+        <td>{{selectedSwitch.AliasUser}}</td>
       </tbody>
     </table>
     <input type="button" id="backbutton" value="{{i18n 'Back'}}" onclick="window.location.href='#switches'">

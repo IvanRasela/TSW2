@@ -137,31 +137,72 @@ class SwitchRest extends BaseRest {
 	}
 
 	public function createSwitch($data) {
+
+		//$currentUser = parent::authenticateUser();
+		$switch = new Switchs();
+
+		if (isset($data->SwitchName)) {
+			//$switch->setAliasUser($currentUser->getAlias());
+			$switch->setAliasUser(new User("JoaKing","JoaKing",NULL));
+			$switch->setDescriptionSwitch($data->DescriptionSwitch);
+			$switch->setSwitchName($data->SwitchName);
+			$switch->setMaxTimePowerOn($data->MaxTimePowerOn);
+			$switch->setMaxTimePowerOn($data->LastTimePowerOn);
+			//Se generan las claves al guardar en la base de datos. 
+		}
+
 		try {
 			
-			$switch = new Switchs();
+			$switch->checkIsValidForCreate(); 
 
-			if (isset($data->AliasUser) && isset($data->DescriptionSwitch)&& isset($data->SwitchName)) {
-				$switch->setAliasUser($data->AliasUser);
-				$switch->setDescriptionSwitch($data->DescriptionSwitch);
-				$switch->setSwitchName($data->SwitchName);
-			}
-			/*if(data->MaxTimePowerOn == 0){
-				data->MaxTimePowerOn = 3600;
-			}
-			$switch->setMaxTimePowerOn($data->MaxTimePowerOn);*/
+			$this->SwitchsMapper->save($switch);
 
-			$switch->checkIsValidForCreate(); // if it fails, ValidationException
-
-			$switchId = $this->SwitchsMapper->save($switch);
-
-			header($_SERVER['SERVER_PROTOCOL'].' 201 Created');
-			header('Location: '.$_SERVER['REQUEST_URI']."/".$switchId);
+			header($_SERVER['SERVER_PROTOCOL'].' 200 OK');
+			//
 			header('Content-Type: application/json');
 			echo(json_encode(array(
-				"id"=>$switchId,
-				"aliasuser"=>$switch->getAliasUser(),
-				"description" => $switch->getDescriptionSwitch()
+				"SwitchName" => $switch->getSwitchName(),
+				"Public_UUID" => $switch->getPublic_UUID(),
+				"AliasUser" => $switch->getAliasUser(),
+				"DescriptionSwitch" =>$switch->getDescriptionSwitch(),
+				"MaxTimePowerOn" =>$switch->getMaxTimePowerOn(),
+				"Private_UUID" =>$switch->getPrivate_UUID(),
+				"Public_UUID" =>$switch->getPublic_UUID()
+			)));
+
+		} catch (ValidationException $e) {
+			header($_SERVER['SERVER_PROTOCOL'].' 400 Bad request');
+			header('Content-Type: application/json');
+			echo(json_encode($e->getErrors()));
+		}
+	}
+
+	public function createPost($data) {
+		$currentUser = parent::authenticateUser();
+		$post = new Post();
+
+		if (isset($data->title) && isset($data->content)) {
+			$post->setTitle($data->title);
+			$post->setContent($data->content);
+
+			$post->setAuthor($currentUser);
+		}
+
+		try {
+			// validate Post object
+			$post->checkIsValidForCreate(); // if it fails, ValidationException
+
+			// save the Post object into the database
+			$postId = $this->postMapper->save($post);
+
+			// response OK. Also send post in content
+			header($_SERVER['SERVER_PROTOCOL'].' 201 Created');
+			header('Location: '.$_SERVER['REQUEST_URI']."/".$postId);
+			header('Content-Type: application/json');
+			echo(json_encode(array(
+				"id"=>$postId,
+				"title"=>$post->getTitle(),
+				"content" => $post->getContent()
 			)));
 
 		} catch (ValidationException $e) {
@@ -265,6 +306,6 @@ URIDispatcher::getInstance()
 ->map("GET",	"/switch/public/$1", array($switchRest,"getSwitchsByUUID"))
 ->map("GET",	"/switch/private/$1", array($switchRest,"getSwitchsByPrivate"))//No se usa
 ->map("GET",	"/switch/suscribe/$1", array($switchRest,"getSwitchsSuscribe"))//revisar pq en switchservice se le pasa la uuid
-->map("POST", "/switch/new/$1", array($switchRest,"createSwitch"))//revisar en el service
+->map("POST", "/switch/new", array($switchRest,"createSwitch"))//revisar en el service
 ->map("DELETE", "/switch/del/$1", array($switchRest,"deleteSwitch"))
 ->map("GET", "/switch/all", array($switchRest,"findAllSwitches"));//quitar esta que es para comprobar solo
