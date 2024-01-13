@@ -59,7 +59,16 @@ class SwitchsMapper {
 		
 		foreach ($suscribers_db as $switchData) {
 			$sw = $this->findById($switchData["Public_UUID"]);
+			//$alias = new User($sw["AliasUser"]);
 			$alias = new User($sw["AliasUser"]);
+			$switch = new Switchs(
+				$sw["SwitchName"],
+				$sw["Private_UUID"],
+				$sw["Public_UUID"],
+				$alias,
+				$sw["DescriptionSwitch"],
+				$sw["LastTimePowerOn"],
+				$sw["MaxTimePowerOn"]);
 			array_push($suscribers, $sw);
 		}
 	
@@ -80,7 +89,7 @@ class SwitchsMapper {
 				$switch = new Switchs(
 					$sw["SwitchName"],
 					$sw["Private_UUID"],
-					$sw["Public_UUID"],
+					$switchData["Public_UUID"],
 					$alias,
 					$sw["DescriptionSwitch"],
 					$sw["LastTimePowerOn"],

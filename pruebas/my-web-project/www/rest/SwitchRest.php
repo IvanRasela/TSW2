@@ -59,7 +59,7 @@ class SwitchRest extends BaseRest {
 	
 	public function getSuscribers($user) {
 
-		$switchs = $this->SwitchsMapper->findAllSuscribers($user);
+		$switchs = $this->SwitchsMapper->findIfSuscribe($user);
 		if($switchs==NULL){
 			header($_SERVER['SERVER_PROTOCOL'].' 400 NotFound');
 		}else{
@@ -69,7 +69,7 @@ class SwitchRest extends BaseRest {
 				array_push($switchs_array, array(
 					"SwitchName" => $switch->getSwitchName(),
 					"Public_UUID" => $switch->getPublic_UUID(),
-					"AliasUser" =>$switch->getAliasUser()
+					"AliasUser" =>$switch->getAliasUser()->getAlias()
 				));
 			}
 			header($_SERVER['SERVER_PROTOCOL'].' 200 Ok');

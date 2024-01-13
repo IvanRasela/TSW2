@@ -17,7 +17,7 @@ class SwitchComponent extends Fronty.ModelComponent {
     }
   
     updateSwitch() {
-      this.switchService.getSwitches(this.userModel.currentUser).then((data) => {
+      this.switchService.getSwitches(window.sessionStorage.getItem("login")).then((data) => {
   
         this.switchModel.setSwitches(
           // create a Fronty.Model for each item retrieved from the backend
@@ -28,12 +28,12 @@ class SwitchComponent extends Fronty.ModelComponent {
     }
     updateSwitchSuscribe() {
       
-      this.switchService.getSwitchesSuscribe(this.userModel.currentUser).then((data) => {
+      this.switchService.getSwitchesSuscribe(window.sessionStorage.getItem("login")).then((data1) => {
   
         this.switchModel.setSwitchesSuscribe(
           // create a Fronty.Model for each item retrieved from the backend
-          data.map(
-            (item) => new SwitchModel(item.SwitchName, item.Public_UUID)
+          data1.map(
+            (item) => new SwitchModel(item.SwitchName, item.AliasUser, item.Public_UUID)
         ));
       });
     }
