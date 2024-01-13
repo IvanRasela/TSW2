@@ -1,4 +1,3 @@
-
 <?php
 //file: /core/I18n.php
 

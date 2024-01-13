@@ -2,7 +2,7 @@
 .container{
 	display: grid;
 	height:100vh;
-	grid-template-columns: 1fr;
+	grid-template-columns: 1fr 1fr;
 	grid-template-rows: 1fr 3fr 0.5fr;
 	grid-template-areas:
 		"header header"
@@ -13,12 +13,20 @@
 #maincontent{
 	display: grid;
 	grid-area:main;
-	grid-template-columns: 1fr 1fr; 
-    grid-template-rows: 0.05fr 2fr; 
 	grid-template-areas:
-		"search search"
         "switches suscribers";
+    grid-template-columns: 1fr 1fr; 
+    grid-template-rows: auto; 
 }
+
+#searchBox{
+	background-color:#2596be;
+	border-radius: 5px;
+	padding: 5px;
+	margin: 5px;
+}
+
+
 header{
 	background-color: #2596be;
 	grid-area: header;
@@ -69,9 +77,6 @@ li{
 	text-align: center;
 	align-items: center;
 }
-
-
-
 #switches-table{
 	grid-area:switches;
 	background-color: #2596be;
@@ -103,11 +108,18 @@ span{
 
 
 
+
+
 footer{
 	background-color: #2596be;
 	grid-area: footer;
 	border-radius: 5px;
 }
+
+
+
+
+
 
 
 @media only screen and (max-width:550px){
@@ -117,8 +129,8 @@ footer{
 		grid-template-areas: "header" "main" "main" "footer";
 	}
 	#maincontent {
-        grid-template-areas:"search" "switches" "suscribers";
+        grid-template-areas:"switches" "suscribers";
         grid-template-columns: 1fr; 
-        grid-template-rows: 0.05fr auto auto; 
+        grid-template-rows: auto auto; 
     }
 }

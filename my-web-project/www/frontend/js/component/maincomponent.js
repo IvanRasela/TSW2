@@ -12,6 +12,7 @@ class MainComponent extends Fronty.RouterComponent {
     this.userModel = new UserModel();
     this.switchesModel = new SwitchesModel();
     this.userService = new UserService();
+    this.switchService = new SwitchService();
 
     super.setRouterConfig({
     switches: {
@@ -21,10 +22,6 @@ class MainComponent extends Fronty.RouterComponent {
       'view-switch': {
         component: new SwitchViewComponent(this.switchesModel, this.userModel, this),
         title: 'Switch'
-      },
-      'search-switch': {
-        component: new SwitchEditComponent(this.switchesModel, this.userModel, this),
-        title: 'Search Switch'
       },
       'add-switch': {
         component: new SwitchAddComponent(this.switchesModel, this.userModel, this),
@@ -65,6 +62,12 @@ class MainComponent extends Fronty.RouterComponent {
     userbar.addEventListener('click', '#logoutbutton', () => {
       this.userModel.logout();
       this.userService.logout();
+    });
+
+    userbar.addEventListener('click', '#searchbutton', (event) => {
+      // contenido del input text: document.getElementById('searchCont'))
+      alert ("Buscando swith con clave " + $('#searchCont').val());
+      this.switchService.search($('#searchCont').val());
     });
 
     return userbar;

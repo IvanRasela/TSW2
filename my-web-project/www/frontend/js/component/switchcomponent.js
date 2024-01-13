@@ -13,40 +13,44 @@ class SwitchComponent extends Fronty.ModelComponent {
   
     onStart() {
       this.updateSwitch();
+      this.updateSwitchSuscribe();
     }
   
-    async updateSwitch() {
-      this.switchService.getSwitches(this.userModel.currentUser).then((data) => {
+    updateSwitch() {
+      this.switchService.getSwitches(window.sessionStorage.getItem("login")).then((data) => {
   
         this.switchModel.setSwitches(
           // create a Fronty.Model for each item retrieved from the backend
           data.map(
             (item) => new SwitchModel(item.SwitchName, item.Public_UUID, item.Private_UUID, item.AliasUser)
         ));
-      })
-
-      this.switchService.getSwitchesSuscribe(this.userModel.currentUser).then((data1) => {
+      });
+    }
+    updateSwitchSuscribe() {
+      
+      this.switchService.getSwitchesSuscribe(window.sessionStorage.getItem("login")).then((data1) => {
   
         this.switchModel.setSwitchesSuscribe(
           // create a Fronty.Model for each item retrieved from the backend
           data1.map(
-            (item) => SwitchModel(item.SwitchName, item.Public_UUID, item.Private_UUID, item.AliasUser)
+            (item) => new SwitchModel(item.SwitchName, item.AliasUser, item.Public_UUID)
         ));
       });
     }
 
-  
+
     // Override
     createChildModelComponent(className, element, id, modelItem) {
       return new SwitchRowComponent(modelItem, this.userModel, this.router, this);
     }
   }
   
+  
   class SwitchRowComponent extends Fronty.ModelComponent {
     constructor(switchModel, userModel, router, SwitchComponent) {
       super(Handlebars.templates.switchrow, switchModel, null, null);
       
-      this.switchComponent = SwitchComponent;
+      this.switchComponent = switchComponent;
       
       this.userModel = userModel;
       this.addModel('user', userModel); // a secondary model

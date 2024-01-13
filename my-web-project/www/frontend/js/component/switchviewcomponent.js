@@ -11,7 +11,7 @@ class SwitchViewComponent extends Fronty.ModelComponent {
       this.switchesService = new SwitchService();
 
       this.addEventListener('click', '#createswitch', () => {
-          var selectedId = this.router.getRouteQueryParam('id');
+          var selectedId = this.router.getRouteQueryParam('id');//id?
           this.switchesService.createSwitch(selectedId, {
                   content: $('#switchcontent').val()
               })

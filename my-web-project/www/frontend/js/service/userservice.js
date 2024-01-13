@@ -1,7 +1,3 @@
-
-
-//login--alias
-//pass--passwd
 class UserService {
   constructor() {
 

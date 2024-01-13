@@ -10,7 +10,7 @@ class SwitchEditComponent extends Fronty.ModelComponent {
 
     this.addEventListener('click', '#searchswitch', () => {
       this.switchesModel.selectedSwitch.Public_UUID = $('#uuid').val();
-      this.switchesService.getSwitchesByUUID(this.switchesModel.selectedSwitch.Public_UUID)
+      this.switchesService.getSwitchesByPublic(this.switchesModel.selectedSwitch.Public_UUID)
         .then(() => {
           this.switchesModel.set((model) => {
             model.errors = []
@@ -40,3 +40,4 @@ class SwitchEditComponent extends Fronty.ModelComponent {
     }
   }
 }
+

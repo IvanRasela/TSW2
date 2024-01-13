@@ -32,7 +32,7 @@ class UserMapper {
 	* @return void
 	*/
 	public function save($user) {
-		$stmt = $this->db->prepare("INSERT INTO Usuario values (?,?,?)");
+		$stmt = $this->db->prepare("INSERT INTO usuario values (?,?,?)");
 		$result = $stmt->execute(array($user->getAlias(), $user->getPasswd(), $user->getEmail()));
 		if ($result) {
 			echo "\nUsuario guardado correctamente en la base de datos.";
@@ -59,7 +59,7 @@ class UserMapper {
 	* @return boolean true if the username exists, false otherwise
 	*/
 	public function aliasExists($alias) {
-		$stmt = $this->db->prepare("SELECT count(alias) FROM Usuario where alias=?");
+		$stmt = $this->db->prepare("SELECT count(alias) FROM usuario where alias=?");
 		$stmt->execute(array($alias));
 
 		if ($stmt->fetchColumn() > 0) {
@@ -71,7 +71,7 @@ class UserMapper {
 	}
 
 	public function emailExists($email) {
-		$stmt = $this->db->prepare("SELECT count(email) FROM Usuario where email=?");
+		$stmt = $this->db->prepare("SELECT count(email) FROM usuario where email=?");
 		$stmt->execute(array($email));
 
 		if ($stmt->fetchColumn() > 0) {
@@ -91,7 +91,7 @@ class UserMapper {
 	* @return boolean true the username/passwrod exists, false otherwise.
 	*/
 	public function isValidUser($alias, $passwd) {
-		$stmt = $this->db->prepare("SELECT count(alias) FROM Usuario where alias=? and passwd=?");
+		$stmt = $this->db->prepare("SELECT count(alias) FROM usuario where alias=? and passwd=?");
 		$stmt->execute(array($alias, $passwd));
 
 		if ($stmt->fetchColumn() > 0) {
@@ -100,7 +100,7 @@ class UserMapper {
 	}
 
 	public function findByAlias($alias){
-		$stmt = $this->db->prepare("SELECT * FROM Usuario WHERE alias=?");
+		$stmt = $this->db->prepare("SELECT * FROM usuario WHERE alias=?");
 		$stmt->execute(array($alias));
 		$userArray = $stmt->fetch(PDO::FETCH_ASSOC);
 
@@ -115,7 +115,7 @@ class UserMapper {
 	}
 
 	public function deleteUser($alias, $passwd){
-		$stmt = $this->db->prepare("DELETE FROM Usuario WHERE alias = ?");
+		$stmt = $this->db->prepare("DELETE FROM usuario WHERE alias = ?");
 		$stmt->execute(array($alias));
 		if(!$this->isValidUser($alias, $passwd)){
 			//Se ha eliminado correctamente

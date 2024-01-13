@@ -4,6 +4,8 @@
     <input type="button" id='logoutbutton' value="{{i18n 'logout'}}"></input>
   {{else}}
     <a id="loginbar" href='#login'>{{i18n 'Login'}}</a>
-    <!--<div id="invitadobar"><a href="#switches">{{i18n 'Enter as a guest'}}</a></div>-->
   {{/if}}
+  {{i18n 'Search Switch'}}
+      <input type="text" id="searchCont"></input>
+      <input type="button" id='searchbutton' value="-" onclick=window.location.href='#view-switch'></input>
 </div>

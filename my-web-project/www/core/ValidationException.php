@@ -1,4 +1,3 @@
-
 <?php
 //file: core/ValidationException.php
 

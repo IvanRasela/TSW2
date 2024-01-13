@@ -50,24 +50,8 @@ class SwitchsMapper {
 		return $switches;
 	}
 	
-	public function findAllSuscribers($user) {
-		$stmt = $this->db->prepare("SELECT * FROM Suscriptor WHERE Suscriptor.AliasUser=?");
-		$stmt->execute(array($user));
-		$suscribers_db = $stmt->fetchAll(PDO::FETCH_ASSOC);
-	
-		$suscribers = array();
-		
-		foreach ($suscribers_db as $switchData) {
-			$sw = $this->findById($switchData["Public_UUID"]);
-			$alias = new User($sw["AliasUser"]);
-			array_push($suscribers, new Switchs($sw["SwitchName"], $sw["Public_UUID"], $alias));
-		}
-	
-		return $suscribers;
-	}
-
-	/*public function findIfSuscribe($user) {
-		$stmt = $this->db->prepare("SELECT * FROM Suscriptor WHERE Suscriptor.SuscriptorAlias=?");
+	public function findIfSuscribe($user) {
+		$stmt = $this->db->prepare("SELECT * FROM Suscriptor WHERE Suscriptor.alias=?");
 		$stmt->execute(array($user));
 		$switchs_db = $stmt->fetchAll(PDO::FETCH_ASSOC);
 	
@@ -75,44 +59,62 @@ class SwitchsMapper {
 	
 		foreach ($switchs_db as $switchData) {
 			$sw = $this->findById($switchData["Public_UUID"]);
-			if ($sw != NULL) {
-				$alias = new User($sw->getAliasUser());
-				$switch = new Switchs(
-					$sw->getSwitchName(),
-					$sw->getPrivate_UUID(),
-					$sw->getPublic_UUID(),
-					$alias
-				);
-				array_push($switches, $switch);
-			}
+			array_push($switches, $sw);
+		}
+		
+		if($switches!=NULL){
+			return $switches;
+		}
+		else{
+			return NULL;
 		}
 	
-		return $switches;
-	}*/
+		
+	}
 
-	/**
-	* Loads a Switch from the database given its id
-	*
-	* Note: Comments are not added to the Switch
-	*
-	* @throws PDOException if a database error occurs
-	* @return Switch The switchs instances (without comments). NULL
-	* if the Switch is not found
-	*/
+	public function findAllSuscribers($user) {
+		$stmt = $this->db->prepare("SELECT * FROM Suscriptor WHERE Suscriptor.alias=?");
+		$stmt->execute(array($user));
+		$suscribers_db = $stmt->fetchAll(PDO::FETCH_ASSOC);
+	
+		$suscribers = array();
+		
+		foreach ($suscribers_db as $switchData) {
+			$sw = $this->findById($switchData["Public_UUID"]);
+			//$alias = new User($sw["AliasUser"]);
+			$alias = new User($sw["AliasUser"]);
+			$switch = new Switchs(
+				$sw["SwitchName"],
+				$sw["Private_UUID"],
+				$sw["Public_UUID"],
+				$alias,
+				$sw["DescriptionSwitch"],
+				$sw["LastTimePowerOn"],
+				$sw["MaxTimePowerOn"]);
+			array_push($suscribers, $sw);
+		}
+	
+		return $suscribers;
+	}
+
+
+	//Devuelve un array de switches
 	public function findById($uuid){
-		$stmt = $this->db->prepare("SELECT * FROM Switchs WHERE Switchs.Public_UUID=?");
+		$stmt = $this->db->prepare("SELECT * FROM Switchs WHERE Public_UUID=?");
 		$stmt->execute(array($uuid));
 		$switchs = $stmt->fetch(PDO::FETCH_ASSOC);
-		if($switchs != null) {
-			return $switchs;
-		} else {
-			$stmt = $this->db->prepare("SELECT * FROM Switchs WHERE Switchs.Private_UUID=?");
-			$stmt->execute(array($uuid));
-			$switchs = $stmt->fetch(PDO::FETCH_ASSOC);
-		}
 
 		if($switchs != null) {
-			return $switchs;
+			$result = new Switchs(
+			$switchs["SwitchName"],
+			$switchs["Private_UUID"],
+			$switchs["Public_UUID"],
+			new User($switchs["AliasUser"]),
+			$switchs["DescriptionSwitch"],
+			$switchs["LastTimePowerOn"],
+			$switchs["MaxTimePowerOn"]);
+			
+			return $result;
 		} else {
 			return NULL;
 		}
@@ -146,15 +148,15 @@ class SwitchsMapper {
 		* @return int The mew switch id
 		*/
 		public function save(Switchs $switchs) {
-			$switchs->setPublic_UUID()=this.createUUID();
-			$switchs->setPrivate_UUID()=this.createUUID();
+			$switchs->setPublic_UUID(this.createUUID());
+			$switchs->setPrivate_UUID(this.createUUID());
 			$stmt = $this->db->prepare("INSERT INTO Switchs(SwitchName, Private_UUID, Public_UUID, LastTimePowerOn, MaxTimePowerOn, DescriptionSwitch, AliasUser) values (?,?,?,?,?,?,?)");
 			$stmt->execute(array($switchs->getSwitchName(), $switchs->getPrivate_UUID(), $switchs->getPublic_UUID(),$switchs->getLastTimePowerOn(),$switchs->getMaxTimePowerOn(),$switchs->getDescriptionSwitch(),$switchs->getAliasUser()->getAlias()));
 			return $this->db->lastInsertId();
 		}
 
 		public function suscribeTo(Switchs $switch) {
-			$stmt = $this->db->prepare("INSERT INTO Suscriptor(SuscriptorAlias, Public_UUID) values (?,?)");
+			$stmt = $this->db->prepare("INSERT INTO Suscriptor(alias, Public_UUID) values (?,?)");
 			$stmt->execute(array($switchs->getSwitchName(),$switchs->getPublic_UUID()));
 			return $this->db->lastInsertId();
 		}

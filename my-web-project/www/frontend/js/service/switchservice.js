@@ -8,10 +8,10 @@ class SwitchService {
   }
 
   getSwitchesSuscribe(user) {
-    return $.get(AppConfig.backendServer+'/rest/switch/suscribe/' + user);
+    return $.get(AppConfig.backendServer+'/rest/switch/suscribers/' + user);
   }
 
-  getSwitchesByUUID(uuid) {
+  getSwitchesByPublic(uuid) {//getSwitchesByUUID
     return $.get(AppConfig.backendServer+'/rest/switch/public/' + uuid);
   }
 
@@ -44,13 +44,23 @@ class SwitchService {
     });
   }
 
-/*createComment(postid, comment) {
-    return $.ajax({
-      url: AppConfig.backendServer+'/rest/post/' + postid + '/comment',
-      method: 'POST',
-      data: JSON.stringify(comment),
-      contentType: 'application/json'
-    });
-  }*/
+  search(searchCont){
 
+    return new Promise((resolve, reject) => {
+
+      $.get({
+        url: AppConfig.backendServer+'/rest/switch/public/' + searchCont
+      })
+      resolve()
+      .fail((error) => {
+        window.sessionStorage.removeItem('searchCont');
+        $.ajaxSetup({
+          beforeSend: (xhr) => {}
+        });
+        reject(error);
+      });
+
+    });
+
+}
 }
