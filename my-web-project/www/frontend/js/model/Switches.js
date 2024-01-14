@@ -9,7 +9,6 @@ class SwitchesModel extends Fronty.Model {
       // model attributes
       this.switches = [];
       this.switchesSuscribe = [];
-      this.actualAuthor;
     }
 
     setSelectedSwitch(selectedSwitch) {
@@ -30,10 +29,5 @@ class SwitchesModel extends Fronty.Model {
       });
     }
     
-    getAuthor(selectedSwitch){
-      this.set((self) => {
-        self.actualAuthor = selectedSwitch.AliasUser;
-      });
-    }
 
   }

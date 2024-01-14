@@ -69,8 +69,12 @@ class SwitchRest extends BaseRest {
 			foreach ($switchs as $switch) {
 				array_push($switchs_array, array(
 					"SwitchName" => $switch->getSwitchName(),
+					"Private_UUID" => $switch->getPrivate_UUID(),
 					"Public_UUID" => $switch->getPublic_UUID(),
-					"AliasUser" =>$switch->getAliasUser()->getAlias()
+					"AliasUser" =>$switch->getAliasUser()->getAlias(),
+					"DescriptionSwitch" =>$switch->getDescriptionSwitch(),
+					"LastTimePowerOn" =>$switch->getLastTimePowerOn(),
+					"MaxTimePowerOn" =>$switch->getMaxTimePowerOn()
 				));
 			}
 			header($_SERVER['SERVER_PROTOCOL'].' 200 Ok');
