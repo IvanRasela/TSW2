@@ -10,10 +10,28 @@ class SwitchComponent extends Fronty.ModelComponent {
       this.switchService = new SwitchService();
   
     }
+
+
+    
   
     onStart() {
       this.updateSwitch();
       this.updateSwitchSuscribe();
+      
+      this.addEventListener('click', '.remove-button', (event) => {
+        
+        if (confirm(I18n.translate('Are you sure?'))) {
+          var switchId = event.target.getAttribute('item');
+          
+          this.switchService.deleteSwitch(switchId)
+            .fail(() => {
+              alert('switch cannot be deleted')
+            })
+            .always(() => {
+              this.updateSwitch();
+            });
+        }
+      });
     }
   
     updateSwitch() {
@@ -55,6 +73,8 @@ class SwitchComponent extends Fronty.ModelComponent {
     createChildModelComponent(className, element, id, modelItem) {
       return new SwitchRowComponent(modelItem, this.userModel, this.router, this);
     }
+
+
   }
   
   
@@ -68,24 +88,7 @@ class SwitchComponent extends Fronty.ModelComponent {
       this.addModel('user', userModel); // a secondary model
       
       this.router = router;
-  
-      this.addEventListener('click', '.remove-button', (event) => {
-        if (confirm(I18n.translate('Are you sure?'))) {
-          var switchId = event.target.getAttribute('item');
-          this.switchComponent.switchService.deleteSwitch(switchId)
-            .fail(() => {
-              alert('switch cannot be deleted')
-            })
-            .always(() => {
-              this.switchComponent.updateSwitch();
-            });
-        }
-      });
-      // On-Off
-      this.addEventListener('click', '.edit-button', (event) => {
-        var switchId = event.target.getAttribute('item');
-        this.router.goToPage('edit-switch?id=' + switchId);
-      });
+
     }
   
   }

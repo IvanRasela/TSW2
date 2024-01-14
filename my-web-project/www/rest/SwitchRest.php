@@ -86,6 +86,7 @@ class SwitchRest extends BaseRest {
 	}
 	public function getSwitchsByUUID($uuid) {
 		$switch = $this->SwitchsMapper->findById($uuid);
+		
 		if ($switch == NULL) {
 			header($_SERVER['SERVER_PROTOCOL'].' 204 Not Found');
 		} else {
@@ -213,26 +214,14 @@ class SwitchRest extends BaseRest {
 	}
 
 
-	public function deleteSwitch($switchuuid) {
+	public function deleteSwitch($uuid) {
 		try{
-			$currentUser = parent::authenticateUser();
-			$switch = $this->SwitchsMapper->findById($switchuuid);
+			//$currentUser = parent::authenticateUser();
+			$switch = $this->SwitchsMapper->findById($uuid);
 
-			if ($switch == NULL) {
-				header($_SERVER['SERVER_PROTOCOL'].' 400 Bad request');
-				echo("Switch with id ".$switchId." not found");
-				return;
-			}
-			// Check if the Switch author is the currentUser (in Session)
-			if ($switch->getAliasUser->getAlias() != $currentUser) {
-				header($_SERVER['SERVER_PROTOCOL'].' 401 Unauthorized');
-				echo("you are not the author of this switch");
-				return;
-			}
+			$this->SwitchsMapper->delete($switch);
 
-		$this->SwitchsMapper->delete($switch);
-
-		header($_SERVER['SERVER_PROTOCOL'].' 204 No Content');
+			header($_SERVER['SERVER_PROTOCOL'].' 200 Ok');
 			
 		}catch (ValidationException $e) {
 			header($_SERVER['SERVER_PROTOCOL'].' 400 Bad request');

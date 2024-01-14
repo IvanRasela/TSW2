@@ -214,8 +214,9 @@ class SwitchsMapper {
 		* @return void
 		*/
 		public function delete(Switchs $switchs) {
-			$stmt = $this->db->prepare("DELETE from Switchs WHERE Private_UUID=?");
-			$stmt->execute(array($switchs->getPrivate_UUID()));
+			$stmt = $this->db->prepare("DELETE from Switchs WHERE Public_UUID=?");
+			$stmt->execute(array($switchs->getPublic_UUID()));
+			
 		}
 
 		public function desuscribeTo(Switchs $switchs) {

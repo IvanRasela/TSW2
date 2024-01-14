@@ -14,11 +14,13 @@
         </thead>
         <tbody>
         {{#each switches}}
-          <tr fronty-component="SwitchRowComponent" key="{{id}}" model="switches[{{@index}}]" id="item-{{id}}"></tr>
+          <tr fronty-component="SwitchComponent" key="{{id}}" model="switches[{{@index}}]" id="item-{{id}}"></tr>
           <td>{{SwitchName}}</td>
           <td>{{Public_UUID}}</td>
           <td>{{AliasUser}}</td>
-          <td></td>
+          <td>
+            <button class="remove-button" item={{Public_UUID}}>{{i18n 'remove'}} </button>
+          </td>
         {{/each}}
       </tbody>
       </table>
