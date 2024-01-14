@@ -1,0 +1,55 @@
+<div>
+  {{#if user.isLogged}}
+  <div id="switches-table">
+    <p>Switches ({{switches.length}}) num.</p>
+    {{#if switches.length}}
+      <table border="1">
+        <thead>
+        <tr>
+          <th>{{i18n 'Switch Name'}}</th>
+          <th>{{i18n 'Public UUID'}}</th>
+          <th>{{i18n 'User Alias'}}</th>
+          <th>{{i18n 'Actions'}}</th>
+        </tr>
+        </thead>
+        <tbody>
+        {{#each switches}}
+          <tr fronty-component="SwitchRowComponent" key="{{id}}" model="switches[{{@index}}]" id="item-{{id}}"></tr>
+          <td>{{SwitchName}}</td>
+          <td>{{Public_UUID}}</td>
+          <td>{{AliasUser}}</td>
+          <td></td>
+        {{/each}}
+      </tbody>
+      </table>
+    {{/if}}
+    <a href='#add-switch' id="addSwitch">{{i18n 'Add switch'}}</a>
+  </div>
+  <div id="suscribers-table">
+  <p>Suscribers ({{switchesSuscribe.length}}) num.</p>
+  {{#if switchesSuscribe.length}}
+    <table border="1">
+      <thead>
+        <tr>
+          <th>{{i18n 'Switch Name'}}</th>
+          <th>{{i18n 'Public UUID'}}</th>
+          <th>{{i18n 'Alias Owner'}}</th>
+          <th>{{i18n 'Actions'}}</th>
+        </tr>
+      </thead>
+      <tbody>
+        {{#each switchesSuscribe}}
+          <tr fronty-component="SwitchRowComponent" key="{{id}}" model="switchesSuscribe[{{@index}}]" id="item-{{id}}"></tr>
+          <td>{{SwitchName}}</td>
+          <td>{{Public_UUID}}</td>
+          <td>{{AliasUser}}</td>
+          <td></td>
+        {{/each}}
+      </tbody>
+    </table>
+  {{else}}
+    <p>No hay switches suscritos.</p>
+  {{/if}}
+</div>
+ {{/if}}
+</div>
