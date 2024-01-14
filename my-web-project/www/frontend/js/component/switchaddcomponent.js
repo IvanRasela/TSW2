@@ -17,7 +17,7 @@ class SwitchAddComponent extends Fronty.ModelComponent {
       newSwitch.AliasUser = this.userModel.currentUser;
       this.switchService.addSwitch(newSwitch)
         .then(() => {
-          this.router.goToPage('switch');
+          this.router.goToPage('switches');
         })
         .fail((xhr, errorThrown, statusText) => {
           if (xhr.status == 400) {
