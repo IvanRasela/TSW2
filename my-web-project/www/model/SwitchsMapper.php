@@ -162,11 +162,6 @@ class SwitchsMapper {
 				$switch->getAliasUser()->getAlias(),
 				NULL,
 				$switch->getMaxTimePowerOn()));
-			if ($stmt) {
-				echo "\Switch guardado correctamente en la base de datos.";
-			} else {
-				echo "Error al guardar el switch en la base de datos.";
-			}
 		}
 
 		public function generateUUID($alias){
