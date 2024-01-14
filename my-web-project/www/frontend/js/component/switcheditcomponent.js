@@ -31,7 +31,7 @@ class SwitchEditComponent extends Fronty.ModelComponent {
   }
 
   onStart() {
-    var selectedId = this.router.getRouteQueryParam('id');
+    var selectedId = this.router.getRouteQueryParam('id');//parametro de una URL
     if (selectedId != null) {
       this.switchesService.findSwitch(selectedId)
         .then((switch_r) => {
