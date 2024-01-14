@@ -34,6 +34,7 @@ I18n.translations = {
   'The username/password is not valid': 'El alias/contraseña no son válidos',
   'Enter as a guest':'Entrar como invitado',
 
+  'Search':'Buscar',
   'Switch Name':'Nombre del switch',
   'Public UUID':'UUID Publica',
   'User Alias':'Nombre de usuario',

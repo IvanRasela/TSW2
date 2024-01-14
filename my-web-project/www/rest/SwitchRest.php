@@ -99,11 +99,6 @@ class SwitchRest extends BaseRest {
 	}
 
 
-
-
-	
-
-
 	public function getSwitchsByPrivate($uuid) {
 		$switchs = $this->SwitchsMapper->findByPrivateUUID($uuid);
 

@@ -9,34 +9,19 @@ class SwitchViewComponent extends Fronty.ModelComponent {
 
       
       this.switchesService = new SwitchService();
+        //searchCont
+      this.addEventListener('click', '#searchbutton', () => {
+        var selectedId = this.router.getRouteQueryParam('id');//no entiendo de donde sale este id
 
-      /*this.addEventListener('click', '#createswitch', () => {
-          var selectedId = this.router.getRouteQueryParam('id');//id?
-          this.switchesService.createSwitch(selectedId, {
-                  content: $('#switchcontent').val()
-              })
-              .then(() => {
-                  $('#switchcontent').val('');
-                  //this.loadSwitch(selectedId);
-              })
-              .fail((xhr, errorThrown, statusText) => {
-                  if (xhr.status == 400) {
-                      this.switchModel.set(() => {
-                          this.switchModel.commentErrors = xhr.responseJSON;
-                      });
-                  } else {
-                      alert('an error has occurred during request: ' + statusText + '.' + xhr.responseText);
-                  }
-              });
-      });*/
+      });
       
   }
 
   onStart() {
-      var selectedId = this.router.getRouteQueryParam('uuid');//parametro de una URL
-      this.loadSwitch(selectedId);
-      if (switchId != null) {
-        this.switchesService.getSwitchesByPublic(switchId)
+      var uuidSwitch = $('#searchCont').val();
+      this.loadSwitch(uuidSwitch);
+      if (uuidSwitch != null) {
+        this.switchesService.getSwitchesByPublic(uuidSwitch)
           .then((data) => {
             this.switchModel.setSelectedSwitch(data);
           });
