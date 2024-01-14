@@ -1,10 +1,10 @@
 <div>
-  {{i18n 'Title'}}:<input type="text" id="title" value="{{selectedSwitch.SwitchName}}">
-  {{#i18n}}{{errors.title}}{{/i18n}}<br> {{i18n 'Content'}}:
+  {{i18n 'Title'}}:<input type="text" id="title" value="{{selectedSwitch.SwitchName}}" required>
+  {{#i18n}}{{errors.title}}{{/i18n}}<br> {{i18n 'Description'}}:
   <br>
-  <textarea id="content" rows="20" cols="80">{{selectedSwitch.DescriptionSwitch}}</textarea>
-  {{#i18n}}{{errors.content}}{{/i18n}}
+  <textarea id="description" rows="20" cols="80">{{selectedSwitch.DescriptionSwitch}}</textarea>
   
+  {{i18n 'Max time power on'}}:<input type="text" id="maxTime" value="{{selectedSwitch.MaxTimePowerOn}}">
   <br>
   <input type="button" id="savebutton" value="{{i18n 'Save'}}"></input>
   <input type="button" id="backbutton" value="{{i18n 'Back'}}" onclick="window.location.href='#switches'">

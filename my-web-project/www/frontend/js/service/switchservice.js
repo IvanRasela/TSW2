@@ -21,7 +21,7 @@ class SwitchService {
 
   addSwitch(switch_r) {
     return $.ajax({
-      url: AppConfig.backendServer+'/rest/switch/new/',
+      url: AppConfig.backendServer+'/rest/switch/new',
       method: 'POST',
       data: JSON.stringify(switch_r),
       contentType: 'application/json'

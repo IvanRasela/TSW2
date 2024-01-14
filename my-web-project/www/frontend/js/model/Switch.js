@@ -24,7 +24,7 @@ class SwitchModel extends Fronty.Model {
       }
 
       if (LastTimePowerOn) {
-        this.LastTimePowerOn = LastTimePowerOn;
+        this.LastTimePowerOn = null;
       }
 
       if (MaxTimePowerOn) {

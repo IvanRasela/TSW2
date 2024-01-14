@@ -150,23 +150,47 @@ class SwitchsMapper {
 		* @return int The mew switch id
 		*/
 		public function save(Switchs $switch) {
-			$switch->setPublic_UUID($this->generatePublic_UUID($switch->getAliasUser()->getAlias()));
-			$switch->setPrivate_UUID($this->generatePrivate_UUID($switch->getAliasUser()->getAlias()));
+			$switch->setPublic_UUID($this->generateUUID($switch->getAliasUser()->getAlias()));
+			$switch->setPrivate_UUID($this->generateUUID($switch->getAliasUser()->getAlias()));
 			$stmt = $this->db->prepare("INSERT INTO Switchs values (?,?,?,?,?,?,?)");
-			$stmt->execute(array($switch->getSwitchName(), $switch->getPrivate_UUID(), $switch->getPublic_UUID(),$switch->getMaxTimePowerOn(),$switch->getMaxTimePowerOn(),$switch->getDescriptionSwitch(),$switch->getAliasUser()->getAlias()));
-			if ($result) {
+
+			$stmt->execute(array(
+				$switch->getSwitchName(), 
+				$switch->getPrivate_UUID(), 
+				$switch->getPublic_UUID(),
+				$switch->getDescriptionSwitch(),
+				$switch->getAliasUser()->getAlias(),
+				NULL,
+				$switch->getMaxTimePowerOn()));
+			if ($stmt) {
 				echo "\Switch guardado correctamente en la base de datos.";
 			} else {
 				echo "Error al guardar el switch en la base de datos.";
 			}
 		}
 
-		public function generatePublic_UUID($alias){
-			//Crea una clave privada, comrpueba si está en la base de datos, si está vuelve a generar.
-			return '9e8a5c4d-68b3-4127-9df7-1a6e3f85a6d2';
-		}
-		public function generatePrivate_UUID($alias){
-			return '3a1f9d57-8bf1-4e02-9e76-cdc25f1272a4';
+		public function generateUUID($alias){
+			// Genera una clave privada única basada en el alias y la marca de tiempo
+			$privateKey = md5($alias . microtime());
+
+			// Obtiene el timestamp actual
+			$timestamp = time();
+		
+			// Convierte el timestamp a hexadecimal y le da un formato específico
+			$timestampHex = dechex($timestamp);
+			$timestampHex = str_pad($timestampHex, 8, '0', STR_PAD_LEFT);
+		
+			// Convierte la parte de la clave privada a hexadecimal y le da un formato específico
+			$privateKeyHex = substr($privateKey, 0, 16);
+		
+			// Formatea el UUID para cumplir con varchar(36)
+			$uuid = substr($timestampHex, 0, 8) . '-' .
+					substr($timestampHex, 8, 4) . '-' .
+					substr($timestampHex, 12, 4) . '-' .
+					substr($privateKeyHex, 0, 4) . '-' .
+					substr($privateKeyHex, 4, 12);
+		
+			return $uuid;
 		}
 
 		public function suscribeTo(Switchs $switch) {

@@ -138,16 +138,16 @@ class SwitchRest extends BaseRest {
 
 	public function createSwitch($data) {
 
-		//$currentUser = parent::authenticateUser();
+		$currentUser = parent::authenticateUser();
 		$switch = new Switchs();
 
 		if (isset($data->SwitchName)) {
-			//$switch->setAliasUser($currentUser->getAlias());
-			$switch->setAliasUser(new User("JoaKing","JoaKing",NULL));
+			$switch->setAliasUser($currentUser);
 			$switch->setDescriptionSwitch($data->DescriptionSwitch);
 			$switch->setSwitchName($data->SwitchName);
+			//Hay que pasar a tipo timestamp al guardar en la base de datos
 			$switch->setMaxTimePowerOn($data->MaxTimePowerOn);
-			$switch->setMaxTimePowerOn($data->LastTimePowerOn);
+			
 			//Se generan las claves al guardar en la base de datos. 
 		}
 
@@ -157,15 +157,16 @@ class SwitchRest extends BaseRest {
 
 			$this->SwitchsMapper->save($switch);
 
-			header($_SERVER['SERVER_PROTOCOL'].' 200 OK');
+			header($_SERVER['SERVER_PROTOCOL'].' 201 Created');
 			//
 			header('Content-Type: application/json');
 			echo(json_encode(array(
 				"SwitchName" => $switch->getSwitchName(),
 				"Public_UUID" => $switch->getPublic_UUID(),
-				"AliasUser" => $switch->getAliasUser(),
+				"AliasUser" => $switch->getAliasUser()->getAlias(),
 				"DescriptionSwitch" =>$switch->getDescriptionSwitch(),
 				"MaxTimePowerOn" =>$switch->getMaxTimePowerOn(),
+				"LastTimePowerOn" =>$switch->getLastTimePowerOn(),
 				"Private_UUID" =>$switch->getPrivate_UUID(),
 				"Public_UUID" =>$switch->getPublic_UUID()
 			)));

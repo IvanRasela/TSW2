@@ -15,7 +15,7 @@ I18n.translations = {
   'Leave a comment': 'Deja un comentario',
   'Save comment': 'Guardar comentario',
   'Add post': 'Nuevo post',
-  'Content': 'Contenido',
+  'Description': 'Descripcion',
   'Save': 'Guardar',
   'Login': 'Entrar',
   'Your are logged. Logout first': 'Ya estás logueado. Sal primero',
@@ -34,6 +34,7 @@ I18n.translations = {
   'The username/password is not valid': 'El alias/contraseña no son válidos',
   'Enter as a guest':'Entrar como invitado',
 
+  'Max time power on':'Tiempo máximo de encendido',
   'Welcome':'Bienvenido',
   'Back':'Atrás',
   'Email':'Correo electrónico'
