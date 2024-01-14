@@ -64,10 +64,11 @@ class MainComponent extends Fronty.RouterComponent {
       this.userService.logout();
     });
 
-    userbar.addEventListener('click', '#searchbutton', (event) => {
+    userbar.addEventListener('click', '#searchbutton', () => {
+      const searchValue = $('#searchCont').val();
       // contenido del input text: document.getElementById('searchCont'))
       //alert ("Buscando swith con clave " + $('#searchCont').val());
-      this.switchService.search($('#searchCont').val());
+      this.search(searchValue);
     });
 
     return userbar;
@@ -87,5 +88,18 @@ class MainComponent extends Fronty.RouterComponent {
     });
 
     return languageComponent;
+  }
+
+  search(uuid) {
+    this.switchService.search(uuid).then((data) => {
+
+      this.switchModel.selectedSwitch(
+        // create a Fronty.Model for each item retrieved from the backend
+        data.map(
+          (item) => new SwitchModel(item.SwitchName, item.Public_UUID, item.Private_UUID, item.AliasUser)
+      ));
+      
+      this.router.goToPage('view-switch');
+    });
   }
 }

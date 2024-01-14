@@ -44,23 +44,20 @@ class SwitchService {
     });
   }
 
-  search(searchCont){
-
+  search(searchCont) {
     return new Promise((resolve, reject) => {
-
       $.get({
-        url: AppConfig.backendServer+'/rest/switch/public/' + searchCont
-      })
-      resolve()
-      .fail((error) => {
-        window.sessionStorage.removeItem('searchCont');
-        $.ajaxSetup({
-          beforeSend: (xhr) => {}
-        });
-        reject(error);
+        url: AppConfig.backendServer + '/rest/switch/public/' + searchCont,
+        success: (data) => {
+          resolve(data);
+        },
+        error: (error) => {
+          window.sessionStorage.removeItem('searchCont');
+          reject(error);
+        }
       });
-
     });
+  }
 
-}
+
 }
