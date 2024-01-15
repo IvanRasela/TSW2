@@ -24,13 +24,13 @@ class SwitchModel extends Fronty.Model {
       }
 
       if (LastTimePowerOn) {
-        this.LastTimePowerOn = null;
+        this.LastTimePowerOn = LastTimePowerOn;
       }
 
       if (MaxTimePowerOn) {
         this.MaxTimePowerOn = MaxTimePowerOn;
       }
-
+      this.State=false;
     }
   
     setTitle(SwitchName) {
@@ -73,5 +73,45 @@ class SwitchModel extends Fronty.Model {
     this.set((self) => {
         self.MaxTimePowerOn = MaxTimePowerOn;
     });
+    }
+
+    setState(State) {
+      this.set((self) => {
+          self.State = State;
+      });
+    }
+
+    changeState(State){
+      const timeLast = self.LastTimePowerOn.split(':');//"00:00"
+      //en minutos
+      const totalLast = 0;
+      const totalMax = 0;
+      if (timeLast.length === 2) {
+          const hours = parseInt(timeLast[0], 10);
+          const minutes = parseInt(timeLast[1], 10);
+          const totalLast = hours * 60 + minutes;
+      }
+
+      const timeMax = self.MaxTimePowerOn.split(':');
+      if (timeMax.length === 2) {
+        const hours = parseInt(timeMax[0], 10);
+        const minutes = parseInt(timeMax[1], 10);
+        const totalMax = hours * 60 + minutes;
+      }
+      if (totalLast>totalMax) {
+        this.set((self) => {
+          self.State = false;
+        });
+      }
+      if (totalLast>0 && totalLast<totalMax) {
+        this.set((self) => {
+          self.State = true;
+        });
+      }
+      if (totalLast===0) {
+        this.set((self) => {
+          self.State = false;
+        });
+      }
     }
   }

@@ -1,18 +1,18 @@
 <div>
-  <table border="1">
-      <thead>
-        <tr>
-          <th>{{i18n 'SwitchName'}}</th>
-          <th>{{i18n 'Public_UUID'}}</th>
-          <th>{{i18n 'AliasUser'}}</th>
-        </tr>
-      </thead>
-      <tbody>
-        <td>{{selectedSwitch.SwitchName}}</td>
-        <td>{{selectedSwitch.Public_UUID}}</td>
-        <td>{{selectedSwitch.AliasUser}}</td>
-      </tbody>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>{{i18n 'SwitchName'}}</th>
+                <th>{{i18n 'Public_UUID'}}</th>
+                <th>{{i18n 'AliasUser'}}</th>
+            </tr>
+        </thead>
+        <tbody>
+            <td>{{selectedSwitch.SwitchName}}</td>
+            <td>{{selectedSwitch.Public_UUID}}</td>
+            <td>{{selectedSwitch.AliasUser}}</td>
+        </tbody>
     </table>
-    <input type="button" id="backbutton" value="{{i18n 'Back'}}" onclick="window.location.href='#switches'">
+    <input type="button" id="backbutton" value="{{i18n 'Back'}}" onclick="this.router.goToPage('switches')">
 </div>
 

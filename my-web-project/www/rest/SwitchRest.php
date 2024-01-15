@@ -62,7 +62,7 @@ class SwitchRest extends BaseRest {
 
 		$switchs = $this->SwitchsMapper->findIfSuscribe($user);
 		if($switchs==NULL){
-			header($_SERVER['SERVER_PROTOCOL'].' 400 NotFound');
+			header($_SERVER['SERVER_PROTOCOL'].' 204 No Content');
 		}else{
 			$switchs_array = array();
 			
@@ -216,10 +216,26 @@ class SwitchRest extends BaseRest {
 
 	public function deleteSwitch($uuid) {
 		try{
-			//$currentUser = parent::authenticateUser();
-			$switch = $this->SwitchsMapper->findById($uuid);
+			$switch = $this->SwitchsMapper->findByIdPrivate($uuid);
 
 			$this->SwitchsMapper->delete($switch);
+
+			header($_SERVER['SERVER_PROTOCOL'].' 200 Ok');
+			
+		}catch (ValidationException $e) {
+			header($_SERVER['SERVER_PROTOCOL'].' 400 Bad request');
+			header('Content-Type: application/json');
+			echo(json_encode($e->getErrors()));
+		}
+		
+	}
+
+	public function desSubscribe($uuid) {
+		try{
+			$currentUser = parent::authenticateUser();
+			$switch = $this->SwitchsMapper->findById($uuid);
+
+			$this->SwitchsMapper->desuscribeTo($switch, $currentUser->getAlias());
 
 			header($_SERVER['SERVER_PROTOCOL'].' 200 Ok');
 			
@@ -296,5 +312,7 @@ URIDispatcher::getInstance()
 ->map("GET",	"/switch/private/$1", array($switchRest,"getSwitchsByPrivate"))//No se usa
 ->map("GET",	"/switch/suscribe/$1", array($switchRest,"getSwitchsSuscribe"))//revisar pq en switchservice se le pasa la uuid
 ->map("POST", "/switch/new", array($switchRest,"createSwitch"))//revisar en el service
-->map("DELETE", "/switch/del/$1", array($switchRest,"deleteSwitch"))
-->map("GET", "/switch/all", array($switchRest,"findAllSwitches"));//quitar esta que es para comprobar solo
+->map("DELETE", "/switch/$1", array($switchRest,"deleteSwitch"))
+->map("GET", "/switch/all", array($switchRest,"findAllSwitches"))//quitar esta que es para comprobar solo
+->map("GET",	"/switch/search/$1", array($switchRest,"getSwitchsByUUID"))
+->map("DELETE",	"/switch/des/$1", array($switchRest,"desSubscribe"));

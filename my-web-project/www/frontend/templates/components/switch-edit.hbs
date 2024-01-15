@@ -4,7 +4,7 @@
   <br>
   <textarea id="description" rows="20" cols="80">{{selectedSwitch.DescriptionSwitch}}</textarea>
   
-  {{i18n 'Max time power on'}}:<input type="text" id="maxTime" value="{{selectedSwitch.MaxTimePowerOn}}">
+  {{i18n 'Max time power on'}}:<input type="time" id="maxTime" value="{{selectedSwitch.MaxTimePowerOn}}">
   <br>
   <input type="button" id="savebutton" value="{{i18n 'Save'}}"></input>
   <input type="button" id="backbutton" value="{{i18n 'Back'}}" onclick="window.location.href='#switches'">

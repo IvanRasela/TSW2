@@ -1,7 +1,6 @@
 <div>
   {{#if user.isLogged}}
   <div id="switches-table">
-    <p>Switches ({{switches.length}}) num.</p>
     {{#if switches.length}}
       <table border="1">
         <thead>
@@ -9,6 +8,7 @@
           <th>{{i18n 'Switch Name'}}</th>
           <th>{{i18n 'Public UUID'}}</th>
           <th>{{i18n 'User Alias'}}</th>
+          <th>{{i18n 'State'}}</th>
           <th>{{i18n 'Actions'}}</th>
         </tr>
         </thead>
@@ -19,6 +19,9 @@
           <td>{{Public_UUID}}</td>
           <td>{{AliasUser}}</td>
           <td>
+            <button class="state-button" item={{State}}>{{State}}</button>
+          </td>
+          <td>
             <button class="remove-button" item={{Public_UUID}}>{{i18n 'remove'}} </button>
           </td>
         {{/each}}
@@ -28,7 +31,6 @@
     <a href='#add-switch' id="addSwitch">{{i18n 'Add switch'}}</a>
   </div>
   <div id="suscribers-table">
-  <p>Suscribers ({{switchesSuscribe.length}}) num.</p>
   {{#if switchesSuscribe.length}}
     <table border="1">
       <thead>
@@ -36,6 +38,7 @@
           <th>{{i18n 'Switch Name'}}</th>
           <th>{{i18n 'Public UUID'}}</th>
           <th>{{i18n 'Alias Owner'}}</th>
+          <th>{{i18n 'Time'}}</th>
           <th>{{i18n 'Actions'}}</th>
         </tr>
       </thead>
@@ -45,7 +48,10 @@
           <td>{{SwitchName}}</td>
           <td>{{Public_UUID}}</td>
           <td>{{AliasUser}}</td>
-          <td></td>
+          <td>{{LastTimePowerOn}}</td>
+          <td>
+            <button class="desSubscribe-button" item={{Public_UUID}}>{{i18n 'desuscribe'}} </button>
+          </td>
         {{/each}}
       </tbody>
     </table>

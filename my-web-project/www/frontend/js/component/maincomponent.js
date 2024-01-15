@@ -15,13 +15,13 @@ class MainComponent extends Fronty.RouterComponent {
     this.switchService = new SwitchService();
 
     super.setRouterConfig({
-    switches: {
+      switches: {
         component: new SwitchComponent(this.switchesModel, this.userModel, this),
         title: 'Switches'
       },
       'view-switch': {
         component: new SwitchViewComponent(this.switchesModel, this.userModel, this),
-        title: 'Search Switch'
+        title: 'View Switch'
       },
       'add-switch': {
         component: new SwitchAddComponent(this.switchesModel, this.userModel, this),
@@ -54,6 +54,13 @@ class MainComponent extends Fronty.RouterComponent {
         }
         super.start(); // now we can call start
       });
+      this.addEventListener('click', '.search-button', (event) => {
+        
+        //document.getElementById('searchCont').value
+        alert(document.getElementById('searchCont').value);
+        this.switchService.search(document.getElementById('searchCont').value)
+
+      });
   }
 
   _createUserBarComponent() {
@@ -62,13 +69,6 @@ class MainComponent extends Fronty.RouterComponent {
     userbar.addEventListener('click', '#logoutbutton', () => {
       this.userModel.logout();
       this.userService.logout();
-    });
-
-    userbar.addEventListener('click', '#searchbutton', () => {
-      const searchValue = $('#searchCont').val();
-      // contenido del input text: document.getElementById('searchCont'))
-      //alert ("Buscando swith con clave " + $('#searchCont').val());
-      this.search(searchValue);
     });
 
     return userbar;
@@ -93,13 +93,15 @@ class MainComponent extends Fronty.RouterComponent {
   search(uuid) {
     this.switchService.search(uuid).then((data) => {
 
-      this.switchModel.selectedSwitch(
+      this.switchModel.setSelectedSwitch(
         // create a Fronty.Model for each item retrieved from the backend
         data.map(
           (item) => new SwitchModel(item.SwitchName, item.Public_UUID, item.Private_UUID, item.AliasUser)
       ));
       
-      this.router.goToPage('view-switch');
+      this.router.goToPage('view-switch' + { id: uuid });
     });
   }
+
+  
 }

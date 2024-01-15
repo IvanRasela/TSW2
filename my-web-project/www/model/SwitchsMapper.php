@@ -160,8 +160,8 @@ class SwitchsMapper {
 				$switch->getPublic_UUID(),
 				$switch->getDescriptionSwitch(),
 				$switch->getAliasUser()->getAlias(),
-				NULL,
-				$switch->getMaxTimePowerOn()));
+				$switch->getMaxTimePowerOn(),
+				NULL));
 		}
 
 		public function generateUUID($alias){
@@ -219,9 +219,9 @@ class SwitchsMapper {
 			
 		}
 
-		public function desuscribeTo(Switchs $switchs) {
-			$stmt = $this->db->prepare("DELETE from Suscriptor WHERE Public_UUID=?");
-			$stmt->execute(array($switchs->getPublic_UUID()));
+		public function desuscribeTo(Switchs $switchs, $alias) {
+			$stmt = $this->db->prepare("DELETE from Suscriptor WHERE Public_UUID=? AND alias=?");
+			$stmt->execute(array($switchs->getPublic_UUID(), $alias));
 		}
 
 		public function createUUID(){

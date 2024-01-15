@@ -11,15 +11,11 @@ class SwitchComponent extends Fronty.ModelComponent {
   
     }
 
-
-    
-  
     onStart() {
       this.updateSwitch();
       this.updateSwitchSuscribe();
       
       this.addEventListener('click', '.remove-button', (event) => {
-        
         if (confirm(I18n.translate('Are you sure?'))) {
           var switchId = event.target.getAttribute('item');
           
@@ -28,10 +24,30 @@ class SwitchComponent extends Fronty.ModelComponent {
               alert('switch cannot be deleted')
             })
             .always(() => {
-              this.updateSwitch();
+              $(event.target).closest('tr').remove();
+            });
+        }
+        });
+
+      this.addEventListener('click', '.desSubscribe-button', (event) => {
+        if (confirm(I18n.translate('Are you sure?'))) {
+          var switchId = event.target.getAttribute('item');
+          
+          this.switchService.desSubscribe(switchId)
+            .fail(() => {
+              alert('switch cannot be deleted')
+            })
+            .always(() => {
+              $(event.target).closest('tr').remove();
             });
         }
       });
+      this.addEventListener('click', '.state-button', (event) => {
+        alert("Switch enciende");
+        this.switchModel.setState(true);
+      });
+
+
     }
   
     updateSwitch() {

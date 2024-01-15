@@ -11,7 +11,12 @@ class SwitchAddComponent extends Fronty.ModelComponent {
 
     this.addEventListener('click', '#savebutton', () => {
       var newSwitch= {};
-      newSwitch.SwitchName = $('#title').val();
+      var switchName={};
+      switchName = $('#title').val();
+      if (this.validarNombreInterruptor(switchName)) {
+        // El nombre del interruptor es válido, puedes proceder con su uso
+        newSwitch.SwitchName = switchName;
+    }
       newSwitch.DescriptionSwitch = $('#description').val();
       newSwitch.MaxTimePowerOn = $('#maxTime').val();
       newSwitch.AliasUser = this.userModel.currentUser;
@@ -34,4 +39,23 @@ class SwitchAddComponent extends Fronty.ModelComponent {
   onStart() {
     this.switchModel.setSelectedSwitch(new SwitchModel());
   }
+
+  validarNombreInterruptor(nombre) {
+    // Verificar longitud máxima (20 caracteres)
+    if (nombre.length > 20) {
+        alert('El nombre del interruptor no puede tener más de 20 caracteres.');
+        return false; // Devolver false indicando un error
+    }
+
+    // Verificar caracteres especiales utilizando una expresión regular
+    var regex = /^[a-zA-Z0-9\s]+$/; // Permite letras, números y espacios
+
+    if (!regex.test(nombre)) {
+        alert('El nombre del interruptor no puede contener caracteres especiales.');
+        return false; // Devolver false indicando un error
+    }
+
+    // El nombre del interruptor es válido
+    return true;
+}
 }

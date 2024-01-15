@@ -30,7 +30,14 @@ class SwitchService {
 
   deleteSwitch(uuid) {
     return $.ajax({
-      url: AppConfig.backendServer+'/rest/switch/del/' + uuid,
+      url: AppConfig.backendServer + '/rest/switch/' + uuid,
+      method: 'DELETE'
+    });
+  }
+
+  desSubscribe(uuid) {
+    return $.ajax({
+      url: AppConfig.backendServer + '/rest/switch/des/' + uuid,
       method: 'DELETE'
     });
   }
@@ -45,18 +52,7 @@ class SwitchService {
   }
 
   search(searchCont) {
-    return new Promise((resolve, reject) => {
-      $.get({
-        url: AppConfig.backendServer + '/rest/switch/public/' + searchCont,
-        success: (data) => {
-          resolve(data);
-        },
-        error: (error) => {
-          window.sessionStorage.removeItem('searchCont');
-          reject(error);
-        }
-      });
-    });
+    return $.get(AppConfig.backendServer+'/rest/switch/search/' + searchCont);
   }
 
 
